@@ -24,6 +24,7 @@
 		93B013672A8E75C000B97CA0 /* ManagedSettings.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93B013522A8E74FC00B97CA0 /* ManagedSettings.framework */; };
 		93B0136A2A8E75C000B97CA0 /* ShieldActionExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B013692A8E75C000B97CA0 /* ShieldActionExtension.swift */; };
 		93B0136F2A8E75C000B97CA0 /* CustomShieldAction.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 93B013662A8E75C000B97CA0 /* CustomShieldAction.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		93B64D722B5FCCAA009786B9 /* AlertToast in Frameworks */ = {isa = PBXBuildFile; productRef = 93B64D712B5FCCAA009786B9 /* AlertToast */; };
 		93EA81C32A8F8BB4005258D5 /* DeviceActivity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93EA81C22A8F8BB4005258D5 /* DeviceActivity.framework */; };
 		93EA81C62A8F8BB4005258D5 /* DeviceActivityMonitorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EA81C52A8F8BB4005258D5 /* DeviceActivityMonitorExtension.swift */; };
 		93EA81CB2A8F8BB4005258D5 /* CustomDeviceActivityMonitor.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 93EA81C12A8F8BB4005258D5 /* CustomDeviceActivityMonitor.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -123,6 +124,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				93B64D722B5FCCAA009786B9 /* AlertToast in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -295,6 +297,9 @@
 				93EA81CA2A8F8BB4005258D5 /* PBXTargetDependency */,
 			);
 			name = ScreenTimeShield;
+			packageProductDependencies = (
+				93B64D712B5FCCAA009786B9 /* AlertToast */,
+			);
 			productName = ScreenTimeShield;
 			productReference = 93B013182A8E557700B97CA0 /* Unplug.app */;
 			productType = "com.apple.product-type.application";
@@ -427,6 +432,9 @@
 				Base,
 			);
 			mainGroup = 93B0130F2A8E557700B97CA0;
+			packageReferences = (
+				93B64D702B5FCC38009786B9 /* XCRemoteSwiftPackageReference "AlertToast" */,
+			);
 			productRefGroup = 93B013192A8E557700B97CA0 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -713,7 +721,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.halfspud.ScreenTimeShield;
 				PRODUCT_NAME = Unplug;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -748,7 +756,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.halfspud.ScreenTimeShield;
 				PRODUCT_NAME = Unplug;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1059,6 +1067,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		93B64D702B5FCC38009786B9 /* XCRemoteSwiftPackageReference "AlertToast" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/elai950/AlertToast.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.3.9;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		93B64D712B5FCCAA009786B9 /* AlertToast */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 93B64D702B5FCC38009786B9 /* XCRemoteSwiftPackageReference "AlertToast" */;
+			productName = AlertToast;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 93B013102A8E557700B97CA0 /* Project object */;
 }
