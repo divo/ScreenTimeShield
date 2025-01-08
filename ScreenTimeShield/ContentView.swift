@@ -51,7 +51,7 @@ struct ContentView: View {
             HStack {
               Image(systemName: "exclamationmark.lock").foregroundColor(Color(uiColor: .systemPink))
               Text("Limits are locked when active. Apps can still be added to restriction")
-            }
+           }
           } else {
             HStack {
               Image(systemName: "lock.open.trianglebadge.exclamationmark").foregroundColor(Color(uiColor: .systemPink))
@@ -65,15 +65,16 @@ struct ContentView: View {
         AlertToast(displayMode: .alert, type: .error(Style.errorColor), title: "Cannot remove apps from block")
       })
       .onChange(of: model.selectionToRestrict) { newValue in
-        if model.validateRestriction() {
-          model.saveSelection()
-          Schedule.setSchedule(start: model.start, end: model.end, event: model.activityEvent())
-        } else {
-          // TODO: Show warning
-          print("Cannot remove apps from restrictions")
-          showToast = true
-          model.loadSelection()
-        }
+        // Not allowing the user to remove any apps from a block is a bit over the top 
+        // if model.validateRestriction() {
+           model.saveSelection()
+           Schedule.setSchedule(start: model.start, end: model.end, event: model.activityEvent())
+        // } else {
+        //   // TODO: Show warning
+        //   print("Cannot remove apps from restrictions")
+        //   showToast = true
+        //   model.loadSelection()
+        // }
       }.onChange(of: model.start) { newValue in
         if !model.isEmpty() {
           Schedule.setSchedule(start: model.start, end: model.end, event: model.activityEvent())
