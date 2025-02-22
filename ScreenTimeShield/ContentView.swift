@@ -53,7 +53,7 @@ struct ContentView: View {
             let oneHourLater = Calendar.current.date(byAdding: .hour, value: 1, to: now)!
             Schedule.setSchedule(start: now, end: oneHourLater, event: model.activityEvent(), repeats: false)
           }
-          .disabled(model.selectionToRestrict.applicationTokens.isEmpty)
+          .disabled(model.selectionToRestrict.applicationTokens.isEmpty || model.insideInterval)
           .padding(10)
           .controlSize(.large)
           .foregroundColor(.white)
