@@ -40,13 +40,26 @@ struct ContentView: View {
           Button(model.insideInterval ? "Add apps to restriction" : "Select apps to restrict") {
             isShowingRestrict = true
           }
-          //        }.disabled(model.insideInterval)
           .familyActivityPicker(isPresented: $isShowingRestrict, selection: $model.selectionToRestrict)
-          .padding(20)
+          .padding(0)
           .controlSize(.large)
           .foregroundColor(.white)
           .buttonStyle(.borderedProminent)
           .tint(Style.primaryColor)
+          
+          // New Quick Restrict Button
+          Button("Restrict for next hour") {
+            let now = Date()
+            let oneHourLater = Calendar.current.date(byAdding: .hour, value: 1, to: now)!
+            Schedule.setSchedule(start: now, end: oneHourLater, event: model.activityEvent(), repeats: false)
+          }
+          .disabled(model.selectionToRestrict.applicationTokens.isEmpty)
+          .padding(10)
+          .controlSize(.large)
+          .foregroundColor(.white)
+          .buttonStyle(.borderedProminent)
+          .tint(Style.primaryColor)
+
           if model.insideInterval {
             HStack {
               Image(systemName: "exclamationmark.lock").foregroundColor(Color(uiColor: .systemPink))
@@ -68,7 +81,7 @@ struct ContentView: View {
         // Not allowing the user to remove any apps from a block is a bit over the top 
         // if model.validateRestriction() {
            model.saveSelection()
-           Schedule.setSchedule(start: model.start, end: model.end, event: model.activityEvent())
+           Schedule.setSchedule(start: model.start, end: model.end, event: model.activityEvent(), repeats: true)
         // } else {
         //   // TODO: Show warning
         //   print("Cannot remove apps from restrictions")
@@ -77,11 +90,11 @@ struct ContentView: View {
         // }
       }.onChange(of: model.start) { newValue in
         if !model.isEmpty() {
-          Schedule.setSchedule(start: model.start, end: model.end, event: model.activityEvent())
+          Schedule.setSchedule(start: model.start, end: model.end, event: model.activityEvent(), repeats: true)
         }
       }.onChange(of: model.end) { newValue in
         if !model.isEmpty() {
-          Schedule.setSchedule(start: model.start, end: model.end, event: model.activityEvent())
+          Schedule.setSchedule(start: model.start, end: model.end, event: model.activityEvent(), repeats: true)
         }
       }.navigationTitle("Unplug ∎")
         .navigationBarTitleDisplayMode(.large)
