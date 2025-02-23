@@ -10,7 +10,8 @@ import SwiftUI
 
 @main
 struct ScreenTimeShieldControlBundle: WidgetBundle {
-    var body: some Widget {
+  @available(iOSApplicationExtension 18.0, *)
+  var body: some Widget {
         ScreenTimeShieldBlockControl()
     }
 }
