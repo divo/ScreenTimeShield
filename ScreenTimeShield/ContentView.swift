@@ -17,6 +17,10 @@ struct ContentView: View {
   @State var showToast: Bool = false
   
   static let screenWidth = UIScreen.main.bounds.size.width
+  
+  private var isQuickRestrictDisabled: Bool {
+    model.insideInterval || model.selectionToRestrict.applicationTokens.isEmpty
+  }
  
   var body: some View {
     NavigationView {
@@ -45,7 +49,7 @@ struct ContentView: View {
           
          
           if model.selectionToRestrict.applicationTokens.count != 0 {
-            Text("You have restricted \(model.selectionToRestrict.applicationTokens.count) apps and \(model.selectionToRestrict.webDomainTokens.count) websites").padding(20)
+            Text("You have restricted \(model.selectionToRestrict.applicationTokens.count) apps and \(model.selectionToRestrict.webDomainTokens.count) websites").padding(0)
           }
           
           VStack {
@@ -63,10 +67,16 @@ struct ContentView: View {
           .familyActivityPicker(isPresented: $isShowingRestrict, selection: $model.selectionToRestrict)
           .foregroundColor(.white)
           .buttonStyle(.borderedProminent)
-          .tint(Style.primaryColor)
+          .tint(.clear)
           .padding(EdgeInsets(top: 12, leading: 32, bottom: 12, trailing: 32))
           .frame(maxWidth: ContentView.screenWidth - 100)
-          .background(Style.primaryColor)
+          .background(
+            LinearGradient(
+              colors: [Style.primaryColor, .purple],
+              startPoint: .leading,
+              endPoint: .trailing
+            )
+          )
           .clipShape(RoundedRectangle(cornerRadius: 12.0, style: .circular))
           
           // New Quick Restrict Button
@@ -77,13 +87,13 @@ struct ContentView: View {
           }
           .foregroundColor(.white)
           .buttonStyle(.borderedProminent)
-          .tint((model.insideInterval || model.selectionToRestrict.applicationTokens.isEmpty) ? .secondary : Style.primaryColor)
+          .tint(isQuickRestrictDisabled ? .secondary : Style.primaryColor)
           .padding(EdgeInsets(top: 12, leading: 32, bottom: 12, trailing: 32))
           .frame(maxWidth: ContentView.screenWidth - 100)
-          .background((model.insideInterval || model.selectionToRestrict.applicationTokens.isEmpty) ? .secondary : Style.primaryColor)
+          .background(isQuickRestrictDisabled ? .secondary : Style.primaryColor)
           .clipShape(RoundedRectangle(cornerRadius: 12.0, style: .circular))
           .padding(.top, 8)
-          .disabled(model.selectionToRestrict.applicationTokens.isEmpty || model.insideInterval)
+          .disabled(isQuickRestrictDisabled)
 
           if model.insideInterval {
             HStack {

@@ -30,7 +30,7 @@ struct ScreenTimeShieldApp: App {
     // Create gradient for the title
     let gradientLayer = CAGradientLayer()
     gradientLayer.frame = CGRect(x: 0, y: 0, width: 300, height: 60) // Large enough for the title
-    gradientLayer.colors = [Style.primaryUIColor.cgColor, Style.backgroundColor.cgColor]
+    gradientLayer.colors = [Style.primaryUIColor.cgColor, UIColor.purple.cgColor]
     gradientLayer.startPoint = CGPoint(x: 0, y: 0.5)
     gradientLayer.endPoint = CGPoint(x: 1, y: 0.5)
     
