@@ -15,16 +15,35 @@ struct ContentView: View {
   
   @EnvironmentObject var model: Model
   @State var showToast: Bool = false
+  
+  static let screenWidth = UIScreen.main.bounds.size.width
  
   var body: some View {
     NavigationView {
       ZStack {
-        VStack {
+        VStack() {
           HStack {
-            Text("Unskippable app limits").padding(.horizontal)
+            Text("Unskippable app limits").padding(.horizontal).foregroundStyle(.secondary)
             Spacer()
           }
           
+          // Block Status Pill
+          HStack(alignment: .center, spacing: 8) {
+            Circle()
+              .fill(model.insideInterval ? .red : .gray)
+              .frame(width: 8, height: 8)
+            Text(model.insideInterval ? "Block active" : "Block inactive")
+              .font(.subheadline)
+              .foregroundStyle(model.insideInterval ? .primary : .secondary)
+          }
+          .padding(.horizontal, 20)
+          .padding(.vertical, 10)
+          .background(.secondary.opacity(0.1))
+          .clipShape(Capsule())
+          .padding(.horizontal)
+          .padding(.vertical, 10)
+          
+         
           if model.selectionToRestrict.applicationTokens.count != 0 {
             Text("You have restricted \(model.selectionToRestrict.applicationTokens.count) apps and \(model.selectionToRestrict.webDomainTokens.count) websites").padding(20)
           }
@@ -37,15 +56,18 @@ struct ContentView: View {
               .disabled(model.insideInterval)
               .foregroundColor(model.insideInterval ? Color(uiColor: .systemGray) : .primary)
           }.padding(20)
+          
           Button(model.insideInterval ? "Add apps to restriction" : "Select apps to restrict") {
             isShowingRestrict = true
           }
           .familyActivityPicker(isPresented: $isShowingRestrict, selection: $model.selectionToRestrict)
-          .padding(0)
-          .controlSize(.large)
           .foregroundColor(.white)
           .buttonStyle(.borderedProminent)
           .tint(Style.primaryColor)
+          .padding(EdgeInsets(top: 12, leading: 32, bottom: 12, trailing: 32))
+          .frame(maxWidth: ContentView.screenWidth - 100)
+          .background(Style.primaryColor)
+          .clipShape(RoundedRectangle(cornerRadius: 12.0, style: .circular))
           
           // New Quick Restrict Button
           Button("Restrict for next hour") {
@@ -53,23 +75,28 @@ struct ContentView: View {
             let oneHourLater = Calendar.current.date(byAdding: .hour, value: 1, to: now)!
             Schedule.setSchedule(start: now, end: oneHourLater, event: model.activityEvent(), repeats: false)
           }
-          .disabled(model.selectionToRestrict.applicationTokens.isEmpty || model.insideInterval)
-          .padding(10)
-          .controlSize(.large)
           .foregroundColor(.white)
           .buttonStyle(.borderedProminent)
-          .tint(Style.primaryColor)
+          .tint((model.insideInterval || model.selectionToRestrict.applicationTokens.isEmpty) ? .secondary : Style.primaryColor)
+          .padding(EdgeInsets(top: 12, leading: 32, bottom: 12, trailing: 32))
+          .frame(maxWidth: ContentView.screenWidth - 100)
+          .background((model.insideInterval || model.selectionToRestrict.applicationTokens.isEmpty) ? .secondary : Style.primaryColor)
+          .clipShape(RoundedRectangle(cornerRadius: 12.0, style: .circular))
+          .padding(.top, 8)
+          .disabled(model.selectionToRestrict.applicationTokens.isEmpty || model.insideInterval)
 
           if model.insideInterval {
             HStack {
               Image(systemName: "exclamationmark.lock").foregroundColor(Color(uiColor: .systemPink))
               Text("Limits are locked when active. Apps can still be added to restriction")
-           }
+            }.padding(.top, 26)
+             .padding(.horizontal, 26)
           } else {
             HStack {
               Image(systemName: "lock.open.trianglebadge.exclamationmark").foregroundColor(Color(uiColor: .systemPink))
               Text("Limits will be locked when active")
-            }
+            }.padding(.top, 26)
+             .padding(.horizontal, 26)
           }
           Spacer()
           
