@@ -88,7 +88,7 @@ struct ContentView: View {
           }
           .foregroundColor(.white)
           .buttonStyle(.borderedProminent)
-          .tint(isQuickRestrictDisabled ? .secondary : Style.primaryColor)
+          .tint(.clear)
           .padding(EdgeInsets(top: 12, leading: 32, bottom: 12, trailing: 32))
           .frame(maxWidth: ContentView.screenWidth - 100)
           .background(isQuickRestrictDisabled ? .secondary : Style.primaryColor)
