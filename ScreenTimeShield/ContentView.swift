@@ -64,7 +64,6 @@ struct ContentView: View {
           Button(model.insideInterval ? "Add apps to restriction" : "Select apps to restrict") {
             isShowingRestrict = true
           }
-          .familyActivityPicker(isPresented: $isShowingRestrict, selection: $model.selectionToRestrict)
           .foregroundColor(.white)
           .buttonStyle(.borderedProminent)
           .tint(.clear)
@@ -78,7 +77,9 @@ struct ContentView: View {
             )
           )
           .clipShape(RoundedRectangle(cornerRadius: 12.0, style: .circular))
-          
+          .familyActivityPicker(isPresented: $isShowingRestrict, selection: $model.selectionToRestrict)
+          .tint(Style.primaryColor)
+
           // New Quick Restrict Button
           Button("Restrict for next hour") {
             let now = Date()
