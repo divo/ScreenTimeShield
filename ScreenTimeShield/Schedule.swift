@@ -19,11 +19,11 @@ class Schedule {
                                         intervalEnd: components(from: end),
                                         repeats: repeats)
     
+    let activityName: DeviceActivityName = repeats ? .daily : .hourly
     let center = DeviceActivityCenter()
-    center.stopMonitoring()
+    center.stopMonitoring([activityName])
     
     let eventName = DeviceActivityEvent.Name("ScreenTimeShield.Event")
-    let activityName: DeviceActivityName = repeats ? .daily : .hourly
     
     do {
       try center.startMonitoring(
