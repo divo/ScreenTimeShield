@@ -7,6 +7,7 @@
 
 import SwiftUI
 import FamilyControls
+import UserNotifications
 
 @main
 struct ScreenTimeShieldApp: App {
@@ -17,6 +18,42 @@ struct ScreenTimeShieldApp: App {
   
   init() {
     configureNavigationBarAppearance()
+    requestNotificationPermission()
+  }
+  
+  private func requestNotificationPermission() {
+    // Configure notification categories and actions
+    configureNotificationCategories()
+    
+    // Request authorization for notifications
+    UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { granted, error in
+      if granted {
+        print("Notification permission granted")
+      } else if let error = error {
+        print("Error requesting notification permission: \(error.localizedDescription)")
+      } else {
+        print("Notification permission denied")
+      }
+    }
+  }
+  
+  private func configureNotificationCategories() {
+    // Define a category for app usage alerts
+    let openAppAction = UNNotificationAction(
+      identifier: "OPEN_APP_ACTION",
+      title: "Open App",
+      options: .foreground
+    )
+    
+    let appUsageCategory = UNNotificationCategory(
+      identifier: "APP_USAGE_ALERT",
+      actions: [openAppAction],
+      intentIdentifiers: [],
+      options: []
+    )
+    
+    // Register the category with the notification center
+    UNUserNotificationCenter.current().setNotificationCategories([appUsageCategory])
   }
   
   private func configureNavigationBarAppearance() {

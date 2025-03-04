@@ -23,6 +23,7 @@ class Model: ObservableObject {
   private static let userDefaultsSuite = "group.screentimeshield"
 
   @AppStorage("inside_interval", store: UserDefaults(suiteName: Model.userDefaultsSuite)) var insideInterval: Bool = false
+  @AppStorage("notifications_enabled", store: UserDefaults(suiteName: Model.userDefaultsSuite)) var notificationsEnabled: Bool = true
   
   @Published var selectionToRestrict: FamilyActivitySelection = FamilyActivitySelection()
   @Published var start: Date = (UserDefaults(suiteName: Model.userDefaultsSuite)?.object(forKey: "start") as? Date) ??
@@ -99,6 +100,16 @@ class Model: ObservableObject {
       categories: applications.categoryTokens,
       webDomains: applications.webDomainTokens,
       threshold: DateComponents(minute: 0)
+    )
+  }
+  
+  func notificationEvent() -> DeviceActivityEvent {
+    let applications = Model.shared.selectionToRestrict
+    return DeviceActivityEvent(
+      applications: applications.applicationTokens,
+      categories: applications.categoryTokens,
+      webDomains: applications.webDomainTokens,
+      threshold: DateComponents(minute: 15)
     )
   }
 }

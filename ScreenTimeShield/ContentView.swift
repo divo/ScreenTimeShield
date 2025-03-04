@@ -61,6 +61,37 @@ struct ContentView: View {
               .foregroundColor(model.insideInterval ? Color(uiColor: .systemGray) : .primary)
           }.padding(20)
           
+          // Notification Toggle
+          VStack(alignment: .leading, spacing: 8) {
+            HStack {
+              Toggle("Send usage notifications", isOn: $model.notificationsEnabled)
+                .tint(Style.primaryColor)
+                .disabled(model.insideInterval)
+              Spacer()
+            }
+            if model.notificationsEnabled {
+              HStack {
+                Image(systemName: "bell.badge")
+                  .foregroundColor(Style.primaryColor)
+                  .font(.system(size: 14))
+                Text("Get notified when using restricted apps outside scheduled hours")
+                  .font(.footnote)
+                  .foregroundStyle(.secondary)
+              }
+            } else {
+              HStack {
+                Image(systemName: "bell.slash")
+                  .foregroundColor(Color.gray)
+                  .font(.system(size: 14))
+                Text("No notifications for restricted app usage")
+                  .font(.footnote)
+                  .foregroundStyle(.secondary)
+              }
+            }
+          }
+          .padding(.horizontal, 30)
+          .padding(.bottom, 15)
+          
           Button(model.insideInterval ? "Add apps to restriction" : "Select apps to restrict") {
             isShowingRestrict = true
           }
@@ -131,6 +162,10 @@ struct ContentView: View {
           Schedule.setSchedule(start: model.start, end: model.end, event: model.activityEvent(), repeats: true)
         }
       }.onChange(of: model.end) { newValue in
+        if !model.isEmpty() {
+          Schedule.setSchedule(start: model.start, end: model.end, event: model.activityEvent(), repeats: true)
+        }
+      }.onChange(of: model.notificationsEnabled) { newValue in
         if !model.isEmpty() {
           Schedule.setSchedule(start: model.start, end: model.end, event: model.activityEvent(), repeats: true)
         }
