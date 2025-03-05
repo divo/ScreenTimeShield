@@ -64,9 +64,8 @@ struct ContentView: View {
           // Notification Toggle
           VStack(alignment: .leading, spacing: 8) {
             HStack {
-              Toggle("Send usage notifications", isOn: $model.notificationsEnabled)
+              Toggle("Send refocus notifications", isOn: $model.notificationsEnabled)
                 .tint(Style.primaryColor)
-                .disabled(model.insideInterval)
               Spacer()
             }
             if model.notificationsEnabled {
@@ -130,13 +129,17 @@ struct ContentView: View {
           if model.insideInterval {
             HStack {
               Image(systemName: "exclamationmark.lock").foregroundColor(Color(uiColor: .systemPink))
+                .font(.system(size: 14))
               Text("Limits are locked when active. Apps can still be added to restriction")
+                .font(.footnote)
             }.padding(.top, 26)
              .padding(.horizontal, 26)
           } else {
             HStack {
               Image(systemName: "lock.open.trianglebadge.exclamationmark").foregroundColor(Color(uiColor: .systemPink))
+                .font(.system(size: 14))
               Text("Limits will be locked when active")
+                .font(.footnote)
             }.padding(.top, 26)
              .padding(.horizontal, 26)
           }
