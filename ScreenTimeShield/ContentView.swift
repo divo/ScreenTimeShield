@@ -9,6 +9,7 @@ import SwiftUI
 import FamilyControls
 import Foundation
 import AlertToast
+import DeviceActivity
 
 struct ContentView: View {
   @State private var isShowingRestrict = false
@@ -82,7 +83,7 @@ struct ContentView: View {
                 Image(systemName: "bell.slash")
                   .foregroundColor(Color.gray)
                   .font(.system(size: 14))
-                Text("No notifications for restricted app usage")
+                Text("Get notified when using restricted apps outside scheduled hours")
                   .font(.footnote)
                   .foregroundStyle(.secondary)
               }
@@ -154,6 +155,9 @@ struct ContentView: View {
         // if model.validateRestriction() {
            model.saveSelection()
            Schedule.setSchedule(start: model.start, end: model.end, event: model.activityEvent(), repeats: true)
+           if model.notificationsEnabled {
+             Schedule.setNotificationSchedule(restrictionStart: model.start, restrictionEnd: model.end)
+           }
         // } else {
         //   // TODO: Show warning
         //   print("Cannot remove apps from restrictions")
@@ -163,14 +167,22 @@ struct ContentView: View {
       }.onChange(of: model.start) { newValue in
         if !model.isEmpty() {
           Schedule.setSchedule(start: model.start, end: model.end, event: model.activityEvent(), repeats: true)
+          if model.notificationsEnabled {
+            Schedule.setNotificationSchedule(restrictionStart: model.start, restrictionEnd: model.end)
+          }
         }
       }.onChange(of: model.end) { newValue in
         if !model.isEmpty() {
           Schedule.setSchedule(start: model.start, end: model.end, event: model.activityEvent(), repeats: true)
+          if model.notificationsEnabled {
+            Schedule.setNotificationSchedule(restrictionStart: model.start, restrictionEnd: model.end)
+          }
         }
       }.onChange(of: model.notificationsEnabled) { newValue in
-        if !model.isEmpty() {
-          Schedule.setSchedule(start: model.start, end: model.end, event: model.activityEvent(), repeats: true)
+        if newValue && !model.isEmpty() {
+          Schedule.setNotificationSchedule(restrictionStart: model.start, restrictionEnd: model.end)
+        } else {
+          DeviceActivityCenter().stopMonitoring([.notificationSchedule])
         }
       }.navigationTitle("Unplug ∎")
         .navigationBarTitleDisplayMode(.large)

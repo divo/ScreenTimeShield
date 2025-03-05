@@ -109,7 +109,7 @@ class Model: ObservableObject {
       applications: applications.applicationTokens,
       categories: applications.categoryTokens,
       webDomains: applications.webDomainTokens,
-      threshold: DateComponents(minute: 15)
+      threshold: DateComponents(minute: 1) // TODO: Update to 5 minutes before release
     )
   }
 }

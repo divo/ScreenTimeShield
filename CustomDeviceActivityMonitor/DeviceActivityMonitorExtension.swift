@@ -17,10 +17,9 @@ extension DeviceActivityName {
   static let notificationSchedule = Self("notificationSchedule")
 }
 
-// Simple proxy to access shared preferences
-class ExtensionModel {
-  static let shared = ExtensionModel()
-  
+// Optionally override any of the functions below.
+// Make sure that your class name matches the NSExtensionPrincipalClass in your Info.plist.
+class DeviceActivityMonitorExtension: DeviceActivityMonitor {
   private let defaults = UserDefaults(suiteName: "group.screentimeshield")
   let store = ManagedSettingsStore()
   
@@ -38,24 +37,6 @@ class ExtensionModel {
     }
   }
   
-  func loadSelection() {
-    // This is simplified - in real app we'd need to decode the selection
-  }
-  
-  func setRestrictions() {
-    // In real implementation, this would set the ManagedSettingsStore
-  }
-  
-  func clearRestrictions() {
-    store.shield.applications = nil
-    store.shield.applicationCategories = nil
-    store.shield.webDomains = nil
-  }
-}
-
-// Optionally override any of the functions below.
-// Make sure that your class name matches the NSExtensionPrincipalClass in your Info.plist.
-class DeviceActivityMonitorExtension: DeviceActivityMonitor {
   // This is called when the Schedule starts
   override func intervalDidStart(for activity: DeviceActivityName) {
     super.intervalDidStart(for: activity)
@@ -64,7 +45,7 @@ class DeviceActivityMonitorExtension: DeviceActivityMonitor {
     
     // Only set restrictions for the main restriction schedule
     if activity.rawValue == "daily" || activity.rawValue == "hourly" {
-      let model = ExtensionModel.shared
+      let model = Model.shared
       model.loadSelection()
       model.setRestrictions()
       model.insideInterval = true
@@ -79,7 +60,7 @@ class DeviceActivityMonitorExtension: DeviceActivityMonitor {
     
     // Only clear restrictions for the main restriction schedule
     if activity.rawValue == "daily" || activity.rawValue == "hourly" {
-      let model = ExtensionModel.shared
+      let model = Model.shared
       model.clearRestrictions()
       model.insideInterval = false
     }
@@ -94,8 +75,7 @@ class DeviceActivityMonitorExtension: DeviceActivityMonitor {
     if activity.rawValue == "notificationSchedule" {
       // Only send notifications for the threshold events in notification schedules
       if event.rawValue == "ScreenTimeShield.NotificationEvent" {
-        let model = ExtensionModel.shared
-        if model.notificationsEnabled {
+        if notificationsEnabled {
           sendUsageNotification()
         }
       }
