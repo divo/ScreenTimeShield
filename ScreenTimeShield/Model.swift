@@ -103,13 +103,26 @@ class Model: ObservableObject {
     )
   }
   
-  func notificationEvent() -> DeviceActivityEvent {
-    let applications = Model.shared.selectionToRestrict
-    return DeviceActivityEvent(
-      applications: applications.applicationTokens,
-      categories: applications.categoryTokens,
-      webDomains: applications.webDomainTokens,
-      threshold: DateComponents(minute: 1) // TODO: Update to 5 minutes before release
-    )
+  func notificationEvents() -> [DeviceActivityEvent.Name: DeviceActivityEvent] {
+    [
+      .init("ScreenTimeShield.NotificationEvent.5min"): DeviceActivityEvent(
+        applications: selectionToRestrict.applicationTokens,
+        categories: selectionToRestrict.categoryTokens,
+        webDomains: selectionToRestrict.webDomainTokens,
+        threshold: DateComponents(minute: 5)
+      ),
+      .init("ScreenTimeShield.NotificationEvent.10min"): DeviceActivityEvent(
+        applications: selectionToRestrict.applicationTokens,
+        categories: selectionToRestrict.categoryTokens,
+        webDomains: selectionToRestrict.webDomainTokens,
+        threshold: DateComponents(minute: 10)
+      ),
+      .init("ScreenTimeShield.NotificationEvent.20min"): DeviceActivityEvent(
+        applications: selectionToRestrict.applicationTokens,
+        categories: selectionToRestrict.categoryTokens,
+        webDomains: selectionToRestrict.webDomainTokens,
+        threshold: DateComponents(minute: 20)
+      )
+    ]
   }
 }

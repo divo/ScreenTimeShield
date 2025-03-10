@@ -42,9 +42,6 @@ class Schedule {
   
   static public func setNotificationSchedule(restrictionStart: Date, restrictionEnd: Date) {
     let model = Model.shared
-    let notificationEvent = model.notificationEvent()
-    let eventName = DeviceActivityEvent.Name("ScreenTimeShield.NotificationEvent")
-    
     let center = DeviceActivityCenter()
     center.stopMonitoring([.notificationSchedule])
     
@@ -62,7 +59,7 @@ class Schedule {
       try center.startMonitoring(
         .notificationSchedule,
         during: notificationSchedule,
-        events: [eventName: notificationEvent]
+        events: model.notificationEvents()
       )
     } catch {
       print("Error setting notification schedule: \(error)")

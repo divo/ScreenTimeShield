@@ -72,21 +72,25 @@ class DeviceActivityMonitorExtension: DeviceActivityMonitor {
     print("Event threshold reached: \(event.rawValue) for activity: \(activity.rawValue)")
     
     // Check if this is a notification schedule and notifications are enabled
-    if activity.rawValue == "notificationSchedule" {
-      // Only send notifications for the threshold events in notification schedules
-      if event.rawValue == "ScreenTimeShield.NotificationEvent" {
-        if notificationsEnabled {
-          sendUsageNotification()
-        }
+    if activity.rawValue == "notificationSchedule" && notificationsEnabled {
+      switch event.rawValue {
+      case "ScreenTimeShield.NotificationEvent.5min":
+        sendUsageNotification(message: "You've been using a restricted app for 5 minutes, tap here to regain focus")
+      case "ScreenTimeShield.NotificationEvent.10min":
+        sendUsageNotification(message: "You've been using a restricted app for 10 minutes, tap here to regain focus")
+      case "ScreenTimeShield.NotificationEvent.20min":
+        sendUsageNotification(message: "You've spent 20 minutes in a restricted app. Time to regain focus")
+      default:
+        break
       }
     }
   }
   
-  private func sendUsageNotification() {
+  private func sendUsageNotification(message: String) {
     // Create notification content
     let content = UNMutableNotificationContent()
     content.title = "App Usage Alert"
-    content.body = "You've spent 15 minutes in a restricted app. Tap to regain focus"
+    content.body = message
     content.sound = .default
     
     // Add category for action when tapped
