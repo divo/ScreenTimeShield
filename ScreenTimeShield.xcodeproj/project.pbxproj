@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		931CCC152D7F815E00E447ED /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 931CCC142D7F815E00E447ED /* Localizable.xcstrings */; };
+		931CCC162D7F815E00E447ED /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 931CCC142D7F815E00E447ED /* Localizable.xcstrings */; };
+		931CCC172D7F815E00E447ED /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 931CCC142D7F815E00E447ED /* Localizable.xcstrings */; };
+		931CCC182D7F815E00E447ED /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 931CCC142D7F815E00E447ED /* Localizable.xcstrings */; };
+		931CCC192D7F815E00E447ED /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 931CCC142D7F815E00E447ED /* Localizable.xcstrings */; };
 		934F9C1B2D69D061006FC752 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 934F9C1A2D69D061006FC752 /* WidgetKit.framework */; };
 		934F9C1D2D69D061006FC752 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 934F9C1C2D69D061006FC752 /* SwiftUI.framework */; };
 		934F9C2C2D69D062006FC752 /* ScreenTimeShieldControlExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 934F9C192D69D061006FC752 /* ScreenTimeShieldControlExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -101,6 +106,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		931CCC142D7F815E00E447ED /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		934F9C192D69D061006FC752 /* ScreenTimeShieldControlExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ScreenTimeShieldControlExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		934F9C1A2D69D061006FC752 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		934F9C1C2D69D061006FC752 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
@@ -213,6 +219,7 @@
 		93B0130F2A8E557700B97CA0 = {
 			isa = PBXGroup;
 			children = (
+				931CCC142D7F815E00E447ED /* Localizable.xcstrings */,
 				934F9C332D6BAA20006FC752 /* ScreenTimeShieldControlExtension.entitlements */,
 				93B0131A2A8E557700B97CA0 /* ScreenTimeShield */,
 				93B0132B2A8E557800B97CA0 /* ScreenTimeShieldTests */,
@@ -526,6 +533,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				931CCC152D7F815E00E447ED /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -535,6 +543,7 @@
 			files = (
 				93B013232A8E557800B97CA0 /* Preview Assets.xcassets in Resources */,
 				93B013202A8E557800B97CA0 /* Assets.xcassets in Resources */,
+				931CCC162D7F815E00E447ED /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -556,6 +565,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				931CCC172D7F815E00E447ED /* Localizable.xcstrings in Resources */,
 				93EA81CF2A8FAC38005258D5 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -564,6 +574,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				931CCC182D7F815E00E447ED /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -571,6 +582,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				931CCC192D7F815E00E447ED /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -800,6 +812,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -853,6 +866,7 @@
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				VALIDATE_PRODUCT = YES;
 			};

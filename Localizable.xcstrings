@@ -1,0 +1,226 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "Add apps to restriction" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add apps to restriction"
+          }
+        }
+      }
+    },
+    "Block active" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Block active"
+          }
+        }
+      }
+    },
+    "Block inactive" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Block inactive"
+          }
+        }
+      }
+    },
+    "Block restricted apps for 1 hour" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Block restricted apps for 1 hour"
+          }
+        }
+      }
+    },
+    "Control Name" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Control Name"
+          }
+        }
+      }
+    },
+    "Focus" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Focus"
+          }
+        }
+      }
+    },
+    "Focus for 1 hour" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Focus for 1 hour"
+          }
+        }
+      }
+    },
+    "Focus Name Configuration" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Focus Name Configuration"
+          }
+        }
+      }
+    },
+    "Get notified when using restricted apps outside scheduled hours" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Get notified when using restricted apps outside scheduled hours"
+          }
+        }
+      }
+    },
+    "Limits are locked when active. Apps can still be added to restriction" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Limits are locked when active. Apps can still be added to restriction"
+          }
+        }
+      }
+    },
+    "Limits will be locked when active" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Limits will be locked when active"
+          }
+        }
+      }
+    },
+    "Off" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Off"
+          }
+        }
+      }
+    },
+    "On" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "On"
+          }
+        }
+      }
+    },
+    "Restrict for next hour" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restrict for next hour"
+          }
+        }
+      }
+    },
+    "Schedule End" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schedule End"
+          }
+        }
+      }
+    },
+    "Schedule start" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schedule start"
+          }
+        }
+      }
+    },
+    "Select apps to restrict" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select apps to restrict"
+          }
+        }
+      }
+    },
+    "Send refocus notifications" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Send refocus notifications"
+          }
+        }
+      }
+    },
+    "Start a timer" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start a timer"
+          }
+        }
+      }
+    },
+    "Unplug ∎" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unplug ∎"
+          }
+        }
+      }
+    },
+    "Unskippable app limits" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unskippable app limits"
+          }
+        }
+      }
+    },
+    "You have restricted %lld apps and %lld websites" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You have restricted %1$lld apps and %2$lld websites"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}
