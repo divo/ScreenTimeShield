@@ -507,13 +507,13 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
-				Base,
 				fr,
 				"zh-Hans",
 				it,
 				ko,
 				de,
 				ja,
+				Base,
 			);
 			mainGroup = 93B0130F2A8E557700B97CA0;
 			packageReferences = (
