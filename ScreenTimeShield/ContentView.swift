@@ -74,7 +74,7 @@ struct ContentView: View {
                 Image(systemName: "bell.badge")
                   .foregroundColor(Style.primaryColor)
                   .font(.system(size: 14))
-                Text("Get notified when using restricted apps outside scheduled restriction")
+                Text("Get notified when using restricted apps outside of blocked hours")
                   .font(.footnote)
                   .foregroundStyle(.secondary)
               }
@@ -83,7 +83,7 @@ struct ContentView: View {
                 Image(systemName: "bell.slash")
                   .foregroundColor(Color.gray)
                   .font(.system(size: 14))
-                Text("Get notified when using restricted apps outside scheduled restriction")
+                Text("Get notified when using restricted apps outside of blocked hours")
                   .font(.footnote)
                   .foregroundStyle(.secondary)
               }
