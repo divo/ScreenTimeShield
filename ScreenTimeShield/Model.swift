@@ -104,25 +104,17 @@ class Model: ObservableObject {
   }
   
   func notificationEvents() -> [DeviceActivityEvent.Name: DeviceActivityEvent] {
-    [
-      .init("ScreenTimeShield.NotificationEvent.5min"): DeviceActivityEvent(
-        applications: selectionToRestrict.applicationTokens,
-        categories: selectionToRestrict.categoryTokens,
-        webDomains: selectionToRestrict.webDomainTokens,
-        threshold: DateComponents(minute: 5)
-      ),
-      .init("ScreenTimeShield.NotificationEvent.10min"): DeviceActivityEvent(
-        applications: selectionToRestrict.applicationTokens,
-        categories: selectionToRestrict.categoryTokens,
-        webDomains: selectionToRestrict.webDomainTokens,
-        threshold: DateComponents(minute: 10)
-      ),
-      .init("ScreenTimeShield.NotificationEvent.20min"): DeviceActivityEvent(
-        applications: selectionToRestrict.applicationTokens,
-        categories: selectionToRestrict.categoryTokens,
-        webDomains: selectionToRestrict.webDomainTokens,
-        threshold: DateComponents(minute: 20)
-      )
-    ]
+    Dictionary(uniqueKeysWithValues: (1...10).map { i in
+        let minute = i * 5
+        return (
+            .init("ScreenTimeShield.NotificationEvent.\(minute)min"),
+            DeviceActivityEvent(
+                applications: selectionToRestrict.applicationTokens,
+                categories: selectionToRestrict.categoryTokens,
+                webDomains: selectionToRestrict.webDomainTokens,
+                threshold: DateComponents(minute: minute)
+            )
+        )
+    })
   }
 }

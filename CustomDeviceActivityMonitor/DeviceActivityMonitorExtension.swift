@@ -73,15 +73,10 @@ class DeviceActivityMonitorExtension: DeviceActivityMonitor {
     
     // Check if this is a notification schedule and notifications are enabled
     if activity.rawValue == "notificationSchedule" && notificationsEnabled {
-      switch event.rawValue {
-      case "ScreenTimeShield.NotificationEvent.5min":
-        sendUsageNotification(message: "You've been using a restricted app for 5 minutes, tap here to regain focus")
-      case "ScreenTimeShield.NotificationEvent.10min":
-        sendUsageNotification(message: "You've been using a restricted app for 10 minutes, tap here to regain focus")
-      case "ScreenTimeShield.NotificationEvent.20min":
-        sendUsageNotification(message: "You've spent 20 minutes in a restricted app. Time to regain focus")
-      default:
-        break
+      // Extract the minute value from the event.rawValue
+      if let minuteString = event.rawValue.split(separator: ".").last,
+         let minutes = Int(minuteString.replacingOccurrences(of: "min", with: "")) {
+        sendUsageNotification(message: String(localized:"You've been using a restricted app for \(minutes) minutes, tap here to regain focus"))
       }
     }
   }
