@@ -34,10 +34,10 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
     }
   
   func customShieldConfiguration() -> ShieldConfiguration {
-    let primaryLabel = ShieldConfiguration.Label(text: "Unplug", color: UIColor.lightGray)
-    let subtitleLabel = ShieldConfiguration.Label(text: "App limits reached", color: UIColor.lightGray)
+    let primaryLabel = ShieldConfiguration.Label(text: String(localized: "Unplug"), color: UIColor.lightGray)
+    let subtitleLabel = ShieldConfiguration.Label(text: String(localized: "App limits reached"), color: UIColor.lightGray)
     
-    let primaryButton = ShieldConfiguration.Label(text: "Close", color: .black)
+    let primaryButton = ShieldConfiguration.Label(text: String(localized:"Close"), color: .black)
     let secondaryButton = ShieldConfiguration.Label(text: "", color: UIColor.lightGray)
     
     return ShieldConfiguration(backgroundBlurStyle: UIBlurEffect.Style.systemMaterialDark,

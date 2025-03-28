@@ -1,1414 +1,1739 @@
 {
-  "sourceLanguage" : "en",
-  "strings" : {
-    "Add apps to restriction" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Anwendungen zur Einschränkung hinzufügen"
-          }
+    "sourceLanguage": "en",
+    "strings": {
+        "Add apps to restriction": {
+            "localizations": {
+                "de": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Anwendungen zur Einschränkung hinzufügen"
+                    }
+                },
+                "en": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Add apps to restriction"
+                    }
+                },
+                "es": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Añadir aplicaciones a la restricción"
+                    }
+                },
+                "fr": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Ajouter des applications à la restriction"
+                    }
+                },
+                "it": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Aggiungere app alla restrizione"
+                    }
+                },
+                "ja": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "制限にアプリを追加する"
+                    }
+                },
+                "ko": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "제한 대상 앱 추가"
+                    }
+                },
+                "pt-PT": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Adicione aplicativos à restrição"
+                    }
+                },
+                "zh-Hans": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "将应用程序添加到限制"
+                    }
+                },
+                "zh-Hant": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "將應用程序添加到限制"
+                    }
+                }
+            }
         },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Add apps to restriction"
-          }
+        "App limits reached": {
+            "extractionState": "manual",
+            "localizations": {
+                "en": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "App limits reached"
+                    }
+                },
+                "zh-Hans": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "达到应用程序限制"
+                    }
+                },
+                "zh-Hant": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "達到應用程式限制"
+                    }
+                },
+                "pt-PT": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Limites da aplicação atingidos"
+                    }
+                },
+                "es": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Se han alcanzado los límites de la aplicación"
+                    }
+                },
+                "de": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "App-Grenzen erreicht"
+                    }
+                },
+                "fr": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Limites de l'application atteintes"
+                    }
+                },
+                "ja": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "アプリの制限に達した"
+                    }
+                },
+                "ko": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "앱 한도 도달"
+                    }
+                },
+                "it": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Limiti dell'app raggiunti"
+                    }
+                }
+            }
         },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Añadir aplicaciones a la restricción"
-          }
+        "Block active": {
+            "localizations": {
+                "de": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Block aktiv"
+                    }
+                },
+                "en": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Block active"
+                    }
+                },
+                "es": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Bloque activo"
+                    }
+                },
+                "fr": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Bloc actif"
+                    }
+                },
+                "it": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Blocco attivo"
+                    }
+                },
+                "ja": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "ブロック・アクティブ"
+                    }
+                },
+                "ko": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "블록 활성화"
+                    }
+                },
+                "pt-PT": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Bloco ativo"
+                    }
+                },
+                "zh-Hans": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "块活动"
+                    }
+                },
+                "zh-Hant": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "塊活動"
+                    }
+                }
+            }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ajouter des applications à la restriction"
-          }
+        "Block inactive": {
+            "localizations": {
+                "de": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Block inaktiv"
+                    }
+                },
+                "en": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Block inactive"
+                    }
+                },
+                "es": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Bloque inactivo"
+                    }
+                },
+                "fr": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Bloc inactif"
+                    }
+                },
+                "it": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Blocco inattivo"
+                    }
+                },
+                "ja": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "ブロック・インアクティブ"
+                    }
+                },
+                "ko": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "비활성 차단"
+                    }
+                },
+                "pt-PT": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Bloco inativo"
+                    }
+                },
+                "zh-Hans": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "阻止非活性"
+                    }
+                },
+                "zh-Hant": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "阻止非活性"
+                    }
+                }
+            }
         },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aggiungere app alla restrizione"
-          }
+        "Block restricted apps for 1 hour": {
+            "localizations": {
+                "de": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Sperrung eingeschränkter Anwendungen für 1 Stunde"
+                    }
+                },
+                "en": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Block restricted apps for 1 hour"
+                    }
+                },
+                "es": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Bloquear aplicaciones restringidas durante 1 hora"
+                    }
+                },
+                "fr": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Bloquer les applications à usage restreint pendant 1 heure"
+                    }
+                },
+                "it": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Bloccare le app riservate per 1 ora"
+                    }
+                },
+                "ja": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "制限されたアプリを1時間ブロック"
+                    }
+                },
+                "ko": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "1시간 동안 제한된 앱 차단"
+                    }
+                },
+                "pt-PT": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Bloco aplicativos restritos por 1 hora"
+                    }
+                },
+                "zh-Hans": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "块限制应用程序1小时"
+                    }
+                },
+                "zh-Hant": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "塊限制應用程序1小時"
+                    }
+                }
+            }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "制限にアプリを追加する"
-          }
+        "Cannot remove apps from block": {
+            "extractionState": "manual",
+            "localizations": {
+                "en": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Cannot remove apps from block"
+                    }
+                },
+                "zh-Hans": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "无法从阻止程序中删除应用程序"
+                    }
+                },
+                "zh-Hant": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "無法從區塊中移除應用程式"
+                    }
+                },
+                "pt-PT": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Não é possível remover aplicações do bloco"
+                    }
+                },
+                "es": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "No se pueden eliminar aplicaciones del bloque"
+                    }
+                },
+                "de": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Anwendungen können nicht aus dem Block entfernt werden"
+                    }
+                },
+                "fr": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Impossible de supprimer les applications du bloc"
+                    }
+                },
+                "ja": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "ブロックからアプリを削除できない"
+                    }
+                },
+                "ko": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "차단에서 앱을 제거할 수 없습니다."
+                    }
+                },
+                "it": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Impossibile rimuovere le app dal blocco"
+                    }
+                }
+            }
         },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "제한 대상 앱 추가"
-          }
+        "Close": {
+            "extractionState": "manual",
+            "localizations": {
+                "en": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Close"
+                    }
+                },
+                "zh-Hans": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "关闭"
+                    }
+                },
+                "zh-Hant": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "關閉"
+                    }
+                },
+                "pt-PT": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Fechar"
+                    }
+                },
+                "es": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Cerrar"
+                    }
+                },
+                "de": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Schließen Sie"
+                    }
+                },
+                "fr": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Fermer"
+                    }
+                },
+                "ja": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "閉じる"
+                    }
+                },
+                "ko": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "닫기"
+                    }
+                },
+                "it": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Chiudere"
+                    }
+                }
+            }
         },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Adicione aplicativos à restrição"
-          }
+        "Control Name": {
+            "localizations": {
+                "de": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Kontrolle Name"
+                    }
+                },
+                "en": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Control Name"
+                    }
+                },
+                "es": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Nombre del control"
+                    }
+                },
+                "fr": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Nom du contrôle"
+                    }
+                },
+                "it": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Nome del controllo"
+                    }
+                },
+                "ja": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "コントロール名"
+                    }
+                },
+                "ko": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "컨트롤 이름"
+                    }
+                },
+                "pt-PT": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Nome de controle"
+                    }
+                },
+                "zh-Hans": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "控制名称"
+                    }
+                },
+                "zh-Hant": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "控制名稱"
+                    }
+                }
+            }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "将应用程序添加到限制"
-          }
+        "Focus": {
+            "localizations": {
+                "de": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Fokus"
+                    }
+                },
+                "en": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Focus"
+                    }
+                },
+                "es": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Enfoque"
+                    }
+                },
+                "fr": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Focus"
+                    }
+                },
+                "it": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Focus"
+                    }
+                },
+                "ja": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "フォーカス"
+                    }
+                },
+                "ko": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "초점"
+                    }
+                },
+                "pt-PT": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Foco"
+                    }
+                },
+                "zh-Hans": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "重点"
+                    }
+                },
+                "zh-Hant": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "重點"
+                    }
+                }
+            }
         },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "將應用程序添加到限制"
-          }
+        "Focus for 1 hour": {
+            "localizations": {
+                "de": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Fokus für 1 Stunde"
+                    }
+                },
+                "en": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Focus for 1 hour"
+                    }
+                },
+                "es": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Concentración durante 1 hora"
+                    }
+                },
+                "fr": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Focus pendant 1 heure"
+                    }
+                },
+                "it": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Concentrazione per 1 ora"
+                    }
+                },
+                "ja": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "1時間集中"
+                    }
+                },
+                "ko": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "1시간 동안 집중하기"
+                    }
+                },
+                "pt-PT": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Foco por 1 hora"
+                    }
+                },
+                "zh-Hans": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "焦点1小时"
+                    }
+                },
+                "zh-Hant": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "焦點1小時"
+                    }
+                }
+            }
+        },
+        "Focus Name Configuration": {
+            "localizations": {
+                "de": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Focus Name Configuration"
+                    }
+                },
+                "en": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Focus Name Configuration"
+                    }
+                },
+                "es": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Configuración de Focus Name"
+                    }
+                },
+                "fr": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Focus Name Configuration"
+                    }
+                },
+                "it": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Configurazione del nome del focus"
+                    }
+                },
+                "ja": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "フォーカス名の構成"
+                    }
+                },
+                "ko": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "포커스 이름 구성"
+                    }
+                },
+                "pt-PT": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Configuração do nome do foco"
+                    }
+                },
+                "zh-Hans": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "焦点名称配置"
+                    }
+                },
+                "zh-Hant": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "焦點名稱配置"
+                    }
+                }
+            }
+        },
+        "Get notified when using restricted apps outside scheduled hours": {
+            "localizations": {
+                "de": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Benachrichtigung bei Nutzung eingeschränkter Anwendungen außerhalb der geplanten Zeiten"
+                    }
+                },
+                "en": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Get notified when using restricted apps outside scheduled hours"
+                    }
+                },
+                "es": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Recibe notificaciones cuando utilices aplicaciones restringidas fuera del horario programado"
+                    }
+                },
+                "fr": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Recevoir une notification en cas d'utilisation d'applications restreintes en dehors des heures prévues"
+                    }
+                },
+                "it": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Ricevere una notifica quando si utilizzano app riservate al di fuori degli orari previsti"
+                    }
+                },
+                "ja": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "制限時間外に制限アプリを使用すると通知が届く"
+                    }
+                },
+                "ko": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "예약된 시간 외에 제한된 앱을 사용할 때 알림 받기"
+                    }
+                },
+                "pt-PT": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Seja notificado ao usar aplicativos restritos fora do horário programado"
+                    }
+                },
+                "zh-Hans": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "在计划小时外使用受限制的应用程序时通知"
+                    }
+                },
+                "zh-Hant": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "在計劃小時外使用受限制的應用程序時通知"
+                    }
+                }
+            }
+        },
+        "Limits are locked when active. Apps can still be added to restriction": {
+            "localizations": {
+                "de": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Limits sind gesperrt, wenn sie aktiv sind. Apps können noch zu den Restriktionen hinzugefügt werden."
+                    }
+                },
+                "en": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Limits are locked when active. Apps can still be added to restriction"
+                    }
+                },
+                "es": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Los límites se bloquean cuando están activos. Las aplicaciones pueden seguir añadiéndose a la restricción."
+                    }
+                },
+                "fr": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Les limites sont verrouillées lorsqu'elles sont actives, mais les applications peuvent toujours être ajoutées à la restriction."
+                    }
+                },
+                "it": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "I limiti sono bloccati quando sono attivi. Le applicazioni possono ancora essere aggiunte alla restrizione."
+                    }
+                },
+                "ja": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "制限が有効な場合はロックされます。 制限へのアプリの追加は可能です。"
+                    }
+                },
+                "ko": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "활성 상태에서는 제한이 잠깁니다. 앱은 여전히 제한에 추가할 수 있습니다."
+                    }
+                },
+                "pt-PT": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Os limites são bloqueados quando ativos.Os aplicativos ainda podem ser adicionados à restrição"
+                    }
+                },
+                "zh-Hans": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "活动时限制锁定。应用程序仍然可以添加到限制中"
+                    }
+                },
+                "zh-Hant": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "活動時限制鎖定。應用程序仍然可以添加到限制中"
+                    }
+                }
+            }
+        },
+        "Limits will be locked when active": {
+            "localizations": {
+                "de": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Limits werden gesperrt, wenn sie aktiv sind"
+                    }
+                },
+                "en": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Limits will be locked when active"
+                    }
+                },
+                "es": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Los límites se bloquearán cuando estén activos"
+                    }
+                },
+                "fr": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Les limites sont verrouillées lorsqu'elles sont actives"
+                    }
+                },
+                "it": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "I limiti saranno bloccati quando sono attivi"
+                    }
+                },
+                "ja": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "アクティブな場合、リミットはロックされる"
+                    }
+                },
+                "ko": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "활성화되면 한도가 잠깁니다."
+                    }
+                },
+                "pt-PT": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Os limites serão bloqueados quando ativos"
+                    }
+                },
+                "zh-Hans": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "活动时限制将被锁定"
+                    }
+                },
+                "zh-Hant": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "活動時限制將被鎖定"
+                    }
+                }
+            }
+        },
+        "Off": {
+            "localizations": {
+                "de": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Aus"
+                    }
+                },
+                "en": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Off"
+                    }
+                },
+                "es": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Fuera de"
+                    }
+                },
+                "fr": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Arrêt"
+                    }
+                },
+                "it": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Spento"
+                    }
+                },
+                "ja": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "オフ"
+                    }
+                },
+                "ko": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "꺼짐"
+                    }
+                },
+                "pt-PT": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Desligado"
+                    }
+                },
+                "zh-Hans": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "离开"
+                    }
+                },
+                "zh-Hant": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "離開"
+                    }
+                }
+            }
+        },
+        "On": {
+            "localizations": {
+                "de": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Auf"
+                    }
+                },
+                "en": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "On"
+                    }
+                },
+                "es": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "En"
+                    }
+                },
+                "fr": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Sur"
+                    }
+                },
+                "it": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Su"
+                    }
+                },
+                "ja": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "オン"
+                    }
+                },
+                "ko": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "켜짐"
+                    }
+                },
+                "pt-PT": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Em"
+                    }
+                },
+                "zh-Hans": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "在"
+                    }
+                },
+                "zh-Hant": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "在"
+                    }
+                }
+            }
+        },
+        "Restrict for next hour": {
+            "localizations": {
+                "de": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Für die nächste Stunde einschränken"
+                    }
+                },
+                "en": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Restrict for next hour"
+                    }
+                },
+                "es": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Restringir para la próxima hora"
+                    }
+                },
+                "fr": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Restriction pour l'heure suivante"
+                    }
+                },
+                "it": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Limitare per la prossima ora"
+                    }
+                },
+                "ja": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "次の1時間の制限"
+                    }
+                },
+                "ko": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "다음 시간 동안 제한"
+                    }
+                },
+                "pt-PT": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Restringir para a próxima hora"
+                    }
+                },
+                "zh-Hans": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "限制下一个小时"
+                    }
+                },
+                "zh-Hant": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "限制下一個小時"
+                    }
+                }
+            }
+        },
+        "Schedule End": {
+            "localizations": {
+                "de": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Zeitplan Ende"
+                    }
+                },
+                "en": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Schedule End"
+                    }
+                },
+                "es": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Horario Fin"
+                    }
+                },
+                "fr": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Fin du calendrier"
+                    }
+                },
+                "it": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Programma Fine"
+                    }
+                },
+                "ja": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "スケジュール終了"
+                    }
+                },
+                "ko": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "일정 종료"
+                    }
+                },
+                "pt-PT": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Fim do calendário"
+                    }
+                },
+                "zh-Hans": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "时间表结束"
+                    }
+                },
+                "zh-Hant": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "時間表結束"
+                    }
+                }
+            }
+        },
+        "Schedule start": {
+            "localizations": {
+                "de": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Schedule start"
+                    }
+                },
+                "en": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Schedule start"
+                    }
+                },
+                "es": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Horario de inicio"
+                    }
+                },
+                "fr": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Début de l'horaire"
+                    }
+                },
+                "it": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Inizio programma"
+                    }
+                },
+                "ja": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "スケジュール開始"
+                    }
+                },
+                "ko": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "일정 시작"
+                    }
+                },
+                "pt-PT": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Início do calendário"
+                    }
+                },
+                "zh-Hans": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "时间表开始"
+                    }
+                },
+                "zh-Hant": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "時間表開始"
+                    }
+                }
+            }
+        },
+        "Select apps to restrict": {
+            "localizations": {
+                "de": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Zu beschränkende Anwendungen auswählen"
+                    }
+                },
+                "en": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Select apps to restrict"
+                    }
+                },
+                "es": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Seleccione las aplicaciones que desea restringir"
+                    }
+                },
+                "fr": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Sélectionner les applications à restreindre"
+                    }
+                },
+                "it": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Selezionare le app da limitare"
+                    }
+                },
+                "ja": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "制限するアプリを選択する"
+                    }
+                },
+                "ko": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "제한할 앱 선택"
+                    }
+                },
+                "pt-PT": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Selecionar aplicações para restringir"
+                    }
+                },
+                "zh-Hans": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "选择限制应用程序"
+                    }
+                },
+                "zh-Hant": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "選擇限制應用程序"
+                    }
+                }
+            }
+        },
+        "Send refocus notifications": {
+            "localizations": {
+                "de": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Send refocus notifications"
+                    }
+                },
+                "en": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Send refocus notifications"
+                    }
+                },
+                "es": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Enviar notificaciones de reenfoque"
+                    }
+                },
+                "fr": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Send refocus notifications"
+                    }
+                },
+                "it": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Inviare notifiche di rifocalizzazione"
+                    }
+                },
+                "ja": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "リフォーカス通知の送信"
+                    }
+                },
+                "ko": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "재초점 알림 보내기"
+                    }
+                },
+                "pt-PT": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Enviar notificações de reorientação"
+                    }
+                },
+                "zh-Hans": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "发送重新关注通知"
+                    }
+                },
+                "zh-Hant": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "發送重新關注通知"
+                    }
+                }
+            }
+        },
+        "Start a timer": {
+            "localizations": {
+                "de": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Einen Timer starten"
+                    }
+                },
+                "en": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Start a timer"
+                    }
+                },
+                "es": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Iniciar un temporizador"
+                    }
+                },
+                "fr": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Démarrer une minuterie"
+                    }
+                },
+                "it": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Avviare un timer"
+                    }
+                },
+                "ja": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "タイマー開始"
+                    }
+                },
+                "ko": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "타이머 시작"
+                    }
+                },
+                "pt-PT": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Iniciar um temporizador"
+                    }
+                },
+                "zh-Hans": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "启动一个计时器"
+                    }
+                },
+                "zh-Hant": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "啟動一個計時器"
+                    }
+                }
+            }
+        },
+        "Unplug": {
+            "extractionState": "manual",
+            "localizations": {
+                "en": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Unplug"
+                    }
+                },
+                "zh-Hans": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "拔掉插头"
+                    }
+                },
+                "zh-Hant": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "拔下插頭"
+                    }
+                },
+                "pt-PT": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Desligar a ficha"
+                    }
+                },
+                "es": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Desenchufe"
+                    }
+                },
+                "de": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Ziehen Sie den Stecker"
+                    }
+                },
+                "fr": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Débrancher"
+                    }
+                },
+                "ja": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "プラグを抜く"
+                    }
+                },
+                "ko": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "플러그 뽑기"
+                    }
+                },
+                "it": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Staccare la spina"
+                    }
+                }
+            }
+        },
+        "Unplug ∎": {
+            "localizations": {
+                "de": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Netzstecker ziehen ∎"
+                    }
+                },
+                "en": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Unplug ∎"
+                    }
+                },
+                "es": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Desenchufar ∎"
+                    }
+                },
+                "fr": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Débrancher ∎"
+                    }
+                },
+                "it": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Scollegare la spina ∎"
+                    }
+                },
+                "ja": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "プラグを抜く"
+                    }
+                },
+                "ko": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "플러그 뽑기 ∎"
+                    }
+                },
+                "pt-PT": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Desligar a ficha ∎"
+                    }
+                },
+                "zh-Hans": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "拔出插头∎"
+                    }
+                },
+                "zh-Hant": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "拔出插頭∎"
+                    }
+                }
+            }
+        },
+        "Unskippable app limits": {
+            "localizations": {
+                "de": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Unskippbare App-Begrenzungen"
+                    }
+                },
+                "en": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Unskippable app limits"
+                    }
+                },
+                "es": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Límites de las aplicaciones"
+                    }
+                },
+                "fr": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Limites d'applications non désactivables"
+                    }
+                },
+                "it": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Limiti delle app non skippabili"
+                    }
+                },
+                "ja": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "アプリの制限解除"
+                    }
+                },
+                "ko": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "건너뛸 수 없는 앱 제한"
+                    }
+                },
+                "pt-PT": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Limites de aplicações insusceptíveis de serem utilizados"
+                    }
+                },
+                "zh-Hans": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "不合理的应用程序限制"
+                    }
+                },
+                "zh-Hant": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "不合理的應用程序限制"
+                    }
+                }
+            }
+        },
+        "You have restricted %lld apps and %lld websites": {
+            "localizations": {
+                "de": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Sie haben %1$lld Anwendungen und %2$lld Websites eingeschränkt"
+                    }
+                },
+                "en": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "You have restricted %1$lld apps and %2$lld websites"
+                    }
+                },
+                "es": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Has restringido %1$lld apps y %2$lld websites"
+                    }
+                },
+                "fr": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Vous avez restreint %1$lld apps et %2$lld websites"
+                    }
+                },
+                "it": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Avete limitato %1$lld app e %2$lld website"
+                    }
+                },
+                "ja": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "1$古いアプリと%2$古いウェブサイトを制限しています。"
+                    }
+                },
+                "ko": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "1$lld 앱 및 %2$lld 웹 사이트를 제한했습니다."
+                    }
+                },
+                "pt-PT": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Restringiu %1$lld apps e %2$lld websites"
+                    }
+                },
+                "zh-Hans": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "您限制了％1 $ lld应用程序和％2 $ lld网站"
+                    }
+                },
+                "zh-Hant": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "您限制了％1 $ lld應用程序和％2 $ lld網站"
+                    }
+                }
+            }
+        },
+        "You've been using a restricted app for %lld minutes, tap here to regain focus": {
+            "extractionState": "manual",
+            "localizations": {
+                "en": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "You've been using a restricted app for %lld minutes, tap here to regain focus"
+                    }
+                },
+                "zh-Hans": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "您已使用受限应用程序 %lld 分钟，请点击此处重新集中注意力"
+                    }
+                },
+                "zh-Hant": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "您已使用受限制的應用程式 %lld 分鐘，請點選此處以重新集中注意力"
+                    }
+                },
+                "pt-PT": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Esteve a utilizar uma aplicação restrita durante %lld minutos, toque aqui para recuperar a concentração"
+                    }
+                },
+                "es": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Has estado usando una aplicación restringida durante %lld minutos, toca aquí para recuperar la concentración"
+                    }
+                },
+                "de": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Sie haben eine eingeschränkte Anwendung für %lld Minuten verwendet, tippen Sie hier, um den Fokus wiederherzustellen"
+                    }
+                },
+                "fr": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Vous avez utilisé une application restreinte pendant %lld minutes, appuyez ici pour vous concentrer à nouveau."
+                    }
+                },
+                "ja": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "制限されたアプリを何分間も使用しています。"
+                    }
+                },
+                "ko": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "몇 분 동안 제한된 앱을 사용했습니다. 다시 집중하려면 여기를 탭하세요."
+                    }
+                },
+                "it": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Si sta utilizzando un'applicazione limitata da %lld minuti, toccare qui per riprendere la concentrazione"
+                    }
+                }
+            }
         }
-      }
     },
-    "Block active" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Block aktiv"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Block active"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bloque activo"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bloc actif"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Blocco attivo"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ブロック・アクティブ"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "블록 활성화"
-          }
-        },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bloco ativo"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "块活动"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "塊活動"
-          }
-        }
-      }
-    },
-    "Block inactive" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Block inaktiv"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Block inactive"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bloque inactivo"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bloc inactif"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Blocco inattivo"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ブロック・インアクティブ"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "비활성 차단"
-          }
-        },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bloco inativo"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "阻止非活性"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "阻止非活性"
-          }
-        }
-      }
-    },
-    "Block restricted apps for 1 hour" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sperrung eingeschränkter Anwendungen für 1 Stunde"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Block restricted apps for 1 hour"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bloquear aplicaciones restringidas durante 1 hora"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bloquer les applications à usage restreint pendant 1 heure"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bloccare le app riservate per 1 ora"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "制限されたアプリを1時間ブロック"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "1시간 동안 제한된 앱 차단"
-          }
-        },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bloco aplicativos restritos por 1 hora"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "块限制应用程序1小时"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "塊限制應用程序1小時"
-          }
-        }
-      }
-    },
-    "Control Name" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kontrolle Name"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Control Name"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nombre del control"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nom du contrôle"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nome del controllo"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "コントロール名"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "컨트롤 이름"
-          }
-        },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nome de controle"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "控制名称"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "控制名稱"
-          }
-        }
-      }
-    },
-    "Focus" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Fokus"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Focus"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Enfoque"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Focus"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Focus"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "フォーカス"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "초점"
-          }
-        },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Foco"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "重点"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "重點"
-          }
-        }
-      }
-    },
-    "Focus for 1 hour" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Fokus für 1 Stunde"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Focus for 1 hour"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Concentración durante 1 hora"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Focus pendant 1 heure"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Concentrazione per 1 ora"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "1時間集中"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "1시간 동안 집중하기"
-          }
-        },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Foco por 1 hora"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "焦点1小时"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "焦點1小時"
-          }
-        }
-      }
-    },
-    "Focus Name Configuration" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Focus Name Configuration"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Focus Name Configuration"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Configuración de Focus Name"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Focus Name Configuration"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Configurazione del nome del focus"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "フォーカス名の構成"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "포커스 이름 구성"
-          }
-        },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Configuração do nome do foco"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "焦点名称配置"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "焦點名稱配置"
-          }
-        }
-      }
-    },
-    "Get notified when using restricted apps outside scheduled hours" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Benachrichtigung bei Nutzung eingeschränkter Anwendungen außerhalb der geplanten Zeiten"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Get notified when using restricted apps outside scheduled hours"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Recibe notificaciones cuando utilices aplicaciones restringidas fuera del horario programado"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Recevoir une notification en cas d'utilisation d'applications restreintes en dehors des heures prévues"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ricevere una notifica quando si utilizzano app riservate al di fuori degli orari previsti"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "制限時間外に制限アプリを使用すると通知が届く"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "예약된 시간 외에 제한된 앱을 사용할 때 알림 받기"
-          }
-        },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Seja notificado ao usar aplicativos restritos fora do horário programado"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "在计划小时外使用受限制的应用程序时通知"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "在計劃小時外使用受限制的應用程序時通知"
-          }
-        }
-      }
-    },
-    "Limits are locked when active. Apps can still be added to restriction" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Limits sind gesperrt, wenn sie aktiv sind. Apps können noch zu den Restriktionen hinzugefügt werden."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Limits are locked when active. Apps can still be added to restriction"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Los límites se bloquean cuando están activos. Las aplicaciones pueden seguir añadiéndose a la restricción."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Les limites sont verrouillées lorsqu'elles sont actives, mais les applications peuvent toujours être ajoutées à la restriction."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "I limiti sono bloccati quando sono attivi. Le applicazioni possono ancora essere aggiunte alla restrizione."
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "制限が有効な場合はロックされます。 制限へのアプリの追加は可能です。"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "활성 상태에서는 제한이 잠깁니다. 앱은 여전히 제한에 추가할 수 있습니다."
-          }
-        },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Os limites são bloqueados quando ativos.Os aplicativos ainda podem ser adicionados à restrição"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "活动时限制锁定。应用程序仍然可以添加到限制中"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "活動時限制鎖定。應用程序仍然可以添加到限制中"
-          }
-        }
-      }
-    },
-    "Limits will be locked when active" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Limits werden gesperrt, wenn sie aktiv sind"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Limits will be locked when active"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Los límites se bloquearán cuando estén activos"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Les limites sont verrouillées lorsqu'elles sont actives"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "I limiti saranno bloccati quando sono attivi"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "アクティブな場合、リミットはロックされる"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "활성화되면 한도가 잠깁니다."
-          }
-        },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Os limites serão bloqueados quando ativos"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "活动时限制将被锁定"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "活動時限制將被鎖定"
-          }
-        }
-      }
-    },
-    "Off" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aus"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Off"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Fuera de"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Arrêt"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Spento"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "オフ"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "꺼짐"
-          }
-        },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Desligado"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "离开"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "離開"
-          }
-        }
-      }
-    },
-    "On" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Auf"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "On"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "En"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sur"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Su"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "オン"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "켜짐"
-          }
-        },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Em"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "在"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "在"
-          }
-        }
-      }
-    },
-    "Restrict for next hour" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Für die nächste Stunde einschränken"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Restrict for next hour"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Restringir para la próxima hora"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Restriction pour l'heure suivante"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Limitare per la prossima ora"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "次の1時間の制限"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "다음 시간 동안 제한"
-          }
-        },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Restringir para a próxima hora"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "限制下一个小时"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "限制下一個小時"
-          }
-        }
-      }
-    },
-    "Schedule End" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Zeitplan Ende"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Schedule End"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Horario Fin"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Fin du calendrier"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Programma Fine"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "スケジュール終了"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "일정 종료"
-          }
-        },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Fim do calendário"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "时间表结束"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "時間表結束"
-          }
-        }
-      }
-    },
-    "Schedule start" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Schedule start"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Schedule start"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Horario de inicio"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Début de l'horaire"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Inizio programma"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "スケジュール開始"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "일정 시작"
-          }
-        },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Início do calendário"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "时间表开始"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "時間表開始"
-          }
-        }
-      }
-    },
-    "Select apps to restrict" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Zu beschränkende Anwendungen auswählen"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Select apps to restrict"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Seleccione las aplicaciones que desea restringir"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sélectionner les applications à restreindre"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Selezionare le app da limitare"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "制限するアプリを選択する"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "제한할 앱 선택"
-          }
-        },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Selecionar aplicações para restringir"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "选择限制应用程序"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "選擇限制應用程序"
-          }
-        }
-      }
-    },
-    "Send refocus notifications" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Send refocus notifications"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Send refocus notifications"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Enviar notificaciones de reenfoque"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Send refocus notifications"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Inviare notifiche di rifocalizzazione"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "リフォーカス通知の送信"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "재초점 알림 보내기"
-          }
-        },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Enviar notificações de reorientação"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "发送重新关注通知"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "發送重新關注通知"
-          }
-        }
-      }
-    },
-    "Start a timer" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Einen Timer starten"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Start a timer"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Iniciar un temporizador"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Démarrer une minuterie"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Avviare un timer"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "タイマー開始"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "타이머 시작"
-          }
-        },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Iniciar um temporizador"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "启动一个计时器"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "啟動一個計時器"
-          }
-        }
-      }
-    },
-    "Unplug ∎" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Netzstecker ziehen ∎"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Unplug ∎"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Desenchufar ∎"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Débrancher ∎"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Scollegare la spina ∎"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "プラグを抜く"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "플러그 뽑기 ∎"
-          }
-        },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Desligar a ficha ∎"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "拔出插头∎"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "拔出插頭∎"
-          }
-        }
-      }
-    },
-    "Unskippable app limits" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Unskippbare App-Begrenzungen"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Unskippable app limits"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Límites de las aplicaciones"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Limites d'applications non désactivables"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Limiti delle app non skippabili"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "アプリの制限解除"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "건너뛸 수 없는 앱 제한"
-          }
-        },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Limites de aplicações insusceptíveis de serem utilizados"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "不合理的应用程序限制"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "不合理的應用程序限制"
-          }
-        }
-      }
-    },
-    "You have restricted %lld apps and %lld websites" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sie haben %1$lld Anwendungen und %2$lld Websites eingeschränkt"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "You have restricted %1$lld apps and %2$lld websites"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Has restringido %1$lld apps y %2$lld websites"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vous avez restreint %1$lld apps et %2$lld websites"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Avete limitato %1$lld app e %2$lld website"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "1$古いアプリと%2$古いウェブサイトを制限しています。"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "1$lld 앱 및 %2$lld 웹 사이트를 제한했습니다."
-          }
-        },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Restringiu %1$lld apps e %2$lld websites"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "您限制了％1 $ lld应用程序和％2 $ lld网站"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "您限制了％1 $ lld應用程序和％2 $ lld網站"
-          }
-        }
-      }
-    }
-  },
-  "version" : "1.0"
+    "version": "1.0"
 }

@@ -148,7 +148,7 @@ struct ContentView: View {
           
         }
       }.toast(isPresenting: $showToast, alert: {
-        AlertToast(displayMode: .alert, type: .error(Style.errorColor), title: "Cannot remove apps from block")
+        AlertToast(displayMode: .alert, type: .error(Style.errorColor), title: String(localized: "Cannot remove apps from block"))
       })
       .onChange(of: model.selectionToRestrict) { newValue in
         // Not allowing the user to remove any apps from a block is a bit over the top 
