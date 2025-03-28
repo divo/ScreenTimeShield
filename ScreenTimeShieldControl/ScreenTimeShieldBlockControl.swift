@@ -19,10 +19,10 @@ struct ScreenTimeShieldBlockControl: ControlWidget {
         ) { value in
             ControlWidgetToggle(
                 "Focus for 1 hour",
-                isOn: value.isRunning,
+                isOn: value,
                 action: StartTimerIntent()
-            ) { isRunning in
-              Label(isRunning ? "On" : "Off", systemImage: isRunning ? "powerplug.fill" : "powerplug")
+            ) { isOn in
+              Label(isOn ? "On" : "Off", systemImage: isOn ? "powerplug.fill" : "powerplug")
             }
         }
         .displayName("Focus")
@@ -31,23 +31,19 @@ struct ScreenTimeShieldBlockControl: ControlWidget {
 }
 
 extension ScreenTimeShieldBlockControl {
-    struct Value {
-      var isRunning: Bool {
-        Model.shared.insideInterval
-      }
-        var name: String
-    }
-
     struct Provider: AppIntentControlValueProvider {
-        func previewValue(configuration: TimerConfiguration) -> Value {
-            ScreenTimeShieldBlockControl.Value(name: configuration.controlName)
+        func previewValue(configuration: TimerConfiguration) -> Bool {
+          print("Control center state preview \(Model.shared.insideInterval)")
+          return Model.shared.insideInterval
         }
 
-        func currentValue(configuration: TimerConfiguration) async throws -> Value {
-            return ScreenTimeShieldBlockControl.Value(name: configuration.controlName)
+        func currentValue(configuration: TimerConfiguration) async throws -> Bool {
+          print("Control center state \(Model.shared.insideInterval)")
+          return Model.shared.insideInterval
         }
     }
 }
+
 
 struct TimerConfiguration: ControlConfigurationIntent {
     static let title: LocalizedStringResource = "Focus Name Configuration"
