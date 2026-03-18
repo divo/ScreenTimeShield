@@ -46,6 +46,10 @@ The app has **four targets** that work together:
 
 Strings are localized via `Localizable.xcstrings` (Xcode string catalog format) into 10 languages: en, de, es, fr, it, ja, ko, pt-PT, zh-Hans, zh-Hant. Use `String(localized:)` for new user-facing strings.
 
+## Project Docs
+
+Product notes and marketing plan are in Obsidian: `~/Library/Mobile Documents/iCloud~md~obsidian/Documents/Notes/Amerish/projects/unplug/`
+
 ## Key Conventions
 
 - `DeviceActivityName` extensions are duplicated in both `Schedule.swift` and `DeviceActivityMonitorExtension.swift` since extensions run in separate processes and can't share the main app's code directly
