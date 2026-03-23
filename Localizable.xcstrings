@@ -131,7 +131,68 @@
       }
     },
     "App selection was reset, please re-select apps" : {
-
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App-Auswahl wurde zurückgesetzt, bitte wählen Sie die Apps erneut aus"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App selection was reset, please re-select apps"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La selección de aplicaciones se ha restablecido, vuelva a seleccionar las aplicaciones"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La sélection d'applications a été réinitialisée, veuillez resélectionner les applications"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La selezione delle app è stata reimpostata, seleziona nuovamente le app"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アプリの選択がリセットされました。アプリを再選択してください"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "앱 선택이 초기화되었습니다. 앱을 다시 선택해 주세요"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A seleção de aplicações foi reposta, selecione novamente as aplicações"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "应用选择已重置，请重新选择应用"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "應用程式選擇已重置，請重新選擇應用程式"
+          }
+        }
+      }
     },
     "Block active" : {
       "localizations" : {
@@ -845,7 +906,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Send refocus notifications"
+            "value" : "Refokussierungs-Benachrichtigungen senden"
           }
         },
         "en" : {
@@ -863,7 +924,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Send refocus notifications"
+            "value" : "Envoyer des notifications de recentrage"
           }
         },
         "it" : {
@@ -1132,13 +1193,13 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "1$古いアプリと%2$古いウェブサイトを制限しています。"
+            "value" : "%1$lldつのアプリと%2$lldつのウェブサイトを制限しています"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "1$lld 앱 및 %2$lld 웹 사이트를 제한했습니다."
+            "value" : "%1$lld개의 앱 및 %2$lld개의 웹사이트를 제한했습니다."
           }
         },
         "pt-PT" : {
@@ -1197,13 +1258,13 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "制限されたアプリを何分間も使用しています。"
+            "value" : "制限されたアプリを%lld分間使用しています。ここをタップして集中を取り戻しましょう"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "몇 분 동안 제한된 앱을 사용했습니다. 다시 집중하려면 여기를 탭하세요."
+            "value" : "%lld분 동안 제한된 앱을 사용했습니다. 다시 집중하려면 여기를 탭하세요."
           }
         },
         "pt-PT" : {
