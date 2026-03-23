@@ -27,14 +27,14 @@ class Model: ObservableObject {
   
   @Published var selectionToRestrict: FamilyActivitySelection = FamilyActivitySelection()
   @Published var start: Date = (UserDefaults(suiteName: Model.userDefaultsSuite)?.object(forKey: "start") as? Date) ??
-    Calendar.current.startOfDay(for: Date.now) {
+    Calendar.current.date(bySettingHour: 9, minute: 0, second: 0, of: Date.now)! {
     didSet {
       UserDefaults(suiteName: Model.userDefaultsSuite)!.set(start, forKey: "start")
     }
   }
   
   @Published var end: Date = (UserDefaults(suiteName: Model.userDefaultsSuite)?.object(forKey: "end") as? Date) ??
-    Calendar.current.startOfDay(for: Date.now) {
+    Calendar.current.date(bySettingHour: 17, minute: 0, second: 0, of: Date.now)! {
     didSet {
       UserDefaults(suiteName: Model.userDefaultsSuite)!.set(end, forKey: "end")
     }
