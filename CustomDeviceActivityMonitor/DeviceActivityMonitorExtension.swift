@@ -66,16 +66,30 @@ class DeviceActivityMonitorExtension: DeviceActivityMonitor {
     }
   }
   
+  private var lastNotificationTime: Date? {
+    get { defaults?.object(forKey: "last_notification_time") as? Date }
+    set {
+      defaults?.set(newValue, forKey: "last_notification_time")
+      defaults?.synchronize()
+    }
+  }
+
+  private static let notificationCooldown: TimeInterval = 4 * 60
+
   override func eventDidReachThreshold(_ event: DeviceActivityEvent.Name, activity: DeviceActivityName) {
     super.eventDidReachThreshold(event, activity: activity)
-    
+
     print("Event threshold reached: \(event.rawValue) for activity: \(activity.rawValue)")
-    
-    // Check if this is a notification schedule and notifications are enabled
+
     if activity.rawValue == "notificationSchedule" && notificationsEnabled {
-      // Extract the minute value from the event.rawValue
+      if let last = lastNotificationTime, Date().timeIntervalSince(last) < Self.notificationCooldown {
+        print("Suppressing clumped notification: \(event.rawValue)")
+        return
+      }
+
       if let minuteString = event.rawValue.split(separator: ".").last,
          let minutes = Int(minuteString.replacingOccurrences(of: "min", with: "")) {
+        lastNotificationTime = Date()
         sendUsageNotification(message: String(localized:"You've been using a restricted app for \(minutes) minutes, tap here to regain focus"))
       }
     }
