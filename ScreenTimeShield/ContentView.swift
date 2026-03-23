@@ -145,18 +145,19 @@ struct ContentView: View {
              .padding(.horizontal, 26)
           }
           Spacer()
-          
+
         }
       }.toast(isPresenting: $showToast, alert: {
         AlertToast(displayMode: .alert, type: .error(Style.errorColor), title: String(localized: "Cannot remove apps from block"))
       })
-      .toast(isPresenting: $showInvalidatedWarning, duration: 5, alert: {
+      .toast(isPresenting: $showInvalidatedWarning, duration: 0, tapToDismiss: true, alert: {
         AlertToast(displayMode: .alert, type: .error(Style.errorColor), title: String(localized: "App selection was reset, please re-select apps"))
       })
       .onChange(of: model.selectionToRestrict) { newValue in
         // Not allowing the user to remove any apps from a block is a bit over the top 
         // if model.validateRestriction() {
            model.saveSelection()
+           showInvalidatedWarning = false
            Schedule.setSchedule(start: model.start, end: model.end, event: model.activityEvent(), repeats: true)
            if model.notificationsEnabled {
              Schedule.setNotificationSchedule(restrictionStart: model.start, restrictionEnd: model.end)

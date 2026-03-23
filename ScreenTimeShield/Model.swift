@@ -47,6 +47,9 @@ class Model: ObservableObject {
   
   func loadSelection() {
     self.selectionToRestrict = savedSelection() ?? FamilyActivitySelection()
+    if !isEmpty() {
+      hasSelection = true
+    }
   }
   
   private func savedSelection() -> FamilyActivitySelection? {
