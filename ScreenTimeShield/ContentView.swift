@@ -28,6 +28,13 @@ struct ContentView: View {
   var body: some View {
     NavigationView {
       ZStack {
+        LinearGradient(
+          colors: [Color(.systemBackground), Style.primaryColor.opacity(0.06)],
+          startPoint: .top,
+          endPoint: .bottom
+        )
+        .ignoresSafeArea()
+
         VStack() {
           HStack {
             Text("Unskippable app limits").padding(.horizontal).foregroundStyle(.secondary)
