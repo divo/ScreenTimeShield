@@ -42,12 +42,12 @@ struct ContentView: View {
               .font(.subheadline)
               .foregroundStyle(model.insideInterval ? .primary : .secondary)
           }
-          .padding(.horizontal, 20)
-          .padding(.vertical, 10)
+          .padding(.horizontal, 24)
+          .padding(.vertical, 8)
           .background(.secondary.opacity(0.1))
           .clipShape(Capsule())
-          .padding(.horizontal)
-          .padding(.vertical, 10)
+          .padding(.horizontal, 16)
+          .padding(.vertical, 12)
           
          
           Text("You have restricted \(model.selectionToRestrict.applicationTokens.count) apps and \(model.selectionToRestrict.webDomainTokens.count) websites")
@@ -60,7 +60,7 @@ struct ContentView: View {
             DatePicker("Schedule End", selection: $model.end, displayedComponents: .hourAndMinute)
               .disabled(model.insideInterval)
               .foregroundColor(model.insideInterval ? Color(uiColor: .systemGray) : .primary)
-          }.padding(20)
+          }.padding(24)
           
           // Notification Toggle
           VStack(alignment: .leading, spacing: 8) {
@@ -89,8 +89,8 @@ struct ContentView: View {
               }
             }
           }
-          .padding(.horizontal, 30)
-          .padding(.bottom, 15)
+          .padding(.horizontal, 32)
+          .padding(.bottom, 16)
 
           Spacer()
 
@@ -100,7 +100,7 @@ struct ContentView: View {
                 .font(.system(size: 14))
               Text("Limits are locked when active. Apps can still be added to restriction")
                 .font(.footnote)
-            }.padding(.horizontal, 26)
+            }.padding(.horizontal, 24)
              .padding(.bottom, 16)
           } else {
             HStack {
@@ -108,7 +108,7 @@ struct ContentView: View {
                 .font(.system(size: 14))
               Text("Limits will be locked when active")
                 .font(.footnote)
-            }.padding(.horizontal, 26)
+            }.padding(.horizontal, 24)
              .padding(.bottom, 16)
           }
 
