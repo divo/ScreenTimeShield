@@ -91,7 +91,27 @@ struct ContentView: View {
           }
           .padding(.horizontal, 30)
           .padding(.bottom, 15)
-          
+
+          Spacer()
+
+          if model.insideInterval {
+            HStack {
+              Image(systemName: "exclamationmark.lock").foregroundColor(Color(uiColor: .systemPink))
+                .font(.system(size: 14))
+              Text("Limits are locked when active. Apps can still be added to restriction")
+                .font(.footnote)
+            }.padding(.horizontal, 26)
+             .padding(.bottom, 16)
+          } else {
+            HStack {
+              Image(systemName: "lock.open.trianglebadge.exclamationmark").foregroundColor(Color(uiColor: .systemPink))
+                .font(.system(size: 14))
+              Text("Limits will be locked when active")
+                .font(.footnote)
+            }.padding(.horizontal, 26)
+             .padding(.bottom, 16)
+          }
+
           Button(model.insideInterval ? "Add apps to restriction" : "Select apps to restrict") {
             isShowingRestrict = true
           }
@@ -111,7 +131,6 @@ struct ContentView: View {
           .familyActivityPicker(isPresented: $isShowingRestrict, selection: $model.selectionToRestrict)
           .tint(Style.primaryColor)
 
-          // New Quick Restrict Button
           Button("Restrict for next hour") {
             let now = Date()
             let oneHourLater = Calendar.current.date(byAdding: .hour, value: 1, to: now)!
@@ -125,26 +144,8 @@ struct ContentView: View {
           .background(isQuickRestrictDisabled ? .secondary : Style.primaryColor)
           .clipShape(RoundedRectangle(cornerRadius: 12.0, style: .circular))
           .padding(.top, 8)
+          .padding(.bottom, 16)
           .disabled(isQuickRestrictDisabled)
-
-          if model.insideInterval {
-            HStack {
-              Image(systemName: "exclamationmark.lock").foregroundColor(Color(uiColor: .systemPink))
-                .font(.system(size: 14))
-              Text("Limits are locked when active. Apps can still be added to restriction")
-                .font(.footnote)
-            }.padding(.top, 26)
-             .padding(.horizontal, 26)
-          } else {
-            HStack {
-              Image(systemName: "lock.open.trianglebadge.exclamationmark").foregroundColor(Color(uiColor: .systemPink))
-                .font(.system(size: 14))
-              Text("Limits will be locked when active")
-                .font(.footnote)
-            }.padding(.top, 26)
-             .padding(.horizontal, 26)
-          }
-          Spacer()
 
         }
       }.toast(isPresenting: $showToast, alert: {

@@ -411,7 +411,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1620;
-				LastUpgradeCheck = 1430;
+				LastUpgradeCheck = 2630;
 				TargetAttributes = {
 					93B013172A8E557700B97CA0 = {
 						CreatedOnToolsVersion = 14.3;
@@ -610,6 +610,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -640,8 +641,10 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 9F7FZ3S533;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -661,6 +664,7 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -671,6 +675,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -701,8 +706,10 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 9F7FZ3S533;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -715,6 +722,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
@@ -725,14 +733,12 @@
 		93B0133D2A8E557800B97CA0 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = ScreenTimeShield/ScreenTimeShield.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"ScreenTimeShield/Preview Content\"";
-				DEVELOPMENT_TEAM = 9F7FZ3S533;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -760,14 +766,12 @@
 		93B0133E2A8E557800B97CA0 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = ScreenTimeShield/ScreenTimeShield.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"ScreenTimeShield/Preview Content\"";
-				DEVELOPMENT_TEAM = 9F7FZ3S533;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -795,11 +799,9 @@
 		93B013402A8E557800B97CA0 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 9F7FZ3S533;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				MARKETING_VERSION = 1.3;
@@ -815,11 +817,9 @@
 		93B013412A8E557800B97CA0 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 9F7FZ3S533;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				MARKETING_VERSION = 1.3;
@@ -835,10 +835,8 @@
 		93B013432A8E557800B97CA0 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 9F7FZ3S533;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.halfspud.ScreenTimeShieldUITests;
@@ -853,10 +851,8 @@
 		93B013442A8E557800B97CA0 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 9F7FZ3S533;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.halfspud.ScreenTimeShieldUITests;
@@ -874,7 +870,6 @@
 				CODE_SIGN_ENTITLEMENTS = CustomShieldConfiguration/CustomShieldConfiguration.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 9F7FZ3S533;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = CustomShieldConfiguration/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = CustomShieldConfiguration;
@@ -900,7 +895,6 @@
 				CODE_SIGN_ENTITLEMENTS = CustomShieldConfiguration/CustomShieldConfiguration.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 9F7FZ3S533;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = CustomShieldConfiguration/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = CustomShieldConfiguration;
@@ -926,7 +920,6 @@
 				CODE_SIGN_ENTITLEMENTS = CustomShieldAction/CustomShieldAction.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 9F7FZ3S533;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = CustomShieldAction/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = CustomShieldAction;
@@ -952,7 +945,6 @@
 				CODE_SIGN_ENTITLEMENTS = CustomShieldAction/CustomShieldAction.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 9F7FZ3S533;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = CustomShieldAction/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = CustomShieldAction;
@@ -978,7 +970,6 @@
 				CODE_SIGN_ENTITLEMENTS = CustomDeviceActivityMonitor/CustomDeviceActivityMonitor.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 9F7FZ3S533;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = CustomDeviceActivityMonitor/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = CustomDeviceActivityMonitor;
@@ -1004,7 +995,6 @@
 				CODE_SIGN_ENTITLEMENTS = CustomDeviceActivityMonitor/CustomDeviceActivityMonitor.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 9F7FZ3S533;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = CustomDeviceActivityMonitor/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = CustomDeviceActivityMonitor;
