@@ -29,9 +29,9 @@ struct ContentView: View {
     NavigationView {
       ZStack {
         LinearGradient(
-          colors: [Color(.systemBackground), Style.primaryColor.opacity(0.06)],
-          startPoint: .top,
-          endPoint: .bottom
+          colors: [Color(.systemBackground), Style.primaryColor.opacity(0.12)],
+          startPoint: .topTrailing,
+          endPoint: .bottomLeading
         )
         .ignoresSafeArea()
 
@@ -76,7 +76,7 @@ struct ContentView: View {
               .foregroundColor(model.insideInterval ? Color(uiColor: .systemGray) : .primary)
           }
           .padding(16)
-          .background(Color(.secondarySystemBackground))
+          .background(Style.primaryColor.opacity(0.04))
           .clipShape(RoundedRectangle(cornerRadius: 12))
           .padding(.horizontal, 16)
           .padding(.vertical, 8)
@@ -88,28 +88,18 @@ struct ContentView: View {
                 .tint(Style.primaryColor)
               Spacer()
             }
-            if model.notificationsEnabled {
-              HStack {
-                Image(systemName: "bell.badge")
-                  .foregroundColor(Style.primaryColor)
-                  .font(.system(size: 14))
-                Text("Get notified when using restricted apps outside of blocked hours")
-                  .font(.footnote)
-                  .foregroundStyle(.secondary)
-              }
-            } else {
-              HStack {
-                Image(systemName: "bell.slash")
-                  .foregroundColor(Color.gray)
-                  .font(.system(size: 14))
-                Text("Get notified when using restricted apps outside of blocked hours")
-                  .font(.footnote)
-                  .foregroundStyle(.secondary)
-              }
+            HStack(alignment: .top) {
+              Image(systemName: model.notificationsEnabled ? "bell.badge" : "bell.slash")
+                .foregroundColor(model.notificationsEnabled ? Style.primaryColor : .gray)
+                .font(.system(size: 14))
+              Text("Get notified when using restricted apps outside of blocked hours")
+                .font(.footnote)
+                .foregroundStyle(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
             }
           }
           .padding(16)
-          .background(Color(.secondarySystemBackground))
+          .background(Style.primaryColor.opacity(0.04))
           .clipShape(RoundedRectangle(cornerRadius: 12))
           .padding(.horizontal, 16)
           .padding(.bottom, 16)
