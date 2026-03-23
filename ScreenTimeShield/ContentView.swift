@@ -74,7 +74,12 @@ struct ContentView: View {
             DatePicker("Schedule End", selection: $model.end, displayedComponents: .hourAndMinute)
               .disabled(model.insideInterval)
               .foregroundColor(model.insideInterval ? Color(uiColor: .systemGray) : .primary)
-          }.padding(24)
+          }
+          .padding(16)
+          .background(Color(.secondarySystemBackground))
+          .clipShape(RoundedRectangle(cornerRadius: 12))
+          .padding(.horizontal, 16)
+          .padding(.vertical, 8)
           
           // Notification Toggle
           VStack(alignment: .leading, spacing: 8) {
@@ -103,7 +108,10 @@ struct ContentView: View {
               }
             }
           }
-          .padding(.horizontal, 32)
+          .padding(16)
+          .background(Color(.secondarySystemBackground))
+          .clipShape(RoundedRectangle(cornerRadius: 12))
+          .padding(.horizontal, 16)
           .padding(.bottom, 16)
 
           Spacer()
