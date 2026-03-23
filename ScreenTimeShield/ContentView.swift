@@ -54,7 +54,7 @@ struct ContentView: View {
           }
           
           VStack {
-            DatePicker("Schedule start", selection: $model.start, displayedComponents: .hourAndMinute)
+            DatePicker("Schedule Start", selection: $model.start, displayedComponents: .hourAndMinute)
               .disabled(model.insideInterval)
               .foregroundColor(model.insideInterval ? Color(uiColor: .systemGray) : .primary)
             DatePicker("Schedule End", selection: $model.end, displayedComponents: .hourAndMinute)

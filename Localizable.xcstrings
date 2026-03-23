@@ -709,18 +709,18 @@
         }
       }
     },
-    "Schedule start" : {
+    "Schedule Start" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Schedule start"
+            "value" : "Zeitplan Start"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Schedule start"
+            "value" : "Schedule Start"
           }
         },
         "es" : {
