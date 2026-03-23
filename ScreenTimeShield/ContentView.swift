@@ -17,6 +17,7 @@ struct ContentView: View {
   @EnvironmentObject var model: Model
   @State var showToast: Bool = false
   @State var showInvalidatedWarning: Bool = false
+  @State private var isPulsing = false
   
   static let screenWidth = UIScreen.main.bounds.size.width
   
@@ -38,6 +39,12 @@ struct ContentView: View {
             Circle()
               .fill(model.insideInterval ? .red : .gray)
               .frame(width: 8, height: 8)
+              .opacity(model.insideInterval ? (isPulsing ? 0.3 : 1.0) : 1.0)
+              .animation(model.insideInterval ? .easeInOut(duration: 1).repeatForever(autoreverses: true) : .default, value: isPulsing)
+              .onChange(of: model.insideInterval) { newValue in
+                isPulsing = newValue
+              }
+              .onAppear { isPulsing = model.insideInterval }
             Text(model.insideInterval ? "Block active" : "Block inactive")
               .font(.subheadline)
               .foregroundStyle(model.insideInterval ? .primary : .secondary)
