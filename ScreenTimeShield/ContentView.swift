@@ -16,6 +16,7 @@ struct ContentView: View {
   
   @EnvironmentObject var model: Model
   @State var showToast: Bool = false
+  @State var showInvalidatedWarning: Bool = false
   
   static let screenWidth = UIScreen.main.bounds.size.width
   
@@ -49,7 +50,8 @@ struct ContentView: View {
           .padding(.vertical, 10)
           
          
-          Text("You have restricted \(model.selectionToRestrict.applicationTokens.count) apps and \(model.selectionToRestrict.webDomainTokens.count) websites").padding(0)
+          Text("You have restricted \(model.selectionToRestrict.applicationTokens.count) apps and \(model.selectionToRestrict.webDomainTokens.count) websites")
+            .padding(.vertical, 8)
           
           VStack {
             DatePicker("Schedule Start", selection: $model.start, displayedComponents: .hourAndMinute)
@@ -148,6 +150,9 @@ struct ContentView: View {
       }.toast(isPresenting: $showToast, alert: {
         AlertToast(displayMode: .alert, type: .error(Style.errorColor), title: String(localized: "Cannot remove apps from block"))
       })
+      .toast(isPresenting: $showInvalidatedWarning, duration: 5, alert: {
+        AlertToast(displayMode: .alert, type: .error(Style.errorColor), title: String(localized: "App selection was reset, please re-select apps"))
+      })
       .onChange(of: model.selectionToRestrict) { newValue in
         // Not allowing the user to remove any apps from a block is a bit over the top 
         // if model.validateRestriction() {
@@ -186,6 +191,9 @@ struct ContentView: View {
         .navigationBarTitleDisplayMode(.large)
     }.onAppear {
       model.loadSelection()
+      if model.selectionIsInvalidated() {
+        showInvalidatedWarning = true
+      }
     }.navigationViewStyle(StackNavigationViewStyle())
   }
 }
