@@ -24,6 +24,7 @@ class Model: ObservableObject {
 
   @AppStorage("inside_interval", store: UserDefaults(suiteName: Model.userDefaultsSuite)) var insideInterval: Bool = false
   @AppStorage("notifications_enabled", store: UserDefaults(suiteName: Model.userDefaultsSuite)) var notificationsEnabled: Bool = true
+  @AppStorage("has_selection", store: UserDefaults(suiteName: Model.userDefaultsSuite)) var hasSelection: Bool = false
   
   @Published var selectionToRestrict: FamilyActivitySelection = FamilyActivitySelection()
   @Published var start: Date = (UserDefaults(suiteName: Model.userDefaultsSuite)?.object(forKey: "start") as? Date) ??
@@ -71,6 +72,7 @@ class Model: ObservableObject {
     
     defaults.set(data, forKey: userDefaultsKey)
     defaults.synchronize()
+    hasSelection = true
   }
   
   func setRestrictions() {
@@ -87,6 +89,10 @@ class Model: ObservableObject {
     store.shield.webDomains = nil
   }
   
+  func selectionIsInvalidated() -> Bool {
+    return hasSelection && isEmpty()
+  }
+
   func isEmpty() -> Bool {
     return selectionToRestrict.applicationTokens.isEmpty
       && selectionToRestrict.categoryTokens.isEmpty

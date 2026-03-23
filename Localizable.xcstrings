@@ -130,6 +130,9 @@
         }
       }
     },
+    "App selection was reset, please re-select apps" : {
+
+    },
     "Block active" : {
       "localizations" : {
         "de" : {
