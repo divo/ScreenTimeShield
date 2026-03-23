@@ -49,9 +49,7 @@ struct ContentView: View {
           .padding(.vertical, 10)
           
          
-          if model.selectionToRestrict.applicationTokens.count != 0 {
-            Text("You have restricted \(model.selectionToRestrict.applicationTokens.count) apps and \(model.selectionToRestrict.webDomainTokens.count) websites").padding(0)
-          }
+          Text("You have restricted \(model.selectionToRestrict.applicationTokens.count) apps and \(model.selectionToRestrict.webDomainTokens.count) websites").padding(0)
           
           VStack {
             DatePicker("Schedule Start", selection: $model.start, displayedComponents: .hourAndMinute)
