@@ -57,6 +57,7 @@ struct ContentView: View {
             Text("Unskippable app limits").padding(.horizontal).foregroundStyle(.secondary)
             Spacer()
           }
+          .padding(.top, 8)
 
           // Trial / access banner — always a visible purchase CTA unless the user has full access.
           if access.accessState != .fullAccess {
@@ -143,19 +144,21 @@ struct ContentView: View {
           Spacer()
 
           if model.insideInterval {
-            HStack {
+            HStack(alignment: .top) {
               Image(systemName: "exclamationmark.lock").foregroundColor(Color(uiColor: .systemPink))
                 .font(.system(size: 14))
               Text("Limits are locked when active. Apps can still be added to restriction")
                 .font(.footnote)
+                .fixedSize(horizontal: false, vertical: true)
             }.padding(.horizontal, 24)
              .padding(.bottom, 16)
           } else {
-            HStack {
+            HStack(alignment: .top) {
               Image(systemName: "lock.open.trianglebadge.exclamationmark").foregroundColor(Color(uiColor: .systemPink))
                 .font(.system(size: 14))
               Text("Limits will be locked when active")
                 .font(.footnote)
+                .fixedSize(horizontal: false, vertical: true)
             }.padding(.horizontal, 24)
              .padding(.bottom, 16)
           }
