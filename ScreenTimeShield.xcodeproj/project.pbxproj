@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		43161F5DA3864B67099FF0DA /* StoreKitTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8728331F587CE9CD6726F709 /* StoreKitTest.framework */; };
+		500B2FE9485B520EC951AFB1 /* AccessControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD77B4E3505D5BEAF8D7C3A /* AccessControl.swift */; };
 		931CCC162D7F815E00E447ED /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 931CCC142D7F815E00E447ED /* Localizable.xcstrings */; };
 		931CCC172D7F815E00E447ED /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 931CCC142D7F815E00E447ED /* Localizable.xcstrings */; };
 		931CCC182D7F815E00E447ED /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 931CCC142D7F815E00E447ED /* Localizable.xcstrings */; };
@@ -35,6 +37,10 @@
 		93EA81CF2A8FAC38005258D5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 93B0131F2A8E557800B97CA0 /* Assets.xcassets */; };
 		93EA81D12A8FB8A8005258D5 /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EA81D02A8FB8A8005258D5 /* Style.swift */; };
 		93EA81D22A8FBB77005258D5 /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EA81D02A8FB8A8005258D5 /* Style.swift */; };
+		962DDB35068EE01990DADD48 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26C1F2411CDBB447F76426F0 /* Store.swift */; };
+		9948EFCEF4059E15D7BDF020 /* StoreKit.storekit in Resources */ = {isa = PBXBuildFile; fileRef = D0D4E35CAA82A943631086D1 /* StoreKit.storekit */; };
+		B1D3AE259C2136E170FDD474 /* StoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C23184A50D8C703A2A7C2B3 /* StoreTests.swift */; };
+		F38A668809FB4BED0792234C /* AccessControlTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D6AEDD73066A43E1D44BE1 /* AccessControlTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -92,6 +98,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1C23184A50D8C703A2A7C2B3 /* StoreTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = StoreTests.swift; sourceTree = "<group>"; };
+		26C1F2411CDBB447F76426F0 /* Store.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
+		56D6AEDD73066A43E1D44BE1 /* AccessControlTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AccessControlTests.swift; sourceTree = "<group>"; };
+		8728331F587CE9CD6726F709 /* StoreKitTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKitTest.framework; path = System/Library/Frameworks/StoreKitTest.framework; sourceTree = SDKROOT; };
 		931CCC142D7F815E00E447ED /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		934F9C1A2D69D061006FC752 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		934F9C1C2D69D061006FC752 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
@@ -125,6 +135,8 @@
 		93EA81C72A8F8BB4005258D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		93EA81C82A8F8BB4005258D5 /* CustomDeviceActivityMonitor.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CustomDeviceActivityMonitor.entitlements; sourceTree = "<group>"; };
 		93EA81D02A8FB8A8005258D5 /* Style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
+		AFD77B4E3505D5BEAF8D7C3A /* AccessControl.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AccessControl.swift; sourceTree = "<group>"; };
+		D0D4E35CAA82A943631086D1 /* StoreKit.storekit */ = {isa = PBXFileReference; includeInIndex = 1; path = StoreKit.storekit; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -140,6 +152,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				43161F5DA3864B67099FF0DA /* StoreKitTest.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -218,6 +231,9 @@
 				93B013462A8E645400B97CA0 /* Model.swift */,
 				93B0131F2A8E557800B97CA0 /* Assets.xcassets */,
 				93B013212A8E557800B97CA0 /* Preview Content */,
+				AFD77B4E3505D5BEAF8D7C3A /* AccessControl.swift */,
+				26C1F2411CDBB447F76426F0 /* Store.swift */,
+				D0D4E35CAA82A943631086D1 /* StoreKit.storekit */,
 			);
 			path = ScreenTimeShield;
 			sourceTree = "<group>";
@@ -234,6 +250,8 @@
 			isa = PBXGroup;
 			children = (
 				93B0132C2A8E557800B97CA0 /* ScreenTimeShieldTests.swift */,
+				56D6AEDD73066A43E1D44BE1 /* AccessControlTests.swift */,
+				1C23184A50D8C703A2A7C2B3 /* StoreTests.swift */,
 			);
 			path = ScreenTimeShieldTests;
 			sourceTree = "<group>";
@@ -255,6 +273,7 @@
 				93EA81C22A8F8BB4005258D5 /* DeviceActivity.framework */,
 				934F9C1A2D69D061006FC752 /* WidgetKit.framework */,
 				934F9C1C2D69D061006FC752 /* SwiftUI.framework */,
+				8728331F587CE9CD6726F709 /* StoreKitTest.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -482,6 +501,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9948EFCEF4059E15D7BDF020 /* StoreKit.storekit in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -529,6 +549,8 @@
 				93B013492A8E6C9700B97CA0 /* Schedule.swift in Sources */,
 				93B0131C2A8E557700B97CA0 /* ScreenTimeShieldApp.swift in Sources */,
 				93EA81D12A8FB8A8005258D5 /* Style.swift in Sources */,
+				500B2FE9485B520EC951AFB1 /* AccessControl.swift in Sources */,
+				962DDB35068EE01990DADD48 /* Store.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -537,6 +559,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				93B0132D2A8E557800B97CA0 /* ScreenTimeShieldTests.swift in Sources */,
+				F38A668809FB4BED0792234C /* AccessControlTests.swift in Sources */,
+				B1D3AE259C2136E170FDD474 /* StoreTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
