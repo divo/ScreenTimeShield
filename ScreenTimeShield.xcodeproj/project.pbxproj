@@ -11,6 +11,7 @@
 		3ECA03C11C145C07C728DF2D /* AppGroupStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 507894EFD724C5277117DC54 /* AppGroupStore.swift */; };
 		43161F5DA3864B67099FF0DA /* StoreKitTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8728331F587CE9CD6726F709 /* StoreKitTest.framework */; };
 		63DF5E15F67290B44D866122 /* AccessController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CDEEA7261E4C98B75C6367D /* AccessController.swift */; };
+		691FF2A8A41584D62F3BFAB7 /* ScheduleRangeSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60ABAF720C80920CF87D2492 /* ScheduleRangeSlider.swift */; };
 		85A27F8B8534923CD313A4D7 /* UnplugCore in Frameworks */ = {isa = PBXBuildFile; productRef = ED68D37DF1CDF04688459985 /* UnplugCore */; };
 		931CCC162D7F815E00E447ED /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 931CCC142D7F815E00E447ED /* Localizable.xcstrings */; };
 		931CCC172D7F815E00E447ED /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 931CCC142D7F815E00E447ED /* Localizable.xcstrings */; };
@@ -44,6 +45,7 @@
 		962DDB35068EE01990DADD48 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26C1F2411CDBB447F76426F0 /* Store.swift */; };
 		9948EFCEF4059E15D7BDF020 /* StoreKit.storekit in Resources */ = {isa = PBXBuildFile; fileRef = D0D4E35CAA82A943631086D1 /* StoreKit.storekit */; };
 		B1D3AE259C2136E170FDD474 /* StoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C23184A50D8C703A2A7C2B3 /* StoreTests.swift */; };
+		BFA6E768C40D5F5A14DCBD28 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912F9D9B282616D8785C8978 /* SettingsView.swift */; };
 		C99F6A109280EE8AA6275103 /* QAMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2533604AB767B89C3AE6A63F /* QAMenuView.swift */; };
 		F38A668809FB4BED0792234C /* AccessControlTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D6AEDD73066A43E1D44BE1 /* AccessControlTests.swift */; };
 		FEFB7AD28DCA1B4648564C4D /* UnplugCore in Frameworks */ = {isa = PBXBuildFile; productRef = ACF9D0F184FF8E25627514C5 /* UnplugCore */; };
@@ -109,7 +111,9 @@
 		26C1F2411CDBB447F76426F0 /* Store.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		507894EFD724C5277117DC54 /* AppGroupStore.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppGroupStore.swift; sourceTree = "<group>"; };
 		56D6AEDD73066A43E1D44BE1 /* AccessControlTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AccessControlTests.swift; sourceTree = "<group>"; };
+		60ABAF720C80920CF87D2492 /* ScheduleRangeSlider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ScheduleRangeSlider.swift; sourceTree = "<group>"; };
 		8728331F587CE9CD6726F709 /* StoreKitTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKitTest.framework; path = System/Library/Frameworks/StoreKitTest.framework; sourceTree = SDKROOT; };
+		912F9D9B282616D8785C8978 /* SettingsView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		931CCC142D7F815E00E447ED /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		934F9C1A2D69D061006FC752 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		934F9C1C2D69D061006FC752 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
@@ -248,6 +252,8 @@
 				9CDEEA7261E4C98B75C6367D /* AccessController.swift */,
 				9C71ACD206FCE4A5EDE7A4F8 /* PaywallView.swift */,
 				2533604AB767B89C3AE6A63F /* QAMenuView.swift */,
+				60ABAF720C80920CF87D2492 /* ScheduleRangeSlider.swift */,
+				912F9D9B282616D8785C8978 /* SettingsView.swift */,
 			);
 			path = ScreenTimeShield;
 			sourceTree = "<group>";
@@ -573,6 +579,8 @@
 				63DF5E15F67290B44D866122 /* AccessController.swift in Sources */,
 				167D69C20C7BDF7888B00CDC /* PaywallView.swift in Sources */,
 				C99F6A109280EE8AA6275103 /* QAMenuView.swift in Sources */,
+				691FF2A8A41584D62F3BFAB7 /* ScheduleRangeSlider.swift in Sources */,
+				BFA6E768C40D5F5A14DCBD28 /* SettingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
