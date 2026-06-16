@@ -810,7 +810,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ScreenTimeShield.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ScreenTimeShield";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Unplug.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Unplug";
 			};
 			name = Debug;
 		};
@@ -828,7 +828,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ScreenTimeShield.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ScreenTimeShield";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Unplug.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Unplug";
 			};
 			name = Release;
 		};

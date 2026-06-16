@@ -34,6 +34,17 @@
             parallelizable = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "93B013272A8E557800B97CA0"
+               BuildableName = "ScreenTimeShieldTests.xctest"
+               BlueprintName = "ScreenTimeShieldTests"
+               ReferencedContainer = "container:ScreenTimeShield.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "93B013312A8E557800B97CA0"
                BuildableName = "ScreenTimeShieldUITests.xctest"
                BlueprintName = "ScreenTimeShieldUITests"
