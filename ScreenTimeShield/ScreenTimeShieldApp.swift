@@ -103,10 +103,14 @@ struct ScreenTimeShieldApp: App {
 
 class AppDelegate: NSObject, UIApplicationDelegate {
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-    Task {
-      await requestFamilyControls()
+    // QA hook: skip the Family Controls auth prompt so the trial/paywall UI can be
+    // tested on a simulator without a working Apple-ID/Screen Time sign-in.
+    if ProcessInfo.processInfo.environment["UNPLUG_SKIP_FC"] == nil {
+      Task {
+        await requestFamilyControls()
+      }
     }
-    
+
     return true
   }
   

@@ -231,8 +231,10 @@ struct ContentView: View {
       }
     }
     .task {
-      // Skip launch-time StoreKit work when hosted by the unit-test runner (it can block).
-      guard ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] == nil else { return }
+      // Skip launch-time StoreKit work under the unit-test runner or QA mode — AppTransaction
+      // can block / prompt for an Apple-ID sign-in on a simulator without one.
+      guard ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] == nil,
+            ProcessInfo.processInfo.environment["UNPLUG_SKIP_FC"] == nil else { return }
       await access.refreshAccess()
       if access.accessState == .expired { showPaywall = true }
     }
