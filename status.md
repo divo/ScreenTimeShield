@@ -8,7 +8,7 @@
 - [ ] Finish localization — original UI + new paywall/trial strings now translated across all 10 languages; QA-menu strings intentionally untranslated (reverted before prod). Spot-check quality.
 - [ ] Search engine block (private browsing loophole — block search engines in settings) — **attempted, not solved.** Could not get reliable enforcement; no implementation landed in code. Needs a fresh approach.
 - [x] Change pricing model — implemented (see Pricing section)
-- [ ] Full UI redesign — current main screen is cluttered/basic. Add a settings menu (top-right) and move the refocus toggle there; rethink hierarchy. Not started.
+- [~] Full UI redesign — in progress on `ui-redesign`. Done: status-led layout (status banner → app-grid card → 24h range slider → pinned CTAs), gear→Settings sheet with the refocus toggle + QA entry moved off the main screen, NavigationStack migration, custom `ScheduleRangeSlider`, token-rendered app grid. Targets in `design/targets/`. **Follow-ups:** overnight schedules (slider is same-day only; backend supports wrap); real-device QA of token grid + block-active state (sim can't render real tokens or force active); split inline `ScheduleRangeSlider`/`SettingsView` into their own files.
 
 ## Polish
 - [ ] Rework the time picker — current UX is confusing, needs a clearer interaction
