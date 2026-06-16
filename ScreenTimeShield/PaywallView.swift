@@ -8,6 +8,7 @@
 
 import SwiftUI
 import StoreKit
+import UnplugCore
 
 struct PaywallView: View {
   @EnvironmentObject var access: AccessController

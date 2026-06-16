@@ -7,6 +7,7 @@
 
 import Foundation
 import StoreKit
+import UnplugCore
 
 @MainActor
 final class Store: ObservableObject {

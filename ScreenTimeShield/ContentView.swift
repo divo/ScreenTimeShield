@@ -10,6 +10,7 @@ import FamilyControls
 import Foundation
 import AlertToast
 import DeviceActivity
+import UnplugCore
 
 struct ContentView: View {
   @State private var isShowingRestrict = false
@@ -223,6 +224,8 @@ struct ContentView: View {
       }
     }
     .task {
+      // Skip launch-time StoreKit work when hosted by the unit-test runner (it can block).
+      guard ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] == nil else { return }
       await access.refreshAccess()
       if access.accessState == .expired { showPaywall = true }
     }

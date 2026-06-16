@@ -93,7 +93,8 @@ struct ScreenTimeShieldApp: App {
         .environmentObject(model)
     }
     .onChange(of: scenePhase) { newPhase in
-      if newPhase == .active {
+      let isTesting = ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil
+      if newPhase == .active, !isTesting {
         Task { await AccessController.shared.refreshAccess() }
       }
     }

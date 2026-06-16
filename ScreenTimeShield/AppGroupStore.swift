@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UnplugCore
 
 enum AppGroupKeys {
   static let trialStart = "trial_start"

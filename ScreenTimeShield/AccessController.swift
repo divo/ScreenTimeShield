@@ -10,6 +10,7 @@
 import Foundation
 import SwiftUI
 import UserNotifications
+import UnplugCore
 
 @MainActor
 final class AccessController: ObservableObject {

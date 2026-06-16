@@ -8,6 +8,7 @@
 import ManagedSettings
 import ManagedSettingsUI
 import UIKit
+import UnplugCore
 
 // Override the functions below to customize the shields used in various situations.
 // The system provides a default appearance for any methods that your subclass doesn't override.

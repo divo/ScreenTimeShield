@@ -10,8 +10,8 @@
 		167D69C20C7BDF7888B00CDC /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C71ACD206FCE4A5EDE7A4F8 /* PaywallView.swift */; };
 		3ECA03C11C145C07C728DF2D /* AppGroupStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 507894EFD724C5277117DC54 /* AppGroupStore.swift */; };
 		43161F5DA3864B67099FF0DA /* StoreKitTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8728331F587CE9CD6726F709 /* StoreKitTest.framework */; };
-		500B2FE9485B520EC951AFB1 /* AccessControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD77B4E3505D5BEAF8D7C3A /* AccessControl.swift */; };
 		63DF5E15F67290B44D866122 /* AccessController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CDEEA7261E4C98B75C6367D /* AccessController.swift */; };
+		85A27F8B8534923CD313A4D7 /* UnplugCore in Frameworks */ = {isa = PBXBuildFile; productRef = ED68D37DF1CDF04688459985 /* UnplugCore */; };
 		931CCC162D7F815E00E447ED /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 931CCC142D7F815E00E447ED /* Localizable.xcstrings */; };
 		931CCC172D7F815E00E447ED /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 931CCC142D7F815E00E447ED /* Localizable.xcstrings */; };
 		931CCC182D7F815E00E447ED /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 931CCC142D7F815E00E447ED /* Localizable.xcstrings */; };
@@ -44,8 +44,8 @@
 		962DDB35068EE01990DADD48 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26C1F2411CDBB447F76426F0 /* Store.swift */; };
 		9948EFCEF4059E15D7BDF020 /* StoreKit.storekit in Resources */ = {isa = PBXBuildFile; fileRef = D0D4E35CAA82A943631086D1 /* StoreKit.storekit */; };
 		B1D3AE259C2136E170FDD474 /* StoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C23184A50D8C703A2A7C2B3 /* StoreTests.swift */; };
-		B5D27237CB59BE3D8531D309 /* AccessControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD77B4E3505D5BEAF8D7C3A /* AccessControl.swift */; };
 		F38A668809FB4BED0792234C /* AccessControlTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D6AEDD73066A43E1D44BE1 /* AccessControlTests.swift */; };
+		FEFB7AD28DCA1B4648564C4D /* UnplugCore in Frameworks */ = {isa = PBXBuildFile; productRef = ACF9D0F184FF8E25627514C5 /* UnplugCore */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -143,7 +143,6 @@
 		93EA81D02A8FB8A8005258D5 /* Style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
 		9C71ACD206FCE4A5EDE7A4F8 /* PaywallView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
 		9CDEEA7261E4C98B75C6367D /* AccessController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AccessController.swift; sourceTree = "<group>"; };
-		AFD77B4E3505D5BEAF8D7C3A /* AccessControl.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AccessControl.swift; sourceTree = "<group>"; };
 		D0D4E35CAA82A943631086D1 /* StoreKit.storekit */ = {isa = PBXFileReference; includeInIndex = 1; path = StoreKit.storekit; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -153,6 +152,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				93B64D722B5FCCAA009786B9 /* AlertToast in Frameworks */,
+				85A27F8B8534923CD313A4D7 /* UnplugCore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -177,6 +177,7 @@
 			files = (
 				93B013532A8E74FC00B97CA0 /* ManagedSettings.framework in Frameworks */,
 				93B013552A8E74FC00B97CA0 /* ManagedSettingsUI.framework in Frameworks */,
+				FEFB7AD28DCA1B4648564C4D /* UnplugCore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -239,7 +240,6 @@
 				93B013462A8E645400B97CA0 /* Model.swift */,
 				93B0131F2A8E557800B97CA0 /* Assets.xcassets */,
 				93B013212A8E557800B97CA0 /* Preview Content */,
-				AFD77B4E3505D5BEAF8D7C3A /* AccessControl.swift */,
 				26C1F2411CDBB447F76426F0 /* Store.swift */,
 				D0D4E35CAA82A943631086D1 /* StoreKit.storekit */,
 				507894EFD724C5277117DC54 /* AppGroupStore.swift */,
@@ -341,6 +341,7 @@
 			name = ScreenTimeShield;
 			packageProductDependencies = (
 				93B64D712B5FCCAA009786B9 /* AlertToast */,
+				ED68D37DF1CDF04688459985 /* UnplugCore */,
 			);
 			productName = ScreenTimeShield;
 			productReference = 93B013182A8E557700B97CA0 /* Unplug.app */;
@@ -395,6 +396,9 @@
 			dependencies = (
 			);
 			name = CustomShieldConfiguration;
+			packageProductDependencies = (
+				ACF9D0F184FF8E25627514C5 /* UnplugCore */,
+			);
 			productName = CustomShieldConfiguration;
 			productReference = 93B013502A8E74FC00B97CA0 /* CustomShieldConfiguration.appex */;
 			productType = "com.apple.product-type.app-extension";
@@ -482,6 +486,7 @@
 			mainGroup = 93B0130F2A8E557700B97CA0;
 			packageReferences = (
 				93B64D702B5FCC38009786B9 /* XCRemoteSwiftPackageReference "AlertToast" */,
+				82002CB1DD90A376DAA689FB /* XCLocalSwiftPackageReference "UnplugCore" */,
 			);
 			productRefGroup = 93B013192A8E557700B97CA0 /* Products */;
 			projectDirPath = "";
@@ -560,7 +565,6 @@
 				93B013492A8E6C9700B97CA0 /* Schedule.swift in Sources */,
 				93B0131C2A8E557700B97CA0 /* ScreenTimeShieldApp.swift in Sources */,
 				93EA81D12A8FB8A8005258D5 /* Style.swift in Sources */,
-				500B2FE9485B520EC951AFB1 /* AccessControl.swift in Sources */,
 				962DDB35068EE01990DADD48 /* Store.swift in Sources */,
 				93F8910F956D91B11830313E /* AppGroupStore.swift in Sources */,
 				63DF5E15F67290B44D866122 /* AccessController.swift in Sources */,
@@ -594,7 +598,6 @@
 				93EA81D22A8FBB77005258D5 /* Style.swift in Sources */,
 				93B013582A8E74FC00B97CA0 /* ShieldConfigurationExtension.swift in Sources */,
 				3ECA03C11C145C07C728DF2D /* AppGroupStore.swift in Sources */,
-				B5D27237CB59BE3D8531D309 /* AccessControl.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1122,6 +1125,13 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		82002CB1DD90A376DAA689FB /* XCLocalSwiftPackageReference "UnplugCore" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = UnplugCore;
+		};
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin XCRemoteSwiftPackageReference section */
 		93B64D702B5FCC38009786B9 /* XCRemoteSwiftPackageReference "AlertToast" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -1138,6 +1148,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 93B64D702B5FCC38009786B9 /* XCRemoteSwiftPackageReference "AlertToast" */;
 			productName = AlertToast;
+		};
+		ACF9D0F184FF8E25627514C5 /* UnplugCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 82002CB1DD90A376DAA689FB /* XCLocalSwiftPackageReference "UnplugCore" */;
+			productName = UnplugCore;
+		};
+		ED68D37DF1CDF04688459985 /* UnplugCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 82002CB1DD90A376DAA689FB /* XCLocalSwiftPackageReference "UnplugCore" */;
+			productName = UnplugCore;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

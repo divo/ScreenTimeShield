@@ -6,7 +6,7 @@
 //
 
 import XCTest
-@testable import Unplug
+import UnplugCore
 
 final class AccessControlTests: XCTestCase {
 
