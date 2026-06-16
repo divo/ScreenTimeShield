@@ -20,6 +20,7 @@ struct ContentView: View {
   @State var showToast: Bool = false
   @State var showInvalidatedWarning: Bool = false
   @State private var showPaywall = false
+  @State private var showQAMenu = false
   @State private var isPulsing = false
 
   static let screenWidth = UIScreen.main.bounds.size.width
@@ -194,6 +195,12 @@ struct ContentView: View {
           .padding(.bottom, 16)
           .disabled(isQuickRestrictDisabled)
 
+          // QA / Debug entry point — remove (revert this commit) before production.
+          Button("QA / Debug") { showQAMenu = true }
+            .font(.caption)
+            .foregroundStyle(.secondary)
+            .padding(.bottom, 8)
+
         }
       }.toast(isPresenting: $showToast, alert: {
         AlertToast(displayMode: .alert, type: .error(Style.errorColor), title: String(localized: "Cannot remove apps from block"))
@@ -231,6 +238,10 @@ struct ContentView: View {
     }
     .fullScreenCover(isPresented: $showPaywall) {
       PaywallView()
+        .environmentObject(access)
+    }
+    .sheet(isPresented: $showQAMenu) {
+      QAMenuView()
         .environmentObject(access)
     }
     .navigationViewStyle(StackNavigationViewStyle())
