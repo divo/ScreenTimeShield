@@ -20,27 +20,62 @@ final class Store: ObservableObject {
 
   /// Load the lifetime product from the App Store / StoreKit config.
   func loadProduct() async {
-    // stub — Pass 3
+    do {
+      product = try await Product.products(for: [Self.lifetimeProductID]).first
+    } catch {
+      print("Store: failed to load product: \(error)")
+    }
   }
 
   /// Purchase the lifetime unlock. Returns true on a verified success.
   @discardableResult
   func purchase() async throws -> Bool {
-    false // stub — Pass 3
+    if product == nil { await loadProduct() }
+    guard let product else { return false }
+
+    let result = try await product.purchase()
+    switch result {
+    case .success(let verification):
+      guard case .verified(let transaction) = verification else { return false }
+      await transaction.finish()
+      await refreshPurchasedState()
+      return true
+    case .userCancelled, .pending:
+      return false
+    @unknown default:
+      return false
+    }
   }
 
   /// Restore prior purchases (Apple-mandated entry point).
   func restore() async {
-    // stub — Pass 3
+    try? await AppStore.sync()
+    await refreshPurchasedState()
   }
 
   /// Recompute `isPurchased` from the user's current entitlements.
   func refreshPurchasedState() async {
-    // stub — Pass 3
+    var purchased = false
+    for await result in Transaction.currentEntitlements {
+      guard case .verified(let transaction) = result else { continue }
+      if transaction.productID == Self.lifetimeProductID, transaction.revocationDate == nil {
+        purchased = true
+      }
+    }
+    isPurchased = purchased
   }
 
   /// Recompute `isGrandfathered` from the original-download version vs the cutover build.
   func refreshGrandfatheredState(cutoverBuild: Int) async {
-    // stub — Pass 3
+    do {
+      let result = try await AppTransaction.shared
+      guard case .verified(let appTransaction) = result else { return }
+      isGrandfathered = Grandfather.isGrandfathered(
+        originalVersion: appTransaction.originalAppVersion,
+        cutoverBuild: cutoverBuild)
+    } catch {
+      // AppTransaction unavailable (e.g. offline first-run) — leave prior value untouched.
+      print("Store: AppTransaction unavailable: \(error)")
+    }
   }
 }
