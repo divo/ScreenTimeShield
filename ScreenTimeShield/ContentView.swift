@@ -57,7 +57,6 @@ struct ContentView: View {
             Text("Unskippable app limits").padding(.horizontal).foregroundStyle(.secondary)
             Spacer()
           }
-          .padding(.top, 8)
 
           // Trial / access banner — always a visible purchase CTA unless the user has full access.
           if access.accessState != .fullAccess {
