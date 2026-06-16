@@ -7,8 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		167D69C20C7BDF7888B00CDC /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C71ACD206FCE4A5EDE7A4F8 /* PaywallView.swift */; };
+		3ECA03C11C145C07C728DF2D /* AppGroupStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 507894EFD724C5277117DC54 /* AppGroupStore.swift */; };
 		43161F5DA3864B67099FF0DA /* StoreKitTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8728331F587CE9CD6726F709 /* StoreKitTest.framework */; };
 		500B2FE9485B520EC951AFB1 /* AccessControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD77B4E3505D5BEAF8D7C3A /* AccessControl.swift */; };
+		63DF5E15F67290B44D866122 /* AccessController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CDEEA7261E4C98B75C6367D /* AccessController.swift */; };
 		931CCC162D7F815E00E447ED /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 931CCC142D7F815E00E447ED /* Localizable.xcstrings */; };
 		931CCC172D7F815E00E447ED /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 931CCC142D7F815E00E447ED /* Localizable.xcstrings */; };
 		931CCC182D7F815E00E447ED /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 931CCC142D7F815E00E447ED /* Localizable.xcstrings */; };
@@ -37,9 +40,11 @@
 		93EA81CF2A8FAC38005258D5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 93B0131F2A8E557800B97CA0 /* Assets.xcassets */; };
 		93EA81D12A8FB8A8005258D5 /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EA81D02A8FB8A8005258D5 /* Style.swift */; };
 		93EA81D22A8FBB77005258D5 /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EA81D02A8FB8A8005258D5 /* Style.swift */; };
+		93F8910F956D91B11830313E /* AppGroupStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 507894EFD724C5277117DC54 /* AppGroupStore.swift */; };
 		962DDB35068EE01990DADD48 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26C1F2411CDBB447F76426F0 /* Store.swift */; };
 		9948EFCEF4059E15D7BDF020 /* StoreKit.storekit in Resources */ = {isa = PBXBuildFile; fileRef = D0D4E35CAA82A943631086D1 /* StoreKit.storekit */; };
 		B1D3AE259C2136E170FDD474 /* StoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C23184A50D8C703A2A7C2B3 /* StoreTests.swift */; };
+		B5D27237CB59BE3D8531D309 /* AccessControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD77B4E3505D5BEAF8D7C3A /* AccessControl.swift */; };
 		F38A668809FB4BED0792234C /* AccessControlTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D6AEDD73066A43E1D44BE1 /* AccessControlTests.swift */; };
 /* End PBXBuildFile section */
 
@@ -100,6 +105,7 @@
 /* Begin PBXFileReference section */
 		1C23184A50D8C703A2A7C2B3 /* StoreTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = StoreTests.swift; sourceTree = "<group>"; };
 		26C1F2411CDBB447F76426F0 /* Store.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
+		507894EFD724C5277117DC54 /* AppGroupStore.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppGroupStore.swift; sourceTree = "<group>"; };
 		56D6AEDD73066A43E1D44BE1 /* AccessControlTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AccessControlTests.swift; sourceTree = "<group>"; };
 		8728331F587CE9CD6726F709 /* StoreKitTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKitTest.framework; path = System/Library/Frameworks/StoreKitTest.framework; sourceTree = SDKROOT; };
 		931CCC142D7F815E00E447ED /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
@@ -135,6 +141,8 @@
 		93EA81C72A8F8BB4005258D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		93EA81C82A8F8BB4005258D5 /* CustomDeviceActivityMonitor.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CustomDeviceActivityMonitor.entitlements; sourceTree = "<group>"; };
 		93EA81D02A8FB8A8005258D5 /* Style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
+		9C71ACD206FCE4A5EDE7A4F8 /* PaywallView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
+		9CDEEA7261E4C98B75C6367D /* AccessController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AccessController.swift; sourceTree = "<group>"; };
 		AFD77B4E3505D5BEAF8D7C3A /* AccessControl.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AccessControl.swift; sourceTree = "<group>"; };
 		D0D4E35CAA82A943631086D1 /* StoreKit.storekit */ = {isa = PBXFileReference; includeInIndex = 1; path = StoreKit.storekit; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -234,6 +242,9 @@
 				AFD77B4E3505D5BEAF8D7C3A /* AccessControl.swift */,
 				26C1F2411CDBB447F76426F0 /* Store.swift */,
 				D0D4E35CAA82A943631086D1 /* StoreKit.storekit */,
+				507894EFD724C5277117DC54 /* AppGroupStore.swift */,
+				9CDEEA7261E4C98B75C6367D /* AccessController.swift */,
+				9C71ACD206FCE4A5EDE7A4F8 /* PaywallView.swift */,
 			);
 			path = ScreenTimeShield;
 			sourceTree = "<group>";
@@ -551,6 +562,9 @@
 				93EA81D12A8FB8A8005258D5 /* Style.swift in Sources */,
 				500B2FE9485B520EC951AFB1 /* AccessControl.swift in Sources */,
 				962DDB35068EE01990DADD48 /* Store.swift in Sources */,
+				93F8910F956D91B11830313E /* AppGroupStore.swift in Sources */,
+				63DF5E15F67290B44D866122 /* AccessController.swift in Sources */,
+				167D69C20C7BDF7888B00CDC /* PaywallView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -579,6 +593,8 @@
 			files = (
 				93EA81D22A8FBB77005258D5 /* Style.swift in Sources */,
 				93B013582A8E74FC00B97CA0 /* ShieldConfigurationExtension.swift in Sources */,
+				3ECA03C11C145C07C728DF2D /* AppGroupStore.swift in Sources */,
+				B5D27237CB59BE3D8531D309 /* AccessControl.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

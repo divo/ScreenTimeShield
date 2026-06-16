@@ -13,8 +13,9 @@ import UserNotifications
 struct ScreenTimeShieldApp: App {
   
   @UIApplicationDelegateAdaptor private var appDelegate: AppDelegate
-  
+
   @StateObject var model = Model.shared
+  @Environment(\.scenePhase) private var scenePhase
   
   init() {
     configureNavigationBarAppearance()
@@ -90,6 +91,11 @@ struct ScreenTimeShieldApp: App {
     WindowGroup {
       ContentView()
         .environmentObject(model)
+    }
+    .onChange(of: scenePhase) { newPhase in
+      if newPhase == .active {
+        Task { await AccessController.shared.refreshAccess() }
+      }
     }
   }
 }
