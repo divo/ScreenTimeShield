@@ -35,7 +35,7 @@ final class AccessController: ObservableObject {
                                        trialLength: PricingConfig.trialLength)
   }
 
-  var hasFullAccess: Bool { storeKit.hasFullAccess }
+  var hasFullAccess: Bool { storeKit.hasFullAccess || qaForceFullAccess }
 
   /// Begin the trial the first time the user sets up a block. No-op afterwards.
   func startTrialIfNeeded() {
@@ -67,7 +67,7 @@ final class AccessController: ObservableObject {
   private func recomputeAccessState() {
     accessState = AccessEvaluator.accessState(now: Date(),
                                               trialStart: trialStartDate,
-                                              hasFullAccess: storeKit.hasFullAccess,
+                                              hasFullAccess: hasFullAccess,
                                               trialLength: PricingConfig.trialLength)
     // Extensions can't query StoreKit — cache whether enforcement is currently permitted.
     kv.setBool(accessState != .expired, forKey: AppGroupKeys.enforcementAllowed)
@@ -95,5 +95,45 @@ final class AccessController: ObservableObject {
     let trigger = UNCalendarNotificationTrigger(dateMatching: comps, repeats: true)
     let request = UNNotificationRequest(identifier: Self.trialEndedNotificationID, content: content, trigger: trigger)
     center.add(request)
+  }
+
+  // MARK: - QA
+  // In-app QA controls. Present in release builds (TestFlight has no DEBUG); the menu
+  // that drives these is exposed in a separate, easily-reverted commit. These simulate
+  // entitlement *results* (not real StoreKit transactions) and persist via the app group.
+
+  /// QA-only override that forces full access without a StoreKit purchase.
+  var qaForceFullAccess: Bool {
+    get { kv.bool(forKey: AppGroupKeys.qaForceFullAccess) }
+    set { kv.setBool(newValue, forKey: AppGroupKeys.qaForceFullAccess) }
+  }
+
+  func qaStartTrial() {
+    trialStartDate = Date()
+    recomputeAccessState()
+    objectWillChange.send()
+  }
+
+  func qaExpireTrial() {
+    trialStartDate = Date(timeIntervalSinceNow: -(PricingConfig.trialLength + PricingConfig.secondsPerDay))
+    recomputeAccessState()
+    objectWillChange.send()
+  }
+
+  func qaResetTrial() {
+    trialStartDate = nil
+    recomputeAccessState()
+    objectWillChange.send()
+  }
+
+  func qaSetFullAccess(_ on: Bool) {
+    qaForceFullAccess = on
+    recomputeAccessState()
+    objectWillChange.send()
+  }
+
+  func qaSetTimesStopped(_ count: Int) {
+    kv.setInteger(count, forKey: AppGroupKeys.timesStopped)
+    objectWillChange.send()
   }
 }

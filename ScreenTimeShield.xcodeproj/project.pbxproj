@@ -44,6 +44,7 @@
 		962DDB35068EE01990DADD48 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26C1F2411CDBB447F76426F0 /* Store.swift */; };
 		9948EFCEF4059E15D7BDF020 /* StoreKit.storekit in Resources */ = {isa = PBXBuildFile; fileRef = D0D4E35CAA82A943631086D1 /* StoreKit.storekit */; };
 		B1D3AE259C2136E170FDD474 /* StoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C23184A50D8C703A2A7C2B3 /* StoreTests.swift */; };
+		C99F6A109280EE8AA6275103 /* QAMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2533604AB767B89C3AE6A63F /* QAMenuView.swift */; };
 		F38A668809FB4BED0792234C /* AccessControlTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D6AEDD73066A43E1D44BE1 /* AccessControlTests.swift */; };
 		FEFB7AD28DCA1B4648564C4D /* UnplugCore in Frameworks */ = {isa = PBXBuildFile; productRef = ACF9D0F184FF8E25627514C5 /* UnplugCore */; };
 /* End PBXBuildFile section */
@@ -104,6 +105,7 @@
 
 /* Begin PBXFileReference section */
 		1C23184A50D8C703A2A7C2B3 /* StoreTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = StoreTests.swift; sourceTree = "<group>"; };
+		2533604AB767B89C3AE6A63F /* QAMenuView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = QAMenuView.swift; sourceTree = "<group>"; };
 		26C1F2411CDBB447F76426F0 /* Store.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		507894EFD724C5277117DC54 /* AppGroupStore.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppGroupStore.swift; sourceTree = "<group>"; };
 		56D6AEDD73066A43E1D44BE1 /* AccessControlTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AccessControlTests.swift; sourceTree = "<group>"; };
@@ -245,6 +247,7 @@
 				507894EFD724C5277117DC54 /* AppGroupStore.swift */,
 				9CDEEA7261E4C98B75C6367D /* AccessController.swift */,
 				9C71ACD206FCE4A5EDE7A4F8 /* PaywallView.swift */,
+				2533604AB767B89C3AE6A63F /* QAMenuView.swift */,
 			);
 			path = ScreenTimeShield;
 			sourceTree = "<group>";
@@ -569,6 +572,7 @@
 				93F8910F956D91B11830313E /* AppGroupStore.swift in Sources */,
 				63DF5E15F67290B44D866122 /* AccessController.swift in Sources */,
 				167D69C20C7BDF7888B00CDC /* PaywallView.swift in Sources */,
+				C99F6A109280EE8AA6275103 /* QAMenuView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
