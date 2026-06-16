@@ -20,15 +20,25 @@ struct ContentView: View {
   @State var showToast: Bool = false
   @State var showInvalidatedWarning: Bool = false
   @State private var showPaywall = false
-  @State private var showQAMenu = false
+  @State private var showSettings = false
   @State private var isPulsing = false
 
-  static let screenWidth = UIScreen.main.bounds.size.width
+  private let cardCorner: CGFloat = 16
+  private let appGridColumns = Array(repeating: GridItem(.flexible(), spacing: 12), count: 5)
 
   private var isExpired: Bool { access.accessState == .expired }
 
   private var isQuickRestrictDisabled: Bool {
     model.insideInterval || model.selectionToRestrict.applicationTokens.isEmpty
+  }
+
+  private var appCount: Int {
+    model.selectionToRestrict.applicationTokens.count + model.selectionToRestrict.categoryTokens.count
+  }
+  private var siteCount: Int { model.selectionToRestrict.webDomainTokens.count }
+
+  private func timeString(_ date: Date) -> String {
+    date.formatted(date: .omitted, time: .shortened)
   }
 
   /// Register the daily restriction (+ notification) schedule, unless access has lapsed.
@@ -41,9 +51,13 @@ struct ContentView: View {
       Schedule.setNotificationSchedule(restrictionStart: model.start, restrictionEnd: model.end)
     }
   }
- 
+
+  private func openPickerOrPaywall() {
+    if isExpired { showPaywall = true } else { isShowingRestrict = true }
+  }
+
   var body: some View {
-    NavigationView {
+    NavigationStack {
       ZStack {
         LinearGradient(
           colors: [Color(.systemBackground), Style.primaryColor.opacity(0.12)],
@@ -53,187 +67,61 @@ struct ContentView: View {
         .ignoresSafeArea()
 
         GeometryReader { geo in
-        ScrollView {
-        VStack() {
-          HStack {
-            Text("Unskippable app limits").padding(.horizontal).foregroundStyle(.secondary)
-            Spacer()
-          }
+          ScrollView {
+            VStack(spacing: 16) {
+              statusBanner
 
-          // Trial / access banner — always a visible purchase CTA unless the user has full access.
-          if access.accessState != .fullAccess {
-            Button {
-              showPaywall = true
-            } label: {
-              HStack(spacing: 6) {
-                Image(systemName: access.accessState == .expired ? "lock" : "clock.badge")
-                (access.accessState == .expired
-                 ? Text("Trial ended · Unlock Unplug")
-                 : Text("\(access.trialDaysRemaining) days left in trial · Unlock"))
-                  .font(.footnote.weight(.medium))
+              if access.accessState != .fullAccess {
+                trialChip
               }
-              .foregroundStyle(Style.primaryColor)
-              .padding(.horizontal, 16)
-              .padding(.vertical, 8)
-              .frame(maxWidth: .infinity, alignment: .leading)
+
+              appCard
+
+              scheduleCard
+
+              Spacer(minLength: 16)
+
+              pinnedActions
             }
+            .padding(.horizontal, 16)
+            .padding(.top, 8)
+            .padding(.bottom, 16)
+            .frame(minHeight: geo.size.height, alignment: .top)
           }
-
-          // Block Status Pill
-          HStack(alignment: .center, spacing: 8) {
-            Circle()
-              .fill(model.insideInterval ? .red : .gray)
-              .frame(width: 8, height: 8)
-              .opacity(model.insideInterval ? (isPulsing ? 0.3 : 1.0) : 1.0)
-              .animation(model.insideInterval ? .easeInOut(duration: 1).repeatForever(autoreverses: true) : .default, value: isPulsing)
-              .onChange(of: model.insideInterval) { newValue in
-                isPulsing = newValue
-              }
-              .onAppear { isPulsing = model.insideInterval }
-            Text(model.insideInterval ? "Block active" : "Block inactive")
-              .font(.subheadline)
-              .foregroundStyle(model.insideInterval ? .primary : .secondary)
+        }
+      }
+      .navigationTitle("Unplug ∎")
+      .navigationBarTitleDisplayMode(.large)
+      .toolbar {
+        ToolbarItem(placement: .navigationBarTrailing) {
+          Button { showSettings = true } label: {
+            Image(systemName: "gearshape")
           }
-          .padding(.horizontal, 24)
-          .padding(.vertical, 8)
-          .background(.secondary.opacity(0.1))
-          .clipShape(Capsule())
-          .padding(.horizontal, 16)
-          .padding(.vertical, 12)
-          
-         
-          Text("You have restricted \(model.selectionToRestrict.applicationTokens.count) apps and \(model.selectionToRestrict.webDomainTokens.count) websites")
-            .padding(.vertical, 8)
-          
-          VStack {
-            DatePicker("Schedule Start", selection: $model.start, displayedComponents: .hourAndMinute)
-              .disabled(model.insideInterval)
-              .foregroundColor(model.insideInterval ? Color(uiColor: .systemGray) : .primary)
-            DatePicker("Schedule End", selection: $model.end, displayedComponents: .hourAndMinute)
-              .disabled(model.insideInterval)
-              .foregroundColor(model.insideInterval ? Color(uiColor: .systemGray) : .primary)
-          }
-          .padding(16)
-          .background(Style.primaryColor.opacity(0.04))
-          .clipShape(RoundedRectangle(cornerRadius: 12))
-          .padding(.horizontal, 16)
-          .padding(.vertical, 8)
-          
-          // Notification Toggle
-          VStack(alignment: .leading, spacing: 8) {
-            HStack {
-              Toggle("Send refocus notifications", isOn: $model.notificationsEnabled)
-                .tint(Style.primaryColor)
-              Spacer()
-            }
-            HStack(alignment: .top) {
-              Image(systemName: model.notificationsEnabled ? "bell.badge" : "bell.slash")
-                .foregroundColor(model.notificationsEnabled ? Style.primaryColor : .gray)
-                .font(.system(size: 14))
-              Text("Get notified when using restricted apps outside of blocked hours")
-                .font(.footnote)
-                .foregroundStyle(.secondary)
-                .fixedSize(horizontal: false, vertical: true)
-            }
-          }
-          .padding(16)
-          .background(Style.primaryColor.opacity(0.04))
-          .clipShape(RoundedRectangle(cornerRadius: 12))
-          .padding(.horizontal, 16)
-          .padding(.bottom, 16)
-
-          Spacer()
-
-          if model.insideInterval {
-            HStack(alignment: .top) {
-              Image(systemName: "exclamationmark.lock").foregroundColor(Color(uiColor: .systemPink))
-                .font(.system(size: 14))
-              Text("Limits are locked when active. Apps can still be added to restriction")
-                .font(.footnote)
-                .fixedSize(horizontal: false, vertical: true)
-            }.padding(.horizontal, 24)
-             .padding(.bottom, 16)
-          } else {
-            HStack(alignment: .top) {
-              Image(systemName: "lock.open.trianglebadge.exclamationmark").foregroundColor(Color(uiColor: .systemPink))
-                .font(.system(size: 14))
-              Text("Limits will be locked when active")
-                .font(.footnote)
-                .fixedSize(horizontal: false, vertical: true)
-            }.padding(.horizontal, 24)
-             .padding(.bottom, 16)
-          }
-
-          Button(model.insideInterval ? "Add apps to restriction" : "Select apps to restrict") {
-            if isExpired { showPaywall = true } else { isShowingRestrict = true }
-          }
-          .foregroundColor(.white)
-          .buttonStyle(.borderedProminent)
-          .tint(.clear)
-          .padding(EdgeInsets(top: 12, leading: 32, bottom: 12, trailing: 32))
-          .frame(maxWidth: ContentView.screenWidth - 100)
-          .background(
-            LinearGradient(
-              colors: [Style.primaryColor, .purple],
-              startPoint: .leading,
-              endPoint: .trailing
-            )
-          )
-          .clipShape(RoundedRectangle(cornerRadius: 12.0, style: .circular))
-          .familyActivityPicker(isPresented: $isShowingRestrict, selection: $model.selectionToRestrict)
           .tint(Style.primaryColor)
-
-          Button("Restrict for next hour") {
-            if isExpired { showPaywall = true; return }
-            access.startTrialIfNeeded()
-            let now = Date()
-            let oneHourLater = Calendar.current.date(byAdding: .hour, value: 1, to: now)!
-            Schedule.setSchedule(start: now, end: oneHourLater, event: model.activityEvent(), repeats: false)
-          }
-          .foregroundColor(.white)
-          .buttonStyle(.borderedProminent)
-          .tint(.clear)
-          .padding(EdgeInsets(top: 12, leading: 32, bottom: 12, trailing: 32))
-          .frame(maxWidth: ContentView.screenWidth - 100)
-          .background(isQuickRestrictDisabled ? .secondary : Style.primaryColor)
-          .clipShape(RoundedRectangle(cornerRadius: 12.0, style: .circular))
-          .padding(.top, 8)
-          .padding(.bottom, 16)
-          .disabled(isQuickRestrictDisabled)
-
-          // QA / Debug entry point — remove (revert this commit) before production.
-          Button("QA / Debug") { showQAMenu = true }
-            .font(.caption)
-            .foregroundStyle(.secondary)
-            .padding(.bottom, 8)
-
         }
-        .frame(minHeight: geo.size.height, alignment: .top)
-        }
-        }
-      }.toast(isPresenting: $showToast, alert: {
+      }
+      .toast(isPresenting: $showToast, alert: {
         AlertToast(displayMode: .alert, type: .error(Style.errorColor), title: String(localized: "Cannot remove apps from block"))
       })
       .toast(isPresenting: $showInvalidatedWarning, duration: 0, tapToDismiss: true, alert: {
         AlertToast(displayMode: .alert, type: .error(Style.errorColor), title: String(localized: "App selection was reset, please re-select apps"))
       })
-      .onChange(of: model.selectionToRestrict) { newValue in
-           model.saveSelection()
-           showInvalidatedWarning = false
-           applyScheduleIfPermitted()
-      }.onChange(of: model.start) { newValue in
+      .onChange(of: model.selectionToRestrict) { _ in
+        model.saveSelection()
+        showInvalidatedWarning = false
         applyScheduleIfPermitted()
-      }.onChange(of: model.end) { newValue in
-        applyScheduleIfPermitted()
-      }.onChange(of: model.notificationsEnabled) { newValue in
+      }
+      .onChange(of: model.start) { _ in applyScheduleIfPermitted() }
+      .onChange(of: model.end) { _ in applyScheduleIfPermitted() }
+      .onChange(of: model.notificationsEnabled) { newValue in
         if newValue && !model.isEmpty() {
           Schedule.setNotificationSchedule(restrictionStart: model.start, restrictionEnd: model.end)
         } else {
           DeviceActivityCenter().stopMonitoring([.notificationSchedule])
         }
-      }.navigationTitle("Unplug ∎")
-        .navigationBarTitleDisplayMode(.large)
-    }.onAppear {
+      }
+    }
+    .onAppear {
       model.loadSelection()
       if model.selectionIsInvalidated() {
         showInvalidatedWarning = true
@@ -251,11 +139,225 @@ struct ContentView: View {
       PaywallView()
         .environmentObject(access)
     }
-    .sheet(isPresented: $showQAMenu) {
-      QAMenuView()
-        .environmentObject(access)
+    .sheet(isPresented: $showSettings) {
+      SettingsView()
+        .environmentObject(model)
     }
-    .navigationViewStyle(StackNavigationViewStyle())
+  }
+
+  // MARK: - Sections
+
+  private var statusBanner: some View {
+    HStack(spacing: 10) {
+      Circle()
+        .fill(model.insideInterval ? Style.primaryColor : Color.secondary)
+        .frame(width: 9, height: 9)
+        .opacity(model.insideInterval ? (isPulsing ? 0.3 : 1.0) : 1.0)
+        .animation(model.insideInterval ? .easeInOut(duration: 1).repeatForever(autoreverses: true) : .default, value: isPulsing)
+        .onChange(of: model.insideInterval) { isPulsing = $0 }
+        .onAppear { isPulsing = model.insideInterval }
+
+      if model.insideInterval {
+        Text("Block active").fontWeight(.semibold)
+          + Text("  ends \(timeString(model.end))").foregroundColor(.secondary)
+      } else {
+        Text("Block inactive").fontWeight(.semibold)
+          + Text("  locks at \(timeString(model.start))").foregroundColor(.secondary)
+      }
+      Spacer(minLength: 0)
+    }
+    .font(.subheadline)
+    .padding(.horizontal, 16)
+    .padding(.vertical, 12)
+    .frame(maxWidth: .infinity, alignment: .leading)
+    .background(model.insideInterval ? Style.primaryColor.opacity(0.12) : Color.secondary.opacity(0.10))
+    .clipShape(RoundedRectangle(cornerRadius: 14))
+  }
+
+  private var trialChip: some View {
+    Button { showPaywall = true } label: {
+      HStack(spacing: 6) {
+        Image(systemName: isExpired ? "lock" : "clock.badge")
+        (isExpired
+         ? Text("Trial ended · Unlock Unplug")
+         : Text("\(access.trialDaysRemaining) days left in trial · Unlock"))
+          .fontWeight(.medium)
+      }
+      .font(.footnote)
+      .foregroundStyle(Style.primaryColor)
+      .frame(maxWidth: .infinity, alignment: .leading)
+    }
+  }
+
+  private var appCard: some View {
+    VStack(alignment: .leading, spacing: 14) {
+      HStack {
+        Text(model.insideInterval ? "Restricted" : "Will be restricted")
+          .font(.headline)
+        Spacer()
+        Text("\(appCount) apps · \(siteCount) websites")
+          .font(.subheadline)
+          .foregroundStyle(.secondary)
+      }
+
+      if model.isEmpty() {
+        VStack(spacing: 8) {
+          Image(systemName: "apps.iphone")
+            .font(.largeTitle)
+            .foregroundStyle(.secondary)
+          Text("No apps or websites selected yet")
+            .font(.subheadline)
+            .foregroundStyle(.secondary)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 20)
+      } else {
+        ScrollView {
+          appGrid.padding(.vertical, 2)
+        }
+        .frame(maxHeight: 220)
+      }
+    }
+    .padding(16)
+    .background(.background.opacity(0.6))
+    .clipShape(RoundedRectangle(cornerRadius: cardCorner))
+    .overlay(RoundedRectangle(cornerRadius: cardCorner).stroke(.secondary.opacity(0.12)))
+    .contentShape(RoundedRectangle(cornerRadius: cardCorner))
+    .onTapGesture { openPickerOrPaywall() }
+    .familyActivityPicker(isPresented: $isShowingRestrict, selection: $model.selectionToRestrict)
+  }
+
+  private var appGrid: some View {
+    LazyVGrid(columns: appGridColumns, spacing: 14) {
+      ForEach(Array(model.selectionToRestrict.applicationTokens), id: \.self) { token in
+        appIcon { Label(token).labelStyle(.iconOnly) }
+      }
+      ForEach(Array(model.selectionToRestrict.categoryTokens), id: \.self) { token in
+        appIcon { Label(token).labelStyle(.iconOnly) }
+      }
+      ForEach(Array(model.selectionToRestrict.webDomainTokens), id: \.self) { token in
+        appIcon { Label(token).labelStyle(.iconOnly) }
+      }
+    }
+  }
+
+  private func appIcon<Content: View>(@ViewBuilder _ content: () -> Content) -> some View {
+    content()
+      .font(.system(size: 34))
+      .frame(width: 52, height: 52)
+      .overlay(alignment: .bottomTrailing) {
+        if model.insideInterval {
+          Image(systemName: "lock.fill")
+            .font(.system(size: 9, weight: .bold))
+            .foregroundStyle(.white)
+            .padding(4)
+            .background(Style.primaryColor, in: Circle())
+            .overlay(Circle().stroke(.background, lineWidth: 1.5))
+        }
+      }
+  }
+
+  private var scheduleCard: some View {
+    VStack(alignment: .leading, spacing: 12) {
+      ScheduleRangeSlider(
+        start: $model.start,
+        end: $model.end,
+        locked: model.insideInterval,
+        now: model.insideInterval ? Date() : nil
+      )
+      if model.insideInterval {
+        Label("Schedule locked while a block is active", systemImage: "lock")
+          .font(.caption)
+          .foregroundStyle(.secondary)
+      } else {
+        Text("Daily schedule")
+          .font(.caption)
+          .foregroundStyle(.secondary)
+          .frame(maxWidth: .infinity, alignment: .center)
+      }
+    }
+    .padding(16)
+    .background(.background.opacity(0.6))
+    .clipShape(RoundedRectangle(cornerRadius: cardCorner))
+    .overlay(RoundedRectangle(cornerRadius: cardCorner).stroke(.secondary.opacity(0.12)))
+  }
+
+  private var pinnedActions: some View {
+    VStack(spacing: 8) {
+      Button {
+        openPickerOrPaywall()
+      } label: {
+        Text(model.insideInterval ? "Add apps to restriction" : "Select apps to restrict")
+          .font(.headline)
+          .foregroundStyle(.white)
+          .frame(maxWidth: .infinity)
+          .padding(.vertical, 16)
+          .background(
+            LinearGradient(colors: [Style.primaryColor, .purple],
+                           startPoint: .leading, endPoint: .trailing)
+          )
+          .clipShape(RoundedRectangle(cornerRadius: 14))
+      }
+
+      Button {
+        if isExpired { showPaywall = true; return }
+        access.startTrialIfNeeded()
+        let now = Date()
+        let oneHourLater = Calendar.current.date(byAdding: .hour, value: 1, to: now)!
+        Schedule.setSchedule(start: now, end: oneHourLater, event: model.activityEvent(), repeats: false)
+      } label: {
+        Text("Restrict for next hour")
+          .font(.headline)
+          .foregroundStyle(isQuickRestrictDisabled ? Color.secondary : Style.primaryColor)
+          .frame(maxWidth: .infinity)
+          .padding(.vertical, 16)
+          .background(
+            (isQuickRestrictDisabled ? Color.secondary : Style.primaryColor).opacity(0.12)
+          )
+          .clipShape(RoundedRectangle(cornerRadius: 14))
+      }
+      .disabled(isQuickRestrictDisabled)
+    }
+  }
+}
+
+// MARK: - SettingsView
+
+/// Settings sheet reached from the main-screen toolbar gear. Houses the refocus
+/// notifications toggle (moved off the main screen) and the QA/Debug entry.
+struct SettingsView: View {
+  @EnvironmentObject var model: Model
+  @Environment(\.dismiss) private var dismiss
+  @State private var showQAMenu = false
+
+  var body: some View {
+    NavigationStack {
+      Form {
+        Section {
+          Toggle("Send refocus notifications", isOn: $model.notificationsEnabled)
+            .tint(Style.primaryColor)
+        } footer: {
+          Text("Get notified when using restricted apps outside of blocked hours")
+        }
+
+        // QA / Debug entry point — remove (revert this commit) before production.
+        Section {
+          Button("QA / Debug") { showQAMenu = true }
+            .foregroundStyle(.secondary)
+        }
+      }
+      .navigationTitle("Settings")
+      .navigationBarTitleDisplayMode(.inline)
+      .toolbar {
+        ToolbarItem(placement: .confirmationAction) {
+          Button("Done") { dismiss() }
+        }
+      }
+      .sheet(isPresented: $showQAMenu) {
+        QAMenuView()
+          .environmentObject(AccessController.shared)
+      }
+    }
   }
 }
 
