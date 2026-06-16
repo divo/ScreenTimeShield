@@ -21,6 +21,12 @@ struct ScheduleRangeSlider: View {
   private let totalMinutes = 24 * 60
   private let trackHeight: CGFloat = 8
   private let thumbSize: CGFloat = 28
+  // Half the widest hour-axis label. The track, fill, handles, and labels all map
+  // time onto [labelInset, width - labelInset] so everything shares one coordinate
+  // system and the endpoint labels never clip.
+  private let labelInset: CGFloat = 24
+
+  private func usable(_ width: CGFloat) -> CGFloat { max(width - 2 * labelInset, 1) }
 
   private func minutes(of date: Date) -> Int {
     let c = Calendar.current.dateComponents([.hour, .minute], from: date)
@@ -33,11 +39,11 @@ struct ScheduleRangeSlider: View {
   }
 
   private func x(for minute: Int, width: CGFloat) -> CGFloat {
-    width * CGFloat(minute) / CGFloat(totalMinutes)
+    labelInset + usable(width) * CGFloat(minute) / CGFloat(totalMinutes)
   }
 
   private func minute(forX px: CGFloat, width: CGFloat) -> Int {
-    let raw = Int((px / max(width, 1)) * CGFloat(totalMinutes))
+    let raw = Int(((px - labelInset) / usable(width)) * CGFloat(totalMinutes))
     let snapped = Int((Double(raw) / Double(snapMinutes)).rounded()) * snapMinutes
     return max(0, min(totalMinutes, snapped))
   }
@@ -57,6 +63,7 @@ struct ScheduleRangeSlider: View {
           Capsule()
             .fill(Color.secondary.opacity(0.18))
             .frame(height: trackHeight)
+            .padding(.horizontal, labelInset)
 
           Capsule()
             .fill(LinearGradient(colors: [Style.primaryColor, .purple],
@@ -93,6 +100,7 @@ struct ScheduleRangeSlider: View {
         .padding(.horizontal, 8)
         .padding(.vertical, 4)
         .background(Style.primaryColor.opacity(locked ? 0.4 : 1), in: Capsule())
+        .fixedSize()
 
       Circle()
         .fill(.white)
@@ -100,6 +108,9 @@ struct ScheduleRangeSlider: View {
         .overlay(Circle().stroke(Style.primaryColor.opacity(locked ? 0.4 : 1), lineWidth: 3))
         .shadow(color: .black.opacity(0.12), radius: 3, y: 1)
     }
+    // Constrain to the thumb width so the wider time pill overflows symmetrically
+    // instead of widening the stack and shoving the circle off its time position.
+    .frame(width: thumbSize)
     .opacity(locked ? 0.6 : 1)
     .offset(x: cx - thumbSize / 2)
     .gesture(locked ? nil : DragGesture(coordinateSpace: .named(Self.trackSpace))
@@ -124,6 +135,7 @@ struct ScheduleRangeSlider: View {
         .fill(Style.primaryColor)
         .frame(width: 2, height: thumbSize + 6)
     }
+    .frame(width: 2)
     .offset(x: cx - 1, y: -2)
   }
 
@@ -131,13 +143,13 @@ struct ScheduleRangeSlider: View {
     GeometryReader { geo in
       let w = geo.size.width
       ForEach([0, 6, 12, 18, 24], id: \.self) { hour in
-        let cx = w * CGFloat(hour) / 24
+        let cx = x(for: hour * 60, width: w)
         Text(hour == 24 ? "24:00" : String(format: "%02d:00", hour))
           .font(.caption2)
           .foregroundStyle(.secondary)
           .fixedSize()
-          .frame(width: 44)
-          .offset(x: min(max(cx - 22, 0), w - 44))
+          .frame(width: 2 * labelInset)
+          .offset(x: cx - labelInset)
       }
     }
     .frame(height: 14)

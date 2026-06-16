@@ -24,7 +24,7 @@ struct ContentView: View {
   @State private var isPulsing = false
 
   private let cardCorner: CGFloat = 16
-  private let appGridColumns = Array(repeating: GridItem(.flexible(), spacing: 12), count: 5)
+  private let appGridColumns = Array(repeating: GridItem(.flexible(), spacing: 16), count: 4)
 
   private var isExpired: Bool { access.accessState == .expired }
 
@@ -185,7 +185,7 @@ struct ContentView: View {
       }
       .font(.footnote)
       .foregroundStyle(Style.primaryColor)
-      .frame(maxWidth: .infinity, alignment: .leading)
+      .frame(maxWidth: .infinity, alignment: .center)
     }
   }
 
@@ -242,12 +242,12 @@ struct ContentView: View {
 
   private func appIcon<Content: View>(@ViewBuilder _ content: () -> Content) -> some View {
     content()
-      .font(.system(size: 34))
-      .frame(width: 52, height: 52)
+      .font(.system(size: 64))
+      .frame(width: 64, height: 64)
       .overlay(alignment: .bottomTrailing) {
         if model.insideInterval {
           Image(systemName: "lock.fill")
-            .font(.system(size: 9, weight: .bold))
+            .font(.system(size: 11, weight: .bold))
             .foregroundStyle(.white)
             .padding(4)
             .background(Style.primaryColor, in: Circle())
