@@ -52,6 +52,8 @@ struct ContentView: View {
         )
         .ignoresSafeArea()
 
+        GeometryReader { geo in
+        ScrollView {
         VStack() {
           HStack {
             Text("Unskippable app limits").padding(.horizontal).foregroundStyle(.secondary)
@@ -205,6 +207,9 @@ struct ContentView: View {
             .foregroundStyle(.secondary)
             .padding(.bottom, 8)
 
+        }
+        .frame(minHeight: geo.size.height, alignment: .top)
+        }
         }
       }.toast(isPresenting: $showToast, alert: {
         AlertToast(displayMode: .alert, type: .error(Style.errorColor), title: String(localized: "Cannot remove apps from block"))
