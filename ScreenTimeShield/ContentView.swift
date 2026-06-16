@@ -212,10 +212,9 @@ struct ContentView: View {
         .frame(maxWidth: .infinity)
         .padding(.vertical, 20)
       } else {
-        ScrollView {
-          appGrid.padding(.vertical, 2)
-        }
-        .frame(maxHeight: 220)
+        // Natural-height grid — the outer ScrollView handles overflow for large
+        // selections (avoids janky same-axis nested scrolling).
+        appGrid.padding(.vertical, 2)
       }
     }
     .padding(16)
