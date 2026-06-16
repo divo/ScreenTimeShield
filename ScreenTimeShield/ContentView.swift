@@ -58,14 +58,16 @@ struct ContentView: View {
             Spacer()
           }
 
-          // Trial / access banner
-          if access.accessState == .trial {
+          // Trial / access banner — always a visible purchase CTA unless the user has full access.
+          if access.accessState != .fullAccess {
             Button {
               showPaywall = true
             } label: {
               HStack(spacing: 6) {
-                Image(systemName: "clock.badge")
-                Text("\(access.trialDaysRemaining) days left in trial · Unlock")
+                Image(systemName: access.accessState == .expired ? "lock" : "clock.badge")
+                (access.accessState == .expired
+                 ? Text("Trial ended · Unlock Unplug")
+                 : Text("\(access.trialDaysRemaining) days left in trial · Unlock"))
                   .font(.footnote.weight(.medium))
               }
               .foregroundStyle(Style.primaryColor)
