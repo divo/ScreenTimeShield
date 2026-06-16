@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(xcodebuild)",
+      "Bash(xcodebuild:*)",
+      "WebSearch",
+      "mcp__plugin_compound-engineering_context7__resolve-library-id",
+      "WebFetch(domain:crunchybagel.com)",
+      "mcp__plugin_compound-engineering_context7__query-docs",
+      "WebFetch(domain:medium.com)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "WebFetch(domain:gist.github.com)",
+      "Bash(PATH=\"/Users/stevendiviney/.nix-profile/bin:$PATH\" pdftotext -f 88 -l 93 \"/Users/stevendiviney/Library/Mobile Documents/com~apple~CloudDocs/Books/Refactoring_UI_-_Complete_Package/Refactoring UI v1.0.2.pdf\" - 2>/dev/null)"
+    ]
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "claude-flow"
+  ]
+}

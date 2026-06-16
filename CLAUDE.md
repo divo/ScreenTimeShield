@@ -2,6 +2,10 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Canonical Task List
+
+`status.md` is the canonical task list for this project. Consult it to understand outstanding work, and keep it updated as tasks are started, completed, or abandoned.
+
 ## Project Overview
 
 **Unplug** (marketed as "Unplug ∎") is an iOS app that enforces unskippable screen time limits using Apple's Screen Time APIs. Users select apps/websites to restrict, set a schedule, and the restrictions are locked during the active interval — they cannot be bypassed or removed while active.
