@@ -8,6 +8,7 @@
 import ManagedSettings
 import ManagedSettingsUI
 import UIKit
+import UnplugCore
 
 // Override the functions below to customize the shields used in various situations.
 // The system provides a default appearance for any methods that your subclass doesn't override.
@@ -34,6 +35,8 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
     }
   
   func customShieldConfiguration() -> ShieldConfiguration {
+    recordStopIfNeeded()
+
     let primaryLabel = ShieldConfiguration.Label(text: String(localized: "Unplug"), color: UIColor.lightGray)
     let subtitleLabel = ShieldConfiguration.Label(text: String(localized: "App limits reached"), color: UIColor.lightGray)
     
@@ -48,5 +51,15 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
                                primaryButtonLabel: primaryButton,
                                primaryButtonBackgroundColor: Style.primaryUIColor,
                                secondaryButtonLabel: secondaryButton)
+  }
+
+  /// Count a "stop" when the shield is presented. The system calls this repeatedly for a
+  /// single wall-hit, so debounce to collapse the burst into one logical stop.
+  private func recordStopIfNeeded() {
+    let store = AppGroupStore()
+    let last = store.date(forKey: AppGroupKeys.lastStopLogged)
+    guard StopDebouncer.shouldCount(now: Date(), lastLogged: last, cooldown: PricingConfig.stopCooldown) else { return }
+    store.setInteger(store.integer(forKey: AppGroupKeys.timesStopped) + 1, forKey: AppGroupKeys.timesStopped)
+    store.setDate(Date(), forKey: AppGroupKeys.lastStopLogged)
   }
 }

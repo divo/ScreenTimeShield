@@ -36,6 +36,12 @@ class DeviceActivityMonitorExtension: DeviceActivityMonitor {
       defaults?.synchronize()
     }
   }
+
+  // Gate cached by the app (AccessController). Defaults to true so a missing value never
+  // silently disables a paying/grandfathered user's blocks.
+  var enforcementAllowed: Bool {
+    return defaults?.object(forKey: "enforcement_allowed") as? Bool ?? true
+  }
   
   // This is called when the Schedule starts
   override func intervalDidStart(for activity: DeviceActivityName) {
@@ -45,6 +51,12 @@ class DeviceActivityMonitorExtension: DeviceActivityMonitor {
     
     // Only set restrictions for the main restriction schedule
     if activity.rawValue == "daily" || activity.rawValue == "hourly" {
+      // Defense-in-depth: if access has lapsed, don't apply restrictions even if a stale
+      // schedule fires. The app also stops scheduling on expiry (gate-and-drain).
+      guard enforcementAllowed else {
+        print("Enforcement not allowed (access lapsed) — skipping restriction.")
+        return
+      }
       let model = Model.shared
       model.loadSelection()
       model.setRestrictions()

@@ -5,18 +5,24 @@
 - [ ] Outstanding bug mentioned in README — needs documenting
 
 ## Features
-- [ ] Finish localization — partially done, needs review across all 10 languages
+- [ ] Finish localization — original UI + new paywall/trial strings now translated across all 10 languages; QA-menu strings intentionally untranslated (reverted before prod). Spot-check quality.
 - [ ] Search engine block (private browsing loophole — block search engines in settings) — **attempted, not solved.** Could not get reliable enforcement; no implementation landed in code. Needs a fresh approach.
-- [ ] Change pricing model — rework how pricing works (see below)
+- [x] Change pricing model — implemented (see Pricing section)
+- [ ] Full UI redesign — current main screen is cluttered/basic. Add a settings menu (top-right) and move the refocus toggle there; rethink hierarchy. Not started.
 
 ## Polish
 - [ ] Rework the time picker — current UX is confusing, needs a clearer interaction
 - [ ] Optimise App Store page (description, screenshots, keywords)
 - [ ] Remove orphaned `ScreenTimeShieldControlExtension.entitlements` (leftover from removed control center widget)
-- [ ] Write real unit tests (currently boilerplate only)
+- [x] Write real unit tests — pure access/trial logic now tested in `UnplugCore` (`swift test`, no simulator)
 
-## Pricing
-- [ ] Change how pricing works — currently $1 one-time upfront purchase. Decide and implement the new model (details TBD). Touches App Store Connect pricing config and possibly in-app purchase/StoreKit code.
+## Pricing (free trial + lifetime IAP — see [[.worklog/2026-06-16-pricing-rework]])
+- [x] Implement free download + 7-day trial + one-time "lifetime unlock" IAP, with grandfathering (code complete on `pricing-rework`, merged to main)
+- [ ] **Revert QA before production** — remove the QA/Debug menu exposure (commit `b90291f`) and the `UNPLUG_SKIP_FC` launch hook (commit `778f8a6`). These shipped intentionally for TestFlight QA; pull them before the App Store submission.
+- [ ] Manual QA the trial → paywall → purchase flow on a real device (simulator blocked by Family Controls Apple-ID auth)
+- [ ] Verify the ScrollView layout fix in block-active state on a real iPhone 16 Pro
+- [ ] App Store Connect: create the Non-Consumable IAP (`com.halfspud.ScreenTimeShield.lifetime`), set price → Free, submit first IAP with a build (blocked by US→Ireland account move)
+- [ ] Confirm `MARKETING_VERSION` (1.3 may be released → likely bump) and that cutover build = 12 matches the actual IAP release
 
 ## Marketing
 - [ ] Execute marketing plan — see [[marketing-plan]]

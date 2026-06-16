@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		167D69C20C7BDF7888B00CDC /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C71ACD206FCE4A5EDE7A4F8 /* PaywallView.swift */; };
+		3ECA03C11C145C07C728DF2D /* AppGroupStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 507894EFD724C5277117DC54 /* AppGroupStore.swift */; };
+		43161F5DA3864B67099FF0DA /* StoreKitTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8728331F587CE9CD6726F709 /* StoreKitTest.framework */; };
+		63DF5E15F67290B44D866122 /* AccessController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CDEEA7261E4C98B75C6367D /* AccessController.swift */; };
+		85A27F8B8534923CD313A4D7 /* UnplugCore in Frameworks */ = {isa = PBXBuildFile; productRef = ED68D37DF1CDF04688459985 /* UnplugCore */; };
 		931CCC162D7F815E00E447ED /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 931CCC142D7F815E00E447ED /* Localizable.xcstrings */; };
 		931CCC172D7F815E00E447ED /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 931CCC142D7F815E00E447ED /* Localizable.xcstrings */; };
 		931CCC182D7F815E00E447ED /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 931CCC142D7F815E00E447ED /* Localizable.xcstrings */; };
@@ -35,6 +40,13 @@
 		93EA81CF2A8FAC38005258D5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 93B0131F2A8E557800B97CA0 /* Assets.xcassets */; };
 		93EA81D12A8FB8A8005258D5 /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EA81D02A8FB8A8005258D5 /* Style.swift */; };
 		93EA81D22A8FBB77005258D5 /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EA81D02A8FB8A8005258D5 /* Style.swift */; };
+		93F8910F956D91B11830313E /* AppGroupStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 507894EFD724C5277117DC54 /* AppGroupStore.swift */; };
+		962DDB35068EE01990DADD48 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26C1F2411CDBB447F76426F0 /* Store.swift */; };
+		9948EFCEF4059E15D7BDF020 /* StoreKit.storekit in Resources */ = {isa = PBXBuildFile; fileRef = D0D4E35CAA82A943631086D1 /* StoreKit.storekit */; };
+		B1D3AE259C2136E170FDD474 /* StoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C23184A50D8C703A2A7C2B3 /* StoreTests.swift */; };
+		C99F6A109280EE8AA6275103 /* QAMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2533604AB767B89C3AE6A63F /* QAMenuView.swift */; };
+		F38A668809FB4BED0792234C /* AccessControlTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D6AEDD73066A43E1D44BE1 /* AccessControlTests.swift */; };
+		FEFB7AD28DCA1B4648564C4D /* UnplugCore in Frameworks */ = {isa = PBXBuildFile; productRef = ACF9D0F184FF8E25627514C5 /* UnplugCore */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -92,6 +104,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1C23184A50D8C703A2A7C2B3 /* StoreTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = StoreTests.swift; sourceTree = "<group>"; };
+		2533604AB767B89C3AE6A63F /* QAMenuView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = QAMenuView.swift; sourceTree = "<group>"; };
+		26C1F2411CDBB447F76426F0 /* Store.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
+		507894EFD724C5277117DC54 /* AppGroupStore.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppGroupStore.swift; sourceTree = "<group>"; };
+		56D6AEDD73066A43E1D44BE1 /* AccessControlTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AccessControlTests.swift; sourceTree = "<group>"; };
+		8728331F587CE9CD6726F709 /* StoreKitTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKitTest.framework; path = System/Library/Frameworks/StoreKitTest.framework; sourceTree = SDKROOT; };
 		931CCC142D7F815E00E447ED /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		934F9C1A2D69D061006FC752 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		934F9C1C2D69D061006FC752 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
@@ -125,6 +143,9 @@
 		93EA81C72A8F8BB4005258D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		93EA81C82A8F8BB4005258D5 /* CustomDeviceActivityMonitor.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CustomDeviceActivityMonitor.entitlements; sourceTree = "<group>"; };
 		93EA81D02A8FB8A8005258D5 /* Style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
+		9C71ACD206FCE4A5EDE7A4F8 /* PaywallView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
+		9CDEEA7261E4C98B75C6367D /* AccessController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AccessController.swift; sourceTree = "<group>"; };
+		D0D4E35CAA82A943631086D1 /* StoreKit.storekit */ = {isa = PBXFileReference; includeInIndex = 1; path = StoreKit.storekit; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -133,6 +154,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				93B64D722B5FCCAA009786B9 /* AlertToast in Frameworks */,
+				85A27F8B8534923CD313A4D7 /* UnplugCore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -140,6 +162,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				43161F5DA3864B67099FF0DA /* StoreKitTest.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -156,6 +179,7 @@
 			files = (
 				93B013532A8E74FC00B97CA0 /* ManagedSettings.framework in Frameworks */,
 				93B013552A8E74FC00B97CA0 /* ManagedSettingsUI.framework in Frameworks */,
+				FEFB7AD28DCA1B4648564C4D /* UnplugCore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -218,6 +242,12 @@
 				93B013462A8E645400B97CA0 /* Model.swift */,
 				93B0131F2A8E557800B97CA0 /* Assets.xcassets */,
 				93B013212A8E557800B97CA0 /* Preview Content */,
+				26C1F2411CDBB447F76426F0 /* Store.swift */,
+				D0D4E35CAA82A943631086D1 /* StoreKit.storekit */,
+				507894EFD724C5277117DC54 /* AppGroupStore.swift */,
+				9CDEEA7261E4C98B75C6367D /* AccessController.swift */,
+				9C71ACD206FCE4A5EDE7A4F8 /* PaywallView.swift */,
+				2533604AB767B89C3AE6A63F /* QAMenuView.swift */,
 			);
 			path = ScreenTimeShield;
 			sourceTree = "<group>";
@@ -234,6 +264,8 @@
 			isa = PBXGroup;
 			children = (
 				93B0132C2A8E557800B97CA0 /* ScreenTimeShieldTests.swift */,
+				56D6AEDD73066A43E1D44BE1 /* AccessControlTests.swift */,
+				1C23184A50D8C703A2A7C2B3 /* StoreTests.swift */,
 			);
 			path = ScreenTimeShieldTests;
 			sourceTree = "<group>";
@@ -255,6 +287,7 @@
 				93EA81C22A8F8BB4005258D5 /* DeviceActivity.framework */,
 				934F9C1A2D69D061006FC752 /* WidgetKit.framework */,
 				934F9C1C2D69D061006FC752 /* SwiftUI.framework */,
+				8728331F587CE9CD6726F709 /* StoreKitTest.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -311,6 +344,7 @@
 			name = ScreenTimeShield;
 			packageProductDependencies = (
 				93B64D712B5FCCAA009786B9 /* AlertToast */,
+				ED68D37DF1CDF04688459985 /* UnplugCore */,
 			);
 			productName = ScreenTimeShield;
 			productReference = 93B013182A8E557700B97CA0 /* Unplug.app */;
@@ -365,6 +399,9 @@
 			dependencies = (
 			);
 			name = CustomShieldConfiguration;
+			packageProductDependencies = (
+				ACF9D0F184FF8E25627514C5 /* UnplugCore */,
+			);
 			productName = CustomShieldConfiguration;
 			productReference = 93B013502A8E74FC00B97CA0 /* CustomShieldConfiguration.appex */;
 			productType = "com.apple.product-type.app-extension";
@@ -452,6 +489,7 @@
 			mainGroup = 93B0130F2A8E557700B97CA0;
 			packageReferences = (
 				93B64D702B5FCC38009786B9 /* XCRemoteSwiftPackageReference "AlertToast" */,
+				82002CB1DD90A376DAA689FB /* XCLocalSwiftPackageReference "UnplugCore" */,
 			);
 			productRefGroup = 93B013192A8E557700B97CA0 /* Products */;
 			projectDirPath = "";
@@ -482,6 +520,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9948EFCEF4059E15D7BDF020 /* StoreKit.storekit in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -529,6 +568,11 @@
 				93B013492A8E6C9700B97CA0 /* Schedule.swift in Sources */,
 				93B0131C2A8E557700B97CA0 /* ScreenTimeShieldApp.swift in Sources */,
 				93EA81D12A8FB8A8005258D5 /* Style.swift in Sources */,
+				962DDB35068EE01990DADD48 /* Store.swift in Sources */,
+				93F8910F956D91B11830313E /* AppGroupStore.swift in Sources */,
+				63DF5E15F67290B44D866122 /* AccessController.swift in Sources */,
+				167D69C20C7BDF7888B00CDC /* PaywallView.swift in Sources */,
+				C99F6A109280EE8AA6275103 /* QAMenuView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -537,6 +581,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				93B0132D2A8E557800B97CA0 /* ScreenTimeShieldTests.swift in Sources */,
+				F38A668809FB4BED0792234C /* AccessControlTests.swift in Sources */,
+				B1D3AE259C2136E170FDD474 /* StoreTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -555,6 +601,7 @@
 			files = (
 				93EA81D22A8FBB77005258D5 /* Style.swift in Sources */,
 				93B013582A8E74FC00B97CA0 /* ShieldConfigurationExtension.swift in Sources */,
+				3ECA03C11C145C07C728DF2D /* AppGroupStore.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -737,7 +784,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = ScreenTimeShield/ScreenTimeShield.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_ASSET_PATHS = "\"ScreenTimeShield/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -770,7 +817,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = ScreenTimeShield/ScreenTimeShield.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_ASSET_PATHS = "\"ScreenTimeShield/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -801,7 +848,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 12;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				MARKETING_VERSION = 1.3;
@@ -810,7 +857,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ScreenTimeShield.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ScreenTimeShield";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Unplug.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Unplug";
 			};
 			name = Debug;
 		};
@@ -819,7 +866,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 12;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				MARKETING_VERSION = 1.3;
@@ -828,7 +875,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ScreenTimeShield.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ScreenTimeShield";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Unplug.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Unplug";
 			};
 			name = Release;
 		};
@@ -836,7 +883,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 12;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.halfspud.ScreenTimeShieldUITests;
@@ -852,7 +899,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 12;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.halfspud.ScreenTimeShieldUITests;
@@ -869,7 +916,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = CustomShieldConfiguration/CustomShieldConfiguration.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 12;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = CustomShieldConfiguration/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = CustomShieldConfiguration;
@@ -894,7 +941,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = CustomShieldConfiguration/CustomShieldConfiguration.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 12;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = CustomShieldConfiguration/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = CustomShieldConfiguration;
@@ -919,7 +966,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = CustomShieldAction/CustomShieldAction.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 12;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = CustomShieldAction/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = CustomShieldAction;
@@ -944,7 +991,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = CustomShieldAction/CustomShieldAction.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 12;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = CustomShieldAction/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = CustomShieldAction;
@@ -969,7 +1016,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = CustomDeviceActivityMonitor/CustomDeviceActivityMonitor.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 12;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = CustomDeviceActivityMonitor/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = CustomDeviceActivityMonitor;
@@ -994,7 +1041,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = CustomDeviceActivityMonitor/CustomDeviceActivityMonitor.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 12;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = CustomDeviceActivityMonitor/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = CustomDeviceActivityMonitor;
@@ -1082,6 +1129,13 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		82002CB1DD90A376DAA689FB /* XCLocalSwiftPackageReference "UnplugCore" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = UnplugCore;
+		};
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin XCRemoteSwiftPackageReference section */
 		93B64D702B5FCC38009786B9 /* XCRemoteSwiftPackageReference "AlertToast" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -1098,6 +1152,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 93B64D702B5FCC38009786B9 /* XCRemoteSwiftPackageReference "AlertToast" */;
 			productName = AlertToast;
+		};
+		ACF9D0F184FF8E25627514C5 /* UnplugCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 82002CB1DD90A376DAA689FB /* XCLocalSwiftPackageReference "UnplugCore" */;
+			productName = UnplugCore;
+		};
+		ED68D37DF1CDF04688459985 /* UnplugCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 82002CB1DD90A376DAA689FB /* XCLocalSwiftPackageReference "UnplugCore" */;
+			productName = UnplugCore;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

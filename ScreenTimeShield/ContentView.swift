@@ -10,19 +10,36 @@ import FamilyControls
 import Foundation
 import AlertToast
 import DeviceActivity
+import UnplugCore
 
 struct ContentView: View {
   @State private var isShowingRestrict = false
-  
+
   @EnvironmentObject var model: Model
+  @StateObject private var access = AccessController.shared
   @State var showToast: Bool = false
   @State var showInvalidatedWarning: Bool = false
+  @State private var showPaywall = false
+  @State private var showQAMenu = false
   @State private var isPulsing = false
-  
+
   static let screenWidth = UIScreen.main.bounds.size.width
-  
+
+  private var isExpired: Bool { access.accessState == .expired }
+
   private var isQuickRestrictDisabled: Bool {
     model.insideInterval || model.selectionToRestrict.applicationTokens.isEmpty
+  }
+
+  /// Register the daily restriction (+ notification) schedule, unless access has lapsed.
+  private func applyScheduleIfPermitted() {
+    guard !isExpired else { showPaywall = true; return }
+    guard !model.isEmpty() else { return }
+    access.startTrialIfNeeded()
+    Schedule.setSchedule(start: model.start, end: model.end, event: model.activityEvent(), repeats: true)
+    if model.notificationsEnabled {
+      Schedule.setNotificationSchedule(restrictionStart: model.start, restrictionEnd: model.end)
+    }
   }
  
   var body: some View {
@@ -35,12 +52,33 @@ struct ContentView: View {
         )
         .ignoresSafeArea()
 
+        GeometryReader { geo in
+        ScrollView {
         VStack() {
           HStack {
             Text("Unskippable app limits").padding(.horizontal).foregroundStyle(.secondary)
             Spacer()
           }
-          
+
+          // Trial / access banner — always a visible purchase CTA unless the user has full access.
+          if access.accessState != .fullAccess {
+            Button {
+              showPaywall = true
+            } label: {
+              HStack(spacing: 6) {
+                Image(systemName: access.accessState == .expired ? "lock" : "clock.badge")
+                (access.accessState == .expired
+                 ? Text("Trial ended · Unlock Unplug")
+                 : Text("\(access.trialDaysRemaining) days left in trial · Unlock"))
+                  .font(.footnote.weight(.medium))
+              }
+              .foregroundStyle(Style.primaryColor)
+              .padding(.horizontal, 16)
+              .padding(.vertical, 8)
+              .frame(maxWidth: .infinity, alignment: .leading)
+            }
+          }
+
           // Block Status Pill
           HStack(alignment: .center, spacing: 8) {
             Circle()
@@ -107,25 +145,27 @@ struct ContentView: View {
           Spacer()
 
           if model.insideInterval {
-            HStack {
+            HStack(alignment: .top) {
               Image(systemName: "exclamationmark.lock").foregroundColor(Color(uiColor: .systemPink))
                 .font(.system(size: 14))
               Text("Limits are locked when active. Apps can still be added to restriction")
                 .font(.footnote)
+                .fixedSize(horizontal: false, vertical: true)
             }.padding(.horizontal, 24)
              .padding(.bottom, 16)
           } else {
-            HStack {
+            HStack(alignment: .top) {
               Image(systemName: "lock.open.trianglebadge.exclamationmark").foregroundColor(Color(uiColor: .systemPink))
                 .font(.system(size: 14))
               Text("Limits will be locked when active")
                 .font(.footnote)
+                .fixedSize(horizontal: false, vertical: true)
             }.padding(.horizontal, 24)
              .padding(.bottom, 16)
           }
 
           Button(model.insideInterval ? "Add apps to restriction" : "Select apps to restrict") {
-            isShowingRestrict = true
+            if isExpired { showPaywall = true } else { isShowingRestrict = true }
           }
           .foregroundColor(.white)
           .buttonStyle(.borderedProminent)
@@ -144,6 +184,8 @@ struct ContentView: View {
           .tint(Style.primaryColor)
 
           Button("Restrict for next hour") {
+            if isExpired { showPaywall = true; return }
+            access.startTrialIfNeeded()
             let now = Date()
             let oneHourLater = Calendar.current.date(byAdding: .hour, value: 1, to: now)!
             Schedule.setSchedule(start: now, end: oneHourLater, event: model.activityEvent(), repeats: false)
@@ -159,6 +201,15 @@ struct ContentView: View {
           .padding(.bottom, 16)
           .disabled(isQuickRestrictDisabled)
 
+          // QA / Debug entry point — remove (revert this commit) before production.
+          Button("QA / Debug") { showQAMenu = true }
+            .font(.caption)
+            .foregroundStyle(.secondary)
+            .padding(.bottom, 8)
+
+        }
+        .frame(minHeight: geo.size.height, alignment: .top)
+        }
         }
       }.toast(isPresenting: $showToast, alert: {
         AlertToast(displayMode: .alert, type: .error(Style.errorColor), title: String(localized: "Cannot remove apps from block"))
@@ -167,34 +218,13 @@ struct ContentView: View {
         AlertToast(displayMode: .alert, type: .error(Style.errorColor), title: String(localized: "App selection was reset, please re-select apps"))
       })
       .onChange(of: model.selectionToRestrict) { newValue in
-        // Not allowing the user to remove any apps from a block is a bit over the top 
-        // if model.validateRestriction() {
            model.saveSelection()
            showInvalidatedWarning = false
-           Schedule.setSchedule(start: model.start, end: model.end, event: model.activityEvent(), repeats: true)
-           if model.notificationsEnabled {
-             Schedule.setNotificationSchedule(restrictionStart: model.start, restrictionEnd: model.end)
-           }
-        // } else {
-        //   // TODO: Show warning
-        //   print("Cannot remove apps from restrictions")
-        //   showToast = true
-        //   model.loadSelection()
-        // }
+           applyScheduleIfPermitted()
       }.onChange(of: model.start) { newValue in
-        if !model.isEmpty() {
-          Schedule.setSchedule(start: model.start, end: model.end, event: model.activityEvent(), repeats: true)
-          if model.notificationsEnabled {
-            Schedule.setNotificationSchedule(restrictionStart: model.start, restrictionEnd: model.end)
-          }
-        }
+        applyScheduleIfPermitted()
       }.onChange(of: model.end) { newValue in
-        if !model.isEmpty() {
-          Schedule.setSchedule(start: model.start, end: model.end, event: model.activityEvent(), repeats: true)
-          if model.notificationsEnabled {
-            Schedule.setNotificationSchedule(restrictionStart: model.start, restrictionEnd: model.end)
-          }
-        }
+        applyScheduleIfPermitted()
       }.onChange(of: model.notificationsEnabled) { newValue in
         if newValue && !model.isEmpty() {
           Schedule.setNotificationSchedule(restrictionStart: model.start, restrictionEnd: model.end)
@@ -208,7 +238,24 @@ struct ContentView: View {
       if model.selectionIsInvalidated() {
         showInvalidatedWarning = true
       }
-    }.navigationViewStyle(StackNavigationViewStyle())
+    }
+    .task {
+      // Skip launch-time StoreKit work under the unit-test runner or QA mode — AppTransaction
+      // can block / prompt for an Apple-ID sign-in on a simulator without one.
+      guard ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] == nil,
+            ProcessInfo.processInfo.environment["UNPLUG_SKIP_FC"] == nil else { return }
+      await access.refreshAccess()
+      if access.accessState == .expired { showPaywall = true }
+    }
+    .fullScreenCover(isPresented: $showPaywall) {
+      PaywallView()
+        .environmentObject(access)
+    }
+    .sheet(isPresented: $showQAMenu) {
+      QAMenuView()
+        .environmentObject(access)
+    }
+    .navigationViewStyle(StackNavigationViewStyle())
   }
 }
 

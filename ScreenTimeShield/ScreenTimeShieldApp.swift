@@ -13,8 +13,9 @@ import UserNotifications
 struct ScreenTimeShieldApp: App {
   
   @UIApplicationDelegateAdaptor private var appDelegate: AppDelegate
-  
+
   @StateObject var model = Model.shared
+  @Environment(\.scenePhase) private var scenePhase
   
   init() {
     configureNavigationBarAppearance()
@@ -91,15 +92,25 @@ struct ScreenTimeShieldApp: App {
       ContentView()
         .environmentObject(model)
     }
+    .onChange(of: scenePhase) { newPhase in
+      let isTesting = ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil
+      if newPhase == .active, !isTesting {
+        Task { await AccessController.shared.refreshAccess() }
+      }
+    }
   }
 }
 
 class AppDelegate: NSObject, UIApplicationDelegate {
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-    Task {
-      await requestFamilyControls()
+    // QA hook: skip the Family Controls auth prompt so the trial/paywall UI can be
+    // tested on a simulator without a working Apple-ID/Screen Time sign-in.
+    if ProcessInfo.processInfo.environment["UNPLUG_SKIP_FC"] == nil {
+      Task {
+        await requestFamilyControls()
+      }
     }
-    
+
     return true
   }
   
