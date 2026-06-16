@@ -58,8 +58,7 @@ struct ScreenTimeShieldApp: App {
   
   private func configureNavigationBarAppearance() {
     let appearance = UINavigationBarAppearance()
-    appearance.configureWithOpaqueBackground()
-    appearance.backgroundColor = .systemBackground
+    appearance.configureWithTransparentBackground()
     
     // Remove bottom border
     appearance.shadowColor = .clear
