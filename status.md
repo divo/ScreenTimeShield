@@ -18,6 +18,7 @@
 
 ## Pricing (free trial + lifetime IAP — see [[.worklog/2026-06-16-pricing-rework]])
 - [x] Implement free download + 7-day trial + one-time "lifetime unlock" IAP, with grandfathering (code complete on `pricing-rework`, merged to main)
+- [ ] Revisit the grandfathering logic
 - [ ] **Revert QA before production** — remove the QA/Debug menu exposure (commit `b90291f`) and the `UNPLUG_SKIP_FC` launch hook (commit `778f8a6`). These shipped intentionally for TestFlight QA; pull them before the App Store submission.
 - [ ] Manual QA the trial → paywall → purchase flow on a real device (simulator blocked by Family Controls Apple-ID auth)
 - [ ] Verify the ScrollView layout fix in block-active state on a real iPhone 16 Pro
