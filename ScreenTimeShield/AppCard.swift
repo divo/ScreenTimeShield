@@ -6,8 +6,8 @@
 import SwiftUI
 import FamilyControls
 
-/// Card showing what's restricted: a count header and the app grid (or an empty
-/// state). Tapping it, or presenting `pickerPresented`, opens the system picker.
+/// Card showing what's restricted: a header with an explicit Add/Edit action, and the
+/// app list (or a tappable empty state). `onTap` / presenting `pickerPresented` opens the picker.
 struct AppCard: View {
   @EnvironmentObject var model: Model
   @Binding var pickerPresented: Bool
@@ -22,28 +22,42 @@ struct AppCard: View {
 
   var body: some View {
     VStack(alignment: .leading, spacing: 14) {
-      HStack {
-        Text(model.insideInterval ? "Restricted" : "Will be restricted")
-          .font(.headline)
+      HStack(alignment: .firstTextBaseline) {
+        VStack(alignment: .leading, spacing: 2) {
+          Text(model.insideInterval ? "Restricted" : "Will be restricted")
+            .font(.headline)
+          if !model.isEmpty() {
+            Text("\(appCount) apps · \(siteCount) websites")
+              .font(.subheadline)
+              .foregroundStyle(.secondary)
+          }
+        }
         Spacer()
-        Text("\(appCount) apps · \(siteCount) websites")
-          .font(.subheadline)
-          .foregroundStyle(.secondary)
+        if !model.isEmpty() {
+          Button(action: onTap) {
+            Label("Add", systemImage: "plus")
+              .font(.subheadline.weight(.semibold))
+              .foregroundStyle(Style.primaryColor)
+          }
+        }
       }
 
       if model.isEmpty() {
-        VStack(spacing: 8) {
-          Image(systemName: "apps.iphone")
-            .font(.largeTitle)
-            .foregroundStyle(.secondary)
-          Text("No apps or websites selected yet")
-            .font(.subheadline)
-            .foregroundStyle(.secondary)
+        Button(action: onTap) {
+          VStack(spacing: 8) {
+            Image(systemName: "plus.circle.fill")
+              .font(.largeTitle)
+              .foregroundStyle(Style.primaryColor)
+            Text("Choose apps & websites")
+              .font(.subheadline.weight(.medium))
+              .foregroundStyle(Style.primaryColor)
+          }
+          .frame(maxWidth: .infinity)
+          .padding(.vertical, 20)
+          .contentShape(Rectangle())
         }
-        .frame(maxWidth: .infinity)
-        .padding(.vertical, 20)
+        .buttonStyle(.plain)
       } else {
-        // EXPERIMENT (uncommitted): fixed-height, internally-scrolling icon+name list.
         RestrictedAppList()
       }
     }
@@ -51,8 +65,6 @@ struct AppCard: View {
     .background(.background.opacity(0.6))
     .clipShape(RoundedRectangle(cornerRadius: cardCorner))
     .overlay(RoundedRectangle(cornerRadius: cardCorner).stroke(.secondary.opacity(0.12)))
-    .contentShape(RoundedRectangle(cornerRadius: cardCorner))
-    .onTapGesture { onTap() }
     .familyActivityPicker(isPresented: $pickerPresented, selection: $model.selectionToRestrict)
   }
 }
