@@ -69,34 +69,31 @@ struct ContentView: View {
         )
         .ignoresSafeArea()
 
-        GeometryReader { geo in
-          ScrollView {
-            VStack(spacing: 16) {
-              StatusBanner()
+        // Fixed, non-scrolling layout — the restricted-apps view scrolls internally instead.
+        VStack(spacing: 16) {
+          StatusBanner()
 
-              if access.accessState != .fullAccess {
-                TrialChip(access: access) { showPaywall = true }
-              }
-
-              AppCard(pickerPresented: $isShowingRestrict, onTap: openPicker)
-
-              ScheduleCard()
-
-              Spacer(minLength: 16)
-
-              PinnedActions(
-                isActive: model.insideInterval,
-                quickRestrictDisabled: isQuickRestrictDisabled,
-                onPrimary: primaryAction,
-                onRestrictHour: restrictForNextHour
-              )
-            }
-            .padding(.horizontal, 16)
-            .padding(.top, 8)
-            .padding(.bottom, 16)
-            .frame(minHeight: geo.size.height, alignment: .top)
+          if access.accessState != .fullAccess {
+            TrialChip(access: access) { showPaywall = true }
           }
+
+          AppCard(pickerPresented: $isShowingRestrict, onTap: openPicker)
+
+          ScheduleCard()
+
+          Spacer(minLength: 16)
+
+          PinnedActions(
+            isActive: model.insideInterval,
+            quickRestrictDisabled: isQuickRestrictDisabled,
+            onPrimary: primaryAction,
+            onRestrictHour: restrictForNextHour
+          )
         }
+        .padding(.horizontal, 16)
+        .padding(.top, 8)
+        .padding(.bottom, 16)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
       }
       .navigationTitle("Unplug ∎")
       .navigationBarTitleDisplayMode(.large)
