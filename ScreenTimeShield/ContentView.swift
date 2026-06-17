@@ -25,12 +25,14 @@ struct ContentView: View {
   private var isExpired: Bool { access.accessState == .expired }
 
   private var isQuickRestrictDisabled: Bool {
-    model.insideInterval || model.selectionToRestrict.applicationTokens.isEmpty
+    model.insideInterval || isExpired || model.selectionToRestrict.applicationTokens.isEmpty
   }
 
   /// Register the daily restriction (+ notification) schedule, unless access has lapsed.
+  /// When expired we silently skip scheduling — the paywall is only surfaced by the trial
+  /// chip and the primary CTA, not as a side effect of editing.
   private func applyScheduleIfPermitted() {
-    guard !isExpired else { showPaywall = true; return }
+    guard !isExpired else { return }
     guard !model.isEmpty() else { return }
     access.startTrialIfNeeded()
     Schedule.setSchedule(start: model.start, end: model.end, event: model.activityEvent(), repeats: true)
@@ -39,12 +41,18 @@ struct ContentView: View {
     }
   }
 
-  private func openPickerOrPaywall() {
+  /// App-card tap: open the picker, never the paywall (expired users go through the CTAs).
+  private func openPicker() {
+    guard !isExpired else { return }
+    isShowingRestrict = true
+  }
+
+  /// Primary CTA — one of the only two places (with the trial chip) that surfaces the paywall.
+  private func primaryAction() {
     if isExpired { showPaywall = true } else { isShowingRestrict = true }
   }
 
   private func restrictForNextHour() {
-    if isExpired { showPaywall = true; return }
     access.startTrialIfNeeded()
     let now = Date()
     let oneHourLater = Calendar.current.date(byAdding: .hour, value: 1, to: now)!
@@ -70,7 +78,7 @@ struct ContentView: View {
                 TrialChip(access: access) { showPaywall = true }
               }
 
-              AppCard(pickerPresented: $isShowingRestrict, onTap: openPickerOrPaywall)
+              AppCard(pickerPresented: $isShowingRestrict, onTap: openPicker)
 
               ScheduleCard()
 
@@ -79,7 +87,7 @@ struct ContentView: View {
               PinnedActions(
                 isActive: model.insideInterval,
                 quickRestrictDisabled: isQuickRestrictDisabled,
-                onPrimary: openPickerOrPaywall,
+                onPrimary: primaryAction,
                 onRestrictHour: restrictForNextHour
               )
             }
@@ -133,7 +141,6 @@ struct ContentView: View {
       guard ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] == nil,
             ProcessInfo.processInfo.environment["UNPLUG_SKIP_FC"] == nil else { return }
       await access.refreshAccess()
-      if access.accessState == .expired { showPaywall = true }
     }
     .fullScreenCover(isPresented: $showPaywall) {
       PaywallView()
