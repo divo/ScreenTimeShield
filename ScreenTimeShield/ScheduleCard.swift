@@ -11,16 +11,6 @@ struct ScheduleCard: View {
 
   private let cardCorner: CGFloat = 16
 
-  private func timeString(_ date: Date) -> String {
-    date.formatted(date: .omitted, time: .shortened)
-  }
-
-  private var summary: String {
-    model.blockOutsideWindow
-      ? "Blocking all day except \(timeString(model.start))–\(timeString(model.end))"
-      : "Blocking \(timeString(model.start))–\(timeString(model.end)) daily"
-  }
-
   var body: some View {
     VStack(alignment: .leading, spacing: 12) {
       Picker("Schedule mode", selection: $model.blockOutsideWindow) {
@@ -42,8 +32,8 @@ struct ScheduleCard: View {
           .font(.caption)
           .foregroundStyle(.secondary)
           .frame(maxWidth: .infinity, alignment: .center)
-      } else {
-        Text(summary)
+      } else if model.blockOutsideWindow {
+        Text("Blocking all day except this window")
           .font(.caption)
           .foregroundStyle(.secondary)
           .frame(maxWidth: .infinity, alignment: .center)

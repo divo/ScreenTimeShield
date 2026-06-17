@@ -5,19 +5,10 @@
 
 import SwiftUI
 
-/// Slim banner leading the main screen: block active/inactive + the relevant time.
+/// Slim banner leading the main screen: block active/inactive. Times live on the slider only.
 struct StatusBanner: View {
   @EnvironmentObject var model: Model
   @State private var isPulsing = false
-
-  private func timeString(_ date: Date) -> String {
-    date.formatted(date: .omitted, time: .shortened)
-  }
-
-  // In allow-only mode the block runs outside the picked window, so the times flip:
-  // the block ends when the free window starts, and resumes when it ends.
-  private var blockEndsAt: Date { model.blockOutsideWindow ? model.start : model.end }
-  private var blockLocksAt: Date { model.blockOutsideWindow ? model.end : model.start }
 
   private func setPulsing(_ active: Bool) {
     if active {
@@ -38,13 +29,8 @@ struct StatusBanner: View {
         .onAppear { setPulsing(model.insideInterval) }
         .onChange(of: model.insideInterval) { setPulsing($0) }
 
-      if model.insideInterval {
-        Text("Block active").fontWeight(.semibold)
-          + Text("  ends \(timeString(blockEndsAt))").foregroundColor(.secondary)
-      } else {
-        Text("Block inactive").fontWeight(.semibold)
-          + Text("  locks at \(timeString(blockLocksAt))").foregroundColor(.secondary)
-      }
+      Text(model.insideInterval ? "Block active" : "Block inactive")
+        .fontWeight(.semibold)
       Spacer(minLength: 0)
     }
     .font(.subheadline)

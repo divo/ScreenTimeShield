@@ -21,19 +21,42 @@ struct ContentView: View {
   @State var showInvalidatedWarning: Bool = false
   @State private var showPaywall = false
   @State private var showSettings = false
+  @State private var armRequest: ArmRequest?
+
+  private enum ArmRequest: Identifiable { case schedule, hour; var id: Int { hashValue } }
 
   private var isExpired: Bool { access.accessState == .expired }
+  private var hasApps: Bool { !model.isEmpty() }
 
   private var isQuickRestrictDisabled: Bool {
     model.insideInterval || isExpired || model.selectionToRestrict.applicationTokens.isEmpty
   }
 
-  /// Register the daily restriction (+ notification) schedule, unless access has lapsed.
-  /// When expired we silently skip scheduling — the paywall is only surfaced by the trial
-  /// chip and the primary CTA, not as a side effect of editing.
-  private func applyScheduleIfPermitted() {
-    guard !isExpired else { return }
-    guard !model.isEmpty() else { return }
+  // MARK: Primary button state (Start / Stop / Blocking)
+
+  private var primaryTitle: String {
+    if model.insideInterval { return "Blocking" }
+    if model.isArmed { return "Stop blocking" }
+    return "Start blocking"
+  }
+
+  private var primaryDisabled: Bool {
+    if model.insideInterval { return true }          // active → locked
+    if model.isArmed { return false }                // armed, inactive → can stop
+    return !hasApps && !isExpired                    // not armed → need apps (or route expired to paywall)
+  }
+
+  private func onPrimary() {
+    if model.insideInterval { return }
+    if model.isArmed { stop() } else { start() }
+  }
+
+  // MARK: Arm / disarm
+
+  /// Re-register the schedule from the current config — but only when already armed. Editing never
+  /// arms; that's the explicit Start tap. Expired access silently skips (paywall only via the CTAs).
+  private func applySchedule() {
+    guard model.isArmed, !isExpired, !model.isEmpty() else { return }
     access.startTrialIfNeeded()
     let bi = model.blockedInterval
     Schedule.setSchedule(start: bi.start, end: bi.end, event: model.activityEvent(), repeats: true)
@@ -42,22 +65,78 @@ struct ContentView: View {
     }
   }
 
+  private func start() {
+    if isExpired { showPaywall = true; return }
+    guard hasApps else { isShowingRestrict = true; return }
+    if isRiskyToArm() { armRequest = .schedule } else { performArm() }
+  }
+
+  private func performArm() {
+    access.startTrialIfNeeded()
+    model.isArmed = true
+    applySchedule()
+  }
+
+  private func stop() {
+    model.isArmed = false
+    DeviceActivityCenter().stopMonitoring([.daily, .notificationSchedule])
+    model.clearRestrictions()
+  }
+
   /// App-card tap: open the picker, never the paywall (expired users go through the CTAs).
   private func openPicker() {
     guard !isExpired else { return }
     isShowingRestrict = true
   }
 
-  /// Primary CTA — one of the only two places (with the trial chip) that surfaces the paywall.
-  private func primaryAction() {
-    if isExpired { showPaywall = true } else { isShowingRestrict = true }
+  private func restrictForNextHour() {
+    if isExpired { showPaywall = true; return }
+    armRequest = .hour   // immediate lockout — always confirm
   }
 
-  private func restrictForNextHour() {
+  private func performRestrictHour() {
     access.startTrialIfNeeded()
     let now = Date()
     let oneHourLater = Calendar.current.date(byAdding: .hour, value: 1, to: now)!
     Schedule.setSchedule(start: now, end: oneHourLater, event: model.activityEvent(), repeats: false)
+  }
+
+  // MARK: Risk / confirmation
+
+  private func minutesOfDay(_ date: Date) -> Int {
+    let c = Calendar.current.dateComponents([.hour, .minute], from: date)
+    return (c.hour ?? 0) * 60 + (c.minute ?? 0)
+  }
+
+  private func timeString(_ date: Date) -> String {
+    date.formatted(date: .omitted, time: .shortened)
+  }
+
+  /// Arming is risky (→ confirm) when it would lock you in immediately or leave almost no free time.
+  private func isRiskyToArm() -> Bool {
+    let bi = model.blockedInterval
+    let activeNow = ScheduleMath.windowContains(now: minutesOfDay(Date()),
+                                                start: minutesOfDay(bi.start),
+                                                end: minutesOfDay(bi.end))
+    let free = ScheduleMath.freeMinutes(windowStart: minutesOfDay(model.start),
+                                        windowEnd: minutesOfDay(model.end),
+                                        blockOutsideWindow: model.blockOutsideWindow)
+    return activeNow || free <= 30
+  }
+
+  private func confirmMessage(_ req: ArmRequest) -> String {
+    switch req {
+    case .hour:
+      return String(localized: "This blocks everything for the next hour and can't be stopped until then.")
+    case .schedule:
+      let bi = model.blockedInterval
+      let activeNow = ScheduleMath.windowContains(now: minutesOfDay(Date()),
+                                                  start: minutesOfDay(bi.start),
+                                                  end: minutesOfDay(bi.end))
+      return activeNow
+        ? String(localized: "Blocking starts now and can't be stopped until \(timeString(bi.end)).")
+        : String(localized: "This leaves almost no time unblocked, and can't be changed once active.")
+    }
   }
 
   private var header: some View {
@@ -107,9 +186,11 @@ struct ContentView: View {
         Spacer(minLength: 16)
 
         PinnedActions(
-          isActive: model.insideInterval,
+          primaryTitle: primaryTitle,
+          primaryLocked: model.insideInterval,
+          primaryDisabled: primaryDisabled,
           quickRestrictDisabled: isQuickRestrictDisabled,
-          onPrimary: primaryAction,
+          onPrimary: onPrimary,
           onRestrictHour: restrictForNextHour
         )
       }
@@ -134,11 +215,11 @@ struct ContentView: View {
       }
       model.saveSelection()
       showInvalidatedWarning = false
-      applyScheduleIfPermitted()
+      applySchedule()
     }
-    .onChange(of: model.start) { _ in applyScheduleIfPermitted() }
-    .onChange(of: model.end) { _ in applyScheduleIfPermitted() }
-    .onChange(of: model.blockOutsideWindow) { _ in applyScheduleIfPermitted() }
+    .onChange(of: model.start) { _ in applySchedule() }
+    .onChange(of: model.end) { _ in applySchedule() }
+    .onChange(of: model.blockOutsideWindow) { _ in applySchedule() }
     .onChange(of: model.notificationsEnabled) { newValue in
       if newValue && !model.isEmpty() {
         let bi = model.blockedInterval
@@ -149,6 +230,8 @@ struct ContentView: View {
     }
     .onAppear {
       model.loadSelection()
+      // Source-of-truth sync (also migrates pre-arm-flag users): armed iff a daily schedule exists.
+      model.isArmed = DeviceActivityCenter().activities.contains(.daily)
       if model.selectionIsInvalidated() {
         showInvalidatedWarning = true
       }
@@ -167,6 +250,20 @@ struct ContentView: View {
     .sheet(isPresented: $showSettings) {
       SettingsView()
         .environmentObject(model)
+    }
+    .alert("Start blocking?", isPresented: Binding(
+      get: { armRequest != nil },
+      set: { if !$0 { armRequest = nil } }
+    ), presenting: armRequest) { req in
+      Button(req == .hour ? "Block for an hour" : "Start blocking") {
+        switch req {
+        case .schedule: performArm()
+        case .hour: performRestrictHour()
+        }
+      }
+      Button("Cancel", role: .cancel) {}
+    } message: { req in
+      Text(confirmMessage(req))
     }
   }
 }
