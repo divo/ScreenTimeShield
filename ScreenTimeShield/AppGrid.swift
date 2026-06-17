@@ -28,9 +28,12 @@ struct AppGrid: View {
   }
 
   private func icon<Content: View>(@ViewBuilder _ content: () -> Content) -> some View {
+    // FamilyControls token icons are system-drawn at ~25pt and ignore `.font`; `.scaleEffect`
+    // is the only way to enlarge them (with some blur). scaleEffect keeps the layout size, so
+    // the frame reserves the grid cell while the scaled icon sits centered in it.
     content()
-      .font(.system(size: 64))
-      .frame(width: 64, height: 64)
+      .scaleEffect(2.0)
+      .frame(width: 56, height: 56)
       .overlay(alignment: .bottomTrailing) {
         if model.insideInterval {
           Image(systemName: "lock.fill")
