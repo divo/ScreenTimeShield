@@ -13,7 +13,7 @@ struct AppCard: View {
   @Binding var pickerPresented: Bool
   var onTap: () -> Void
 
-  private let cardCorner: CGFloat = 16
+  private let cardCorner = Style.Radius.card
 
   private var appCount: Int {
     model.selectionToRestrict.applicationTokens.count + model.selectionToRestrict.categoryTokens.count
@@ -61,7 +61,7 @@ struct AppCard: View {
         RestrictedAppList()
       }
     }
-    .padding(16)
+    .padding(Style.Spacing.md)
     .background(.background.opacity(0.6))
     .clipShape(RoundedRectangle(cornerRadius: cardCorner))
     .overlay(RoundedRectangle(cornerRadius: cardCorner).stroke(.secondary.opacity(0.12)))

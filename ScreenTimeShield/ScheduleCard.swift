@@ -9,7 +9,7 @@ import SwiftUI
 struct ScheduleCard: View {
   @EnvironmentObject var model: Model
 
-  private let cardCorner: CGFloat = 16
+  private let cardCorner = Style.Radius.card
 
   var body: some View {
     VStack(alignment: .leading, spacing: 12) {
@@ -39,7 +39,7 @@ struct ScheduleCard: View {
           .frame(maxWidth: .infinity, alignment: .center)
       }
     }
-    .padding(16)
+    .padding(Style.Spacing.md)
     .background(.background.opacity(0.6))
     .clipShape(RoundedRectangle(cornerRadius: cardCorner))
     .overlay(RoundedRectangle(cornerRadius: cardCorner).stroke(.secondary.opacity(0.12)))

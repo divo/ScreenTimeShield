@@ -34,11 +34,11 @@ struct StatusBanner: View {
       Spacer(minLength: 0)
     }
     .font(.subheadline)
-    .padding(.horizontal, 16)
-    .padding(.vertical, 12)
+    .padding(.horizontal, Style.Spacing.md)
+    .padding(.vertical, Style.Spacing.sm)
     .frame(maxWidth: .infinity, alignment: .leading)
     .background(model.insideInterval ? Style.primaryColor.opacity(0.12) : Color.secondary.opacity(0.10))
-    .clipShape(RoundedRectangle(cornerRadius: 14))
+    .clipShape(RoundedRectangle(cornerRadius: Style.Radius.card))
   }
 }
 

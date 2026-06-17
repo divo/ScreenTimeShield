@@ -148,23 +148,20 @@ struct ContentView: View {
   private var header: some View {
     HStack(alignment: .firstTextBaseline) {
       Text("Unplug ∎")
-        .font(.system(size: 32, weight: .heavy, design: .rounded))
-        .foregroundStyle(
-          LinearGradient(colors: [Style.primaryColor, .purple],
-                         startPoint: .leading, endPoint: .trailing)
-        )
+        .font(Style.titleFont)
+        .foregroundStyle(Style.primaryGradient)
       Spacer()
       Button { showSettings = true } label: {
         Image(systemName: "gearshape.fill")
           .font(.system(size: 17, weight: .semibold))
           .foregroundStyle(Style.primaryColor)
-          .padding(9)
+          .padding(Style.Spacing.xs)
           .background(Style.primaryColor.opacity(0.12), in: Circle())
       }
       .alignmentGuide(.firstTextBaseline) { $0[VerticalAlignment.center] }
     }
-    .padding(.top, 20)
-    .padding(.bottom, 4)
+    .padding(.top, Style.Spacing.lg)
+    .padding(.bottom, Style.Spacing.xxs)
   }
 
   var body: some View {
@@ -179,7 +176,7 @@ struct ContentView: View {
       // Fixed, non-scrolling layout — the restricted-apps view scrolls internally instead.
       // No NavigationStack large title: it would latch onto the inner ScrollView and drag
       // the whole screen around when that list scrolls.
-      VStack(spacing: 16) {
+      VStack(spacing: Style.Spacing.md) {
         header
 
         StatusBanner()
@@ -201,9 +198,9 @@ struct ContentView: View {
           onRestrictHour: restrictForNextHour
         )
       }
-      .padding(.horizontal, 16)
-      .padding(.top, 8)
-      .padding(.bottom, 16)
+      .padding(.horizontal, Style.Spacing.md)
+      .padding(.top, Style.Spacing.xs)
+      .padding(.bottom, Style.Spacing.md)
       .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
     }
     .toast(isPresenting: $showToast, alert: {

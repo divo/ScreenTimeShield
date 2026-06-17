@@ -97,8 +97,7 @@ struct ScheduleRangeSlider: View {
 
   private func fillBar(from x0: CGFloat, to x1: CGFloat) -> some View {
     Capsule()
-      .fill(LinearGradient(colors: [Style.primaryColor, .purple],
-                           startPoint: .leading, endPoint: .trailing))
+      .fill(Style.primaryGradient)
       .frame(width: max(0, x1 - x0), height: trackHeight)
       .offset(x: x0)
       .opacity(locked ? 0.45 : 1)

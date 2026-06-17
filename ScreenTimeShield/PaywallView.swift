@@ -96,11 +96,8 @@ struct PaywallView: View {
             .foregroundStyle(.white)
             .frame(maxWidth: .infinity)
             .padding(.vertical, 14)
-            .background(
-              LinearGradient(colors: [Style.primaryColor, .purple],
-                             startPoint: .leading, endPoint: .trailing)
-            )
-            .clipShape(RoundedRectangle(cornerRadius: 12))
+            .background(Style.primaryGradient)
+            .clipShape(RoundedRectangle(cornerRadius: Style.Radius.button))
           }
           .disabled(purchasing || product == nil)
 

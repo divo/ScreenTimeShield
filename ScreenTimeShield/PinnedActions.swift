@@ -16,9 +16,9 @@ struct PinnedActions: View {
   var onRestrictHour: () -> Void
 
   var body: some View {
-    VStack(spacing: 8) {
+    VStack(spacing: Style.Spacing.xs) {
       Button(action: onPrimary) {
-        HStack(spacing: 6) {
+        HStack(spacing: Style.Spacing.xs) {
           if primaryLocked {
             Image(systemName: "lock.fill")
           }
@@ -27,12 +27,9 @@ struct PinnedActions: View {
         .font(.headline)
         .foregroundStyle(.white)
         .frame(maxWidth: .infinity)
-        .padding(.vertical, 16)
-        .background(
-          LinearGradient(colors: [Style.primaryColor, .purple],
-                         startPoint: .leading, endPoint: .trailing)
-        )
-        .clipShape(RoundedRectangle(cornerRadius: 14))
+        .padding(.vertical, Style.Spacing.md)
+        .background(Style.primaryGradient)
+        .clipShape(RoundedRectangle(cornerRadius: Style.Radius.button))
         .opacity(primaryDisabled ? 0.5 : 1)
       }
       .disabled(primaryDisabled)
@@ -42,11 +39,11 @@ struct PinnedActions: View {
           .font(.headline)
           .foregroundStyle(quickRestrictDisabled ? Color.secondary : Style.primaryColor)
           .frame(maxWidth: .infinity)
-          .padding(.vertical, 16)
+          .padding(.vertical, Style.Spacing.md)
           .background(
             (quickRestrictDisabled ? Color.secondary : Style.primaryColor).opacity(0.12)
           )
-          .clipShape(RoundedRectangle(cornerRadius: 14))
+          .clipShape(RoundedRectangle(cornerRadius: Style.Radius.button))
       }
       .disabled(quickRestrictDisabled)
     }
