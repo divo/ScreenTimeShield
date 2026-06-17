@@ -52,7 +52,7 @@ struct AppCard: View {
               .font(.subheadline.weight(.medium))
               .foregroundStyle(Style.primaryColor)
           }
-          .frame(maxWidth: .infinity)
+          .frame(maxWidth: .infinity, maxHeight: .infinity)
           .padding(.vertical, 20)
           .contentShape(Rectangle())
         }

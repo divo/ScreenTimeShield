@@ -186,8 +186,6 @@ struct ContentView: View {
 
         ScheduleCard()
 
-        Spacer(minLength: 16)
-
         PinnedActions(
           primaryTitle: primaryTitle,
           primaryLocked: model.insideInterval,

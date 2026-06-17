@@ -2,8 +2,9 @@
 //  RestrictedAppList.swift
 //  ScreenTimeShield
 //
-//  EXPERIMENT (uncommitted): vertical icon+name list of restricted tokens with a
-//  fixed height, so it scrolls internally while the rest of the screen stays put.
+//  Vertical icon+name list of restricted tokens. Flexes to fill the space the fixed-height
+//  elements leave (frame(maxHeight: .infinity)) and scrolls internally when content overflows,
+//  so the whole screen always fits without scrolling.
 //
 
 import SwiftUI
@@ -11,7 +12,6 @@ import FamilyControls
 
 struct RestrictedAppList: View {
   @EnvironmentObject var model: Model
-  var height: CGFloat = 200
 
   var body: some View {
     ScrollView {
@@ -27,7 +27,7 @@ struct RestrictedAppList: View {
         }
       }
     }
-    .frame(height: height)
+    .frame(maxHeight: .infinity)
   }
 
   @ViewBuilder
