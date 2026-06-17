@@ -14,6 +14,9 @@ struct ScheduleRangeSlider: View {
   var locked: Bool = false
   /// When non-nil, draws a "now" marker on the track (used while a block is active).
   var now: Date? = nil
+  /// When true, the blocked region is *outside* the picked window (allow-only mode), so the fill
+  /// is drawn as the two segments flanking the window rather than the window itself.
+  var inverted: Bool = false
 
   private static let trackSpace = "ScheduleRangeSliderTrack"
   private let snapMinutes = 5
@@ -65,12 +68,12 @@ struct ScheduleRangeSlider: View {
             .frame(height: trackHeight)
             .padding(.horizontal, labelInset)
 
-          Capsule()
-            .fill(LinearGradient(colors: [Style.primaryColor, .purple],
-                                 startPoint: .leading, endPoint: .trailing))
-            .frame(width: max(0, endX - startX), height: trackHeight)
-            .offset(x: startX)
-            .opacity(locked ? 0.45 : 1)
+          if inverted {
+            fillBar(from: labelInset, to: startX)
+            fillBar(from: endX, to: w - labelInset)
+          } else {
+            fillBar(from: startX, to: endX)
+          }
 
           if let now {
             nowMarker(at: x(for: minutes(of: now), width: w), date: now)
@@ -91,6 +94,15 @@ struct ScheduleRangeSlider: View {
   }
 
   // MARK: Pieces
+
+  private func fillBar(from x0: CGFloat, to x1: CGFloat) -> some View {
+    Capsule()
+      .fill(LinearGradient(colors: [Style.primaryColor, .purple],
+                           startPoint: .leading, endPoint: .trailing))
+      .frame(width: max(0, x1 - x0), height: trackHeight)
+      .offset(x: x0)
+      .opacity(locked ? 0.45 : 1)
+  }
 
   private enum Edge { case start, end }
 

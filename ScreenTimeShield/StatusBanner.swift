@@ -14,6 +14,11 @@ struct StatusBanner: View {
     date.formatted(date: .omitted, time: .shortened)
   }
 
+  // In allow-only mode the block runs outside the picked window, so the times flip:
+  // the block ends when the free window starts, and resumes when it ends.
+  private var blockEndsAt: Date { model.blockOutsideWindow ? model.start : model.end }
+  private var blockLocksAt: Date { model.blockOutsideWindow ? model.end : model.start }
+
   private func setPulsing(_ active: Bool) {
     if active {
       withAnimation(.easeInOut(duration: 1.1).repeatForever(autoreverses: true)) { isPulsing = true }
@@ -35,10 +40,10 @@ struct StatusBanner: View {
 
       if model.insideInterval {
         Text("Block active").fontWeight(.semibold)
-          + Text("  ends \(timeString(model.end))").foregroundColor(.secondary)
+          + Text("  ends \(timeString(blockEndsAt))").foregroundColor(.secondary)
       } else {
         Text("Block inactive").fontWeight(.semibold)
-          + Text("  locks at \(timeString(model.start))").foregroundColor(.secondary)
+          + Text("  locks at \(timeString(blockLocksAt))").foregroundColor(.secondary)
       }
       Spacer(minLength: 0)
     }

@@ -11,13 +11,31 @@ struct ScheduleCard: View {
 
   private let cardCorner: CGFloat = 16
 
+  private func timeString(_ date: Date) -> String {
+    date.formatted(date: .omitted, time: .shortened)
+  }
+
+  private var summary: String {
+    model.blockOutsideWindow
+      ? "Blocking all day except \(timeString(model.start))–\(timeString(model.end))"
+      : "Blocking \(timeString(model.start))–\(timeString(model.end)) daily"
+  }
+
   var body: some View {
     VStack(alignment: .leading, spacing: 12) {
+      Picker("Schedule mode", selection: $model.blockOutsideWindow) {
+        Text("Block these hours").tag(false)
+        Text("Allow only these hours").tag(true)
+      }
+      .pickerStyle(.segmented)
+      .disabled(model.insideInterval)
+
       ScheduleRangeSlider(
         start: $model.start,
         end: $model.end,
         locked: model.insideInterval,
-        now: model.insideInterval ? Date() : nil
+        now: model.insideInterval ? Date() : nil,
+        inverted: model.blockOutsideWindow
       )
       if model.insideInterval {
         Label("Schedule locked while a block is active", systemImage: "lock")
@@ -25,7 +43,7 @@ struct ScheduleCard: View {
           .foregroundStyle(.secondary)
           .frame(maxWidth: .infinity, alignment: .center)
       } else {
-        Text("Daily schedule")
+        Text(summary)
           .font(.caption)
           .foregroundStyle(.secondary)
           .frame(maxWidth: .infinity, alignment: .center)

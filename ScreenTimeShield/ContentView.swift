@@ -35,9 +35,10 @@ struct ContentView: View {
     guard !isExpired else { return }
     guard !model.isEmpty() else { return }
     access.startTrialIfNeeded()
-    Schedule.setSchedule(start: model.start, end: model.end, event: model.activityEvent(), repeats: true)
+    let bi = model.blockedInterval
+    Schedule.setSchedule(start: bi.start, end: bi.end, event: model.activityEvent(), repeats: true)
     if model.notificationsEnabled {
-      Schedule.setNotificationSchedule(restrictionStart: model.start, restrictionEnd: model.end)
+      Schedule.setNotificationSchedule(restrictionStart: bi.start, restrictionEnd: bi.end)
     }
   }
 
@@ -137,9 +138,11 @@ struct ContentView: View {
     }
     .onChange(of: model.start) { _ in applyScheduleIfPermitted() }
     .onChange(of: model.end) { _ in applyScheduleIfPermitted() }
+    .onChange(of: model.blockOutsideWindow) { _ in applyScheduleIfPermitted() }
     .onChange(of: model.notificationsEnabled) { newValue in
       if newValue && !model.isEmpty() {
-        Schedule.setNotificationSchedule(restrictionStart: model.start, restrictionEnd: model.end)
+        let bi = model.blockedInterval
+        Schedule.setNotificationSchedule(restrictionStart: bi.start, restrictionEnd: bi.end)
       } else {
         DeviceActivityCenter().stopMonitoring([.notificationSchedule])
       }
