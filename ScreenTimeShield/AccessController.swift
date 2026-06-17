@@ -11,6 +11,8 @@ import Foundation
 import SwiftUI
 import UserNotifications
 import UnplugCore
+import DeviceActivity
+import FamilyControls
 
 @MainActor
 final class AccessController: ObservableObject {
@@ -134,6 +136,28 @@ final class AccessController: ObservableObject {
 
   func qaSetTimesStopped(_ count: Int) {
     kv.setInteger(count, forKey: AppGroupKeys.timesStopped)
+    objectWillChange.send()
+  }
+
+  /// QA-only: wipe all shared storage and active schedules back to a fresh-install state.
+  func qaResetToFreshInstall() {
+    let model = Model.shared
+    DeviceActivityCenter().stopMonitoring()      // all activities
+    model.clearRestrictions()
+
+    UserDefaults.standard.removePersistentDomain(forName: "group.screentimeshield")
+
+    // Reset the in-memory @Published model values (not auto-cleared by removing the domain).
+    model.selectionToRestrict = FamilyActivitySelection()
+    model.start = Calendar.current.date(bySettingHour: 9, minute: 0, second: 0, of: Date()) ?? Date()
+    model.end = Calendar.current.date(bySettingHour: 17, minute: 0, second: 0, of: Date()) ?? Date()
+    model.notificationsEnabled = true
+    model.hasSelection = false
+    model.insideInterval = false
+    model.blockOutsideWindow = false
+    model.isArmed = false
+
+    recomputeAccessState()
     objectWillChange.send()
   }
 }

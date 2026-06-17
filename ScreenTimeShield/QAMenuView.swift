@@ -59,6 +59,15 @@ struct QAMenuView: View {
         Section {
           Button("Open paywall") { showPaywall = true }
         }
+
+        Section {
+          Button("Reset to fresh install", role: .destructive) {
+            access.qaResetToFreshInstall()
+            dismiss()
+          }
+        } footer: {
+          Text("Wipes selection, schedule, trial, and all local state.")
+        }
       }
       .navigationTitle("QA / Debug")
       .navigationBarTitleDisplayMode(.inline)

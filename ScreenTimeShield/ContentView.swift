@@ -83,6 +83,12 @@ struct ContentView: View {
     model.clearRestrictions()
   }
 
+  /// Editing the schedule window/mode while not actively blocking disarms it, so an edit can
+  /// never start a block — only an explicit Start does. (No-op while active: controls are locked.)
+  private func disarmIfArmedInactive() {
+    if model.isArmed && !model.insideInterval { stop() }
+  }
+
   /// App-card tap: open the picker, never the paywall (expired users go through the CTAs).
   private func openPicker() {
     guard !isExpired else { return }
@@ -218,9 +224,12 @@ struct ContentView: View {
       showInvalidatedWarning = false
       applySchedule()
     }
-    .onChange(of: model.start) { _ in applySchedule() }
-    .onChange(of: model.end) { _ in applySchedule() }
-    .onChange(of: model.blockOutsideWindow) { _ in applySchedule() }
+    // Changing the schedule window or mode must never *start* a block (e.g. toggling to
+    // Allow-only makes the blocked interval wrap over "now"). So an edit while inactive disarms;
+    // the user re-taps Start to apply it (with the risk confirm if it would block immediately).
+    .onChange(of: model.start) { _ in disarmIfArmedInactive() }
+    .onChange(of: model.end) { _ in disarmIfArmedInactive() }
+    .onChange(of: model.blockOutsideWindow) { _ in disarmIfArmedInactive() }
     .onChange(of: model.notificationsEnabled) { newValue in
       if newValue && !model.isEmpty() {
         let bi = model.blockedInterval
