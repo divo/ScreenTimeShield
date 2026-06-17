@@ -8,7 +8,7 @@ import SwiftUI
 /// The two bottom-pinned CTAs: the primary block control (Start / Stop / Blocking) and
 /// "Restrict for next hour". Purely presentational — the screen owns the state and actions.
 struct PinnedActions: View {
-  var primaryTitle: String
+  var primaryTitle: LocalizedStringKey
   var primaryLocked: Bool       // active block — shows a lock and is non-interactive
   var primaryDisabled: Bool
   var quickRestrictDisabled: Bool

@@ -29,7 +29,8 @@ struct StatusBanner: View {
         .onAppear { setPulsing(model.insideInterval) }
         .onChange(of: model.insideInterval) { setPulsing($0) }
 
-      Text(model.insideInterval ? "Block active" : "Block inactive")
+      // Ternary on Text (not on String) so each literal still localizes.
+      (model.insideInterval ? Text("Block active") : Text("Block inactive"))
         .fontWeight(.semibold)
       Spacer(minLength: 0)
     }

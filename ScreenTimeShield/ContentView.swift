@@ -34,7 +34,7 @@ struct ContentView: View {
 
   // MARK: Primary button state (Start / Stop / Blocking)
 
-  private var primaryTitle: String {
+  private var primaryTitle: LocalizedStringKey {
     if model.insideInterval { return "Blocking" }
     if model.isArmed { return "Stop blocking" }
     return "Start blocking"
