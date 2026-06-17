@@ -59,71 +59,82 @@ struct ContentView: View {
     Schedule.setSchedule(start: now, end: oneHourLater, event: model.activityEvent(), repeats: false)
   }
 
-  var body: some View {
-    NavigationStack {
-      ZStack {
-        LinearGradient(
-          colors: [Color(.systemBackground), Style.primaryColor.opacity(0.12)],
-          startPoint: .topTrailing,
-          endPoint: .bottomLeading
+  private var header: some View {
+    HStack(alignment: .center) {
+      Text("Unplug ∎")
+        .font(.largeTitle.bold())
+        .foregroundStyle(
+          LinearGradient(colors: [Style.primaryColor, .purple],
+                         startPoint: .leading, endPoint: .trailing)
         )
-        .ignoresSafeArea()
-
-        // Fixed, non-scrolling layout — the restricted-apps view scrolls internally instead.
-        VStack(spacing: 16) {
-          StatusBanner()
-
-          if access.accessState != .fullAccess {
-            TrialChip(access: access) { showPaywall = true }
-          }
-
-          AppCard(pickerPresented: $isShowingRestrict, onTap: openPicker)
-
-          ScheduleCard()
-
-          Spacer(minLength: 16)
-
-          PinnedActions(
-            isActive: model.insideInterval,
-            quickRestrictDisabled: isQuickRestrictDisabled,
-            onPrimary: primaryAction,
-            onRestrictHour: restrictForNextHour
-          )
-        }
-        .padding(.horizontal, 16)
-        .padding(.top, 8)
-        .padding(.bottom, 16)
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+      Spacer()
+      Button { showSettings = true } label: {
+        Image(systemName: "gearshape")
+          .font(.title3)
+          .foregroundStyle(Style.primaryColor)
+          .padding(8)
+          .background(Style.primaryColor.opacity(0.12), in: Circle())
       }
-      .navigationTitle("Unplug ∎")
-      .navigationBarTitleDisplayMode(.large)
-      .toolbar {
-        ToolbarItem(placement: .navigationBarTrailing) {
-          Button { showSettings = true } label: {
-            Image(systemName: "gearshape")
-          }
-          .tint(Style.primaryColor)
+    }
+  }
+
+  var body: some View {
+    ZStack {
+      LinearGradient(
+        colors: [Color(.systemBackground), Style.primaryColor.opacity(0.12)],
+        startPoint: .topTrailing,
+        endPoint: .bottomLeading
+      )
+      .ignoresSafeArea()
+
+      // Fixed, non-scrolling layout — the restricted-apps view scrolls internally instead.
+      // No NavigationStack large title: it would latch onto the inner ScrollView and drag
+      // the whole screen around when that list scrolls.
+      VStack(spacing: 16) {
+        header
+
+        StatusBanner()
+
+        if access.accessState != .fullAccess {
+          TrialChip(access: access) { showPaywall = true }
         }
+
+        AppCard(pickerPresented: $isShowingRestrict, onTap: openPicker)
+
+        ScheduleCard()
+
+        Spacer(minLength: 16)
+
+        PinnedActions(
+          isActive: model.insideInterval,
+          quickRestrictDisabled: isQuickRestrictDisabled,
+          onPrimary: primaryAction,
+          onRestrictHour: restrictForNextHour
+        )
       }
-      .toast(isPresenting: $showToast, alert: {
-        AlertToast(displayMode: .alert, type: .error(Style.errorColor), title: String(localized: "Cannot remove apps from block"))
-      })
-      .toast(isPresenting: $showInvalidatedWarning, duration: 0, tapToDismiss: true, alert: {
-        AlertToast(displayMode: .alert, type: .error(Style.errorColor), title: String(localized: "App selection was reset, please re-select apps"))
-      })
-      .onChange(of: model.selectionToRestrict) { _ in
-        model.saveSelection()
-        showInvalidatedWarning = false
-        applyScheduleIfPermitted()
-      }
-      .onChange(of: model.start) { _ in applyScheduleIfPermitted() }
-      .onChange(of: model.end) { _ in applyScheduleIfPermitted() }
-      .onChange(of: model.notificationsEnabled) { newValue in
-        if newValue && !model.isEmpty() {
-          Schedule.setNotificationSchedule(restrictionStart: model.start, restrictionEnd: model.end)
-        } else {
-          DeviceActivityCenter().stopMonitoring([.notificationSchedule])
-        }
+      .padding(.horizontal, 16)
+      .padding(.top, 8)
+      .padding(.bottom, 16)
+      .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+    }
+    .toast(isPresenting: $showToast, alert: {
+      AlertToast(displayMode: .alert, type: .error(Style.errorColor), title: String(localized: "Cannot remove apps from block"))
+    })
+    .toast(isPresenting: $showInvalidatedWarning, duration: 0, tapToDismiss: true, alert: {
+      AlertToast(displayMode: .alert, type: .error(Style.errorColor), title: String(localized: "App selection was reset, please re-select apps"))
+    })
+    .onChange(of: model.selectionToRestrict) { _ in
+      model.saveSelection()
+      showInvalidatedWarning = false
+      applyScheduleIfPermitted()
+    }
+    .onChange(of: model.start) { _ in applyScheduleIfPermitted() }
+    .onChange(of: model.end) { _ in applyScheduleIfPermitted() }
+    .onChange(of: model.notificationsEnabled) { newValue in
+      if newValue && !model.isEmpty() {
+        Schedule.setNotificationSchedule(restrictionStart: model.start, restrictionEnd: model.end)
+      } else {
+        DeviceActivityCenter().stopMonitoring([.notificationSchedule])
       }
     }
     .onAppear {

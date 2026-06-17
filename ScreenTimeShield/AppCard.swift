@@ -43,9 +43,8 @@ struct AppCard: View {
         .frame(maxWidth: .infinity)
         .padding(.vertical, 20)
       } else {
-        // Natural-height grid — the outer ScrollView handles overflow for large
-        // selections (avoids janky same-axis nested scrolling).
-        AppGrid().padding(.vertical, 2)
+        // EXPERIMENT (uncommitted): fixed-height, internally-scrolling icon+name list.
+        RestrictedAppList()
       }
     }
     .padding(16)

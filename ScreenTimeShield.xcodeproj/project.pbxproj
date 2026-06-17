@@ -49,6 +49,7 @@
 		962DDB35068EE01990DADD48 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26C1F2411CDBB447F76426F0 /* Store.swift */; };
 		9948EFCEF4059E15D7BDF020 /* StoreKit.storekit in Resources */ = {isa = PBXBuildFile; fileRef = D0D4E35CAA82A943631086D1 /* StoreKit.storekit */; };
 		AD0C84AE5C95B2B676DBB2A2 /* AppGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4215B481DEA5D4B389C6D397 /* AppGrid.swift */; };
+		AF69D4EFC01097B8E185AE13 /* RestrictedAppList.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8D8AFE52D2E982A1B980FB9 /* RestrictedAppList.swift */; };
 		B1D3AE259C2136E170FDD474 /* StoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C23184A50D8C703A2A7C2B3 /* StoreTests.swift */; };
 		BFA6E768C40D5F5A14DCBD28 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912F9D9B282616D8785C8978 /* SettingsView.swift */; };
 		C99F6A109280EE8AA6275103 /* QAMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2533604AB767B89C3AE6A63F /* QAMenuView.swift */; };
@@ -161,6 +162,7 @@
 		9C71ACD206FCE4A5EDE7A4F8 /* PaywallView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
 		9CDEEA7261E4C98B75C6367D /* AccessController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AccessController.swift; sourceTree = "<group>"; };
 		A33BB92B0B13E4EBE5C7D262 /* TrialChip.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TrialChip.swift; sourceTree = "<group>"; };
+		A8D8AFE52D2E982A1B980FB9 /* RestrictedAppList.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = RestrictedAppList.swift; sourceTree = "<group>"; };
 		D0D4E35CAA82A943631086D1 /* StoreKit.storekit */ = {isa = PBXFileReference; includeInIndex = 1; path = StoreKit.storekit; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -272,6 +274,7 @@
 				4215B481DEA5D4B389C6D397 /* AppGrid.swift */,
 				7D28D81632D22773FBBD2A35 /* ScheduleCard.swift */,
 				732C819C6911D7820E484A7A /* PinnedActions.swift */,
+				A8D8AFE52D2E982A1B980FB9 /* RestrictedAppList.swift */,
 			);
 			path = ScreenTimeShield;
 			sourceTree = "<group>";
@@ -605,6 +608,7 @@
 				AD0C84AE5C95B2B676DBB2A2 /* AppGrid.swift in Sources */,
 				568B333628FCC7F1AA073397 /* ScheduleCard.swift in Sources */,
 				1C6438FA67D1DE098E0B4D8C /* PinnedActions.swift in Sources */,
+				AF69D4EFC01097B8E185AE13 /* RestrictedAppList.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
