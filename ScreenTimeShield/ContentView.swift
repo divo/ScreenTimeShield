@@ -140,22 +140,25 @@ struct ContentView: View {
   }
 
   private var header: some View {
-    HStack(alignment: .center) {
+    HStack(alignment: .firstTextBaseline) {
       Text("Unplug ∎")
-        .font(.largeTitle.bold())
+        .font(.system(size: 32, weight: .heavy, design: .rounded))
         .foregroundStyle(
           LinearGradient(colors: [Style.primaryColor, .purple],
                          startPoint: .leading, endPoint: .trailing)
         )
       Spacer()
       Button { showSettings = true } label: {
-        Image(systemName: "gearshape")
-          .font(.title3)
+        Image(systemName: "gearshape.fill")
+          .font(.system(size: 17, weight: .semibold))
           .foregroundStyle(Style.primaryColor)
-          .padding(8)
+          .padding(9)
           .background(Style.primaryColor.opacity(0.12), in: Circle())
       }
+      .alignmentGuide(.firstTextBaseline) { $0[VerticalAlignment.center] }
     }
+    .padding(.top, 20)
+    .padding(.bottom, 4)
   }
 
   var body: some View {
