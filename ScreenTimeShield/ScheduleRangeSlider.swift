@@ -93,50 +93,50 @@ struct ScheduleRangeSlider: View {
   private enum Edge { case start, end }
 
   private func handle(at cx: CGFloat, date: Date, edge: Edge, width: CGFloat) -> some View {
-    VStack(spacing: 6) {
-      Text(label(date))
-        .font(.caption.weight(.semibold))
-        .foregroundStyle(.white)
-        .padding(.horizontal, 8)
-        .padding(.vertical, 4)
-        .background(Style.primaryColor.opacity(locked ? 0.4 : 1), in: Capsule())
-        .fixedSize()
-
-      Circle()
-        .fill(.white)
-        .frame(width: thumbSize, height: thumbSize)
-        .overlay(Circle().stroke(Style.primaryColor.opacity(locked ? 0.4 : 1), lineWidth: 3))
-        .shadow(color: .black.opacity(0.12), radius: 3, y: 1)
-    }
-    // Constrain to the thumb width so the wider time pill overflows symmetrically
-    // instead of widening the stack and shoving the circle off its time position.
-    .frame(width: thumbSize)
-    .opacity(locked ? 0.6 : 1)
-    .offset(x: cx - thumbSize / 2)
-    .gesture(locked ? nil : DragGesture(coordinateSpace: .named(Self.trackSpace))
-      .onChanged { value in
-        let m = minute(forX: value.location.x, width: width)
-        switch edge {
-        case .start:
-          start = dateAtMinute(min(m, minutes(of: end) - minGap))
-        case .end:
-          end = dateAtMinute(max(m, minutes(of: start) + minGap))
-        }
-      })
+    // The circle is the layout element — vertically centered in the track ZStack so it lands
+    // on the track line. The time pill floats above it as an overlay (fixed upward offset) so
+    // it doesn't shift the circle's center.
+    Circle()
+      .fill(.white)
+      .frame(width: thumbSize, height: thumbSize)
+      .overlay(Circle().stroke(Style.primaryColor.opacity(locked ? 0.4 : 1), lineWidth: 3))
+      .shadow(color: .black.opacity(0.12), radius: 3, y: 1)
+      .overlay {
+        Text(label(date))
+          .font(.caption.weight(.semibold))
+          .foregroundStyle(.white)
+          .padding(.horizontal, 8)
+          .padding(.vertical, 4)
+          .background(Style.primaryColor.opacity(locked ? 0.4 : 1), in: Capsule())
+          .fixedSize()
+          .offset(y: -(thumbSize / 2 + 18))
+      }
+      .opacity(locked ? 0.6 : 1)
+      .offset(x: cx - thumbSize / 2)
+      .gesture(locked ? nil : DragGesture(coordinateSpace: .named(Self.trackSpace))
+        .onChanged { value in
+          let m = minute(forX: value.location.x, width: width)
+          switch edge {
+          case .start:
+            start = dateAtMinute(min(m, minutes(of: end) - minGap))
+          case .end:
+            end = dateAtMinute(max(m, minutes(of: start) + minGap))
+          }
+        })
   }
 
   private func nowMarker(at cx: CGFloat, date: Date) -> some View {
-    VStack(spacing: 2) {
-      Text("now \(label(date))")
-        .font(.caption2.weight(.semibold))
-        .foregroundStyle(Style.primaryColor)
-        .fixedSize()
-      Rectangle()
-        .fill(Style.primaryColor)
-        .frame(width: 2, height: thumbSize + 6)
-    }
-    .frame(width: 2)
-    .offset(x: cx - 1, y: -2)
+    Rectangle()
+      .fill(Style.primaryColor)
+      .frame(width: 2, height: thumbSize + 6)
+      .overlay {
+        Text("now \(label(date))")
+          .font(.caption2.weight(.semibold))
+          .foregroundStyle(Style.primaryColor)
+          .fixedSize()
+          .offset(y: -(thumbSize / 2 + 16))
+      }
+      .offset(x: cx - 1)
   }
 
   private var hourAxis: some View {
