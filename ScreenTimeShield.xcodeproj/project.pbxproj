@@ -48,7 +48,6 @@
 		93F8910F956D91B11830313E /* AppGroupStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 507894EFD724C5277117DC54 /* AppGroupStore.swift */; };
 		962DDB35068EE01990DADD48 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26C1F2411CDBB447F76426F0 /* Store.swift */; };
 		9948EFCEF4059E15D7BDF020 /* StoreKit.storekit in Resources */ = {isa = PBXBuildFile; fileRef = D0D4E35CAA82A943631086D1 /* StoreKit.storekit */; };
-		AD0C84AE5C95B2B676DBB2A2 /* AppGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4215B481DEA5D4B389C6D397 /* AppGrid.swift */; };
 		AF69D4EFC01097B8E185AE13 /* RestrictedAppList.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8D8AFE52D2E982A1B980FB9 /* RestrictedAppList.swift */; };
 		B1D3AE259C2136E170FDD474 /* StoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C23184A50D8C703A2A7C2B3 /* StoreTests.swift */; };
 		BFA6E768C40D5F5A14DCBD28 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912F9D9B282616D8785C8978 /* SettingsView.swift */; };
@@ -117,7 +116,6 @@
 		1C23184A50D8C703A2A7C2B3 /* StoreTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = StoreTests.swift; sourceTree = "<group>"; };
 		2533604AB767B89C3AE6A63F /* QAMenuView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = QAMenuView.swift; sourceTree = "<group>"; };
 		26C1F2411CDBB447F76426F0 /* Store.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
-		4215B481DEA5D4B389C6D397 /* AppGrid.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppGrid.swift; sourceTree = "<group>"; };
 		507894EFD724C5277117DC54 /* AppGroupStore.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppGroupStore.swift; sourceTree = "<group>"; };
 		56D6AEDD73066A43E1D44BE1 /* AccessControlTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AccessControlTests.swift; sourceTree = "<group>"; };
 		60ABAF720C80920CF87D2492 /* ScheduleRangeSlider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ScheduleRangeSlider.swift; sourceTree = "<group>"; };
@@ -271,7 +269,6 @@
 				7598E82AF0FB26C5A5B18FA7 /* StatusBanner.swift */,
 				A33BB92B0B13E4EBE5C7D262 /* TrialChip.swift */,
 				0ED3F83B01478F875A8A3C99 /* AppCard.swift */,
-				4215B481DEA5D4B389C6D397 /* AppGrid.swift */,
 				7D28D81632D22773FBBD2A35 /* ScheduleCard.swift */,
 				732C819C6911D7820E484A7A /* PinnedActions.swift */,
 				A8D8AFE52D2E982A1B980FB9 /* RestrictedAppList.swift */,
@@ -605,7 +602,6 @@
 				06F1096121C1F811122F36CC /* StatusBanner.swift in Sources */,
 				6827D8CFC99AF63FC88B6FCA /* TrialChip.swift in Sources */,
 				D5754AE38027ED9D0D25A17D /* AppCard.swift in Sources */,
-				AD0C84AE5C95B2B676DBB2A2 /* AppGrid.swift in Sources */,
 				568B333628FCC7F1AA073397 /* ScheduleCard.swift in Sources */,
 				1C6438FA67D1DE098E0B4D8C /* PinnedActions.swift in Sources */,
 				AF69D4EFC01097B8E185AE13 /* RestrictedAppList.swift in Sources */,

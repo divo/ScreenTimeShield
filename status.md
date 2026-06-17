@@ -5,21 +5,22 @@
 - [ ] Outstanding bug mentioned in README — needs documenting
 
 ## Features
-- [ ] Finish localization — original UI + new paywall/trial strings now translated across all 10 languages; QA-menu strings intentionally untranslated (reverted before prod). Spot-check quality.
+- [ ] Finish localization — original UI + paywall/trial strings translated across all 10 languages. **New `ui-redesign` strings are English-only** (arm/Block-Allow/add-apps copy: "Start blocking", "Block these hours", "Choose apps & websites", confirm messages, etc.) — extracted to the catalog, not yet translated. QA-menu strings intentionally untranslated.
 - [ ] Search engine block (private browsing loophole — block search engines in settings) — **attempted, not solved.** Could not get reliable enforcement; no implementation landed in code. Needs a fresh approach.
 - [x] Change pricing model — implemented (see Pricing section)
-- [~] Full UI redesign — in progress on `ui-redesign`. Done: status-led layout (status banner → app-grid card → 24h range slider → pinned CTAs), gear→Settings sheet with the refocus toggle + QA entry moved off the main screen, NavigationStack migration, custom `ScheduleRangeSlider`, token-rendered app grid. Targets in `design/targets/`. **Follow-ups:** overnight schedules (slider is same-day only; backend supports wrap); real-device QA of token grid + block-active state (sim can't render real tokens or force active); split inline `ScheduleRangeSlider`/`SettingsView` into their own files.
+- [~] Full UI redesign — on `ui-redesign`, feature-complete, **ready to merge pending device QA + translations**. Done: status-led layout (header → status banner → app-grid card → 24h range slider → pinned CTAs); gear→Settings sheet (refocus toggle + QA moved there); custom `ScheduleRangeSlider`; icon+name `RestrictedAppList` that flexes to fill height; **Block/Allow-only schedule mode** (handles wrapping windows incl. overnight & "block all except X" — `Model.blockedInterval`); **explicit arm/disarm model** ("Start blocking"/"Stop blocking"/"Blocking", no auto-arm on edit) with a **conditional confirm** for risky arming (`UnplugCore/ScheduleMath`, unit-tested); obvious add-apps affordance ("+ Choose apps & websites" / "+ Add"); paywall surfaced only from the trial chip + primary CTA; in-content header (dropped `NavigationStack`). All view components split into their own files; `AppGrid` removed (replaced by the list). Targets in `design/targets/`.
+  - **Redesign follow-ups:** merge → `main`; **real-device QA** (arm→confirm→disarm, wrapping-interval enforcement, active-block removal guard, real token icons in the list — sim can't do these); translate new strings; optional polish (list "+" tile, header on Dynamic Island, "1 apps"→"1 app").
 
 ## Polish
-- [ ] Rework the time picker — current UX is confusing, needs a clearer interaction
+- [x] Rework the time picker — replaced the start/end `DatePicker`s with the `ScheduleRangeSlider` + Block/Allow mode on `ui-redesign`
 - [ ] Optimise App Store page (description, screenshots, keywords)
 - [ ] Remove orphaned `ScreenTimeShieldControlExtension.entitlements` (leftover from removed control center widget)
-- [x] Write real unit tests — pure access/trial logic now tested in `UnplugCore` (`swift test`, no simulator)
+- [x] Write real unit tests — pure access/trial + schedule logic tested in `UnplugCore` (`swift test`, no simulator)
 
 ## Pricing (free trial + lifetime IAP — see [[.worklog/2026-06-16-pricing-rework]])
 - [x] Implement free download + 7-day trial + one-time "lifetime unlock" IAP, with grandfathering (code complete on `pricing-rework`, merged to main)
 - [ ] Revisit the grandfathering logic
-- [ ] **Revert QA before production** — remove the QA/Debug menu exposure (commit `b90291f`) and the `UNPLUG_SKIP_FC` launch hook (commit `778f8a6`). These shipped intentionally for TestFlight QA; pull them before the App Store submission.
+- [ ] **Revert QA before production** — remove the QA/Debug menu exposure (commit `b90291f`), the `UNPLUG_SKIP_FC` launch hook (commit `778f8a6`), and the `UNPLUG_SKIP_FC` guard added to the `scenePhase`/`AppDelegate` paths on `ui-redesign`. These shipped intentionally for TestFlight QA; pull them before the App Store submission.
 - [ ] Manual QA the trial → paywall → purchase flow on a real device (simulator blocked by Family Controls Apple-ID auth)
 - [ ] Verify the ScrollView layout fix in block-active state on a real iPhone 16 Pro
 - [ ] App Store Connect: create the Non-Consumable IAP (`com.halfspud.ScreenTimeShield.lifetime`), set price → Free, submit first IAP with a build (blocked by US→Ireland account move)
@@ -38,4 +39,4 @@
 - [x] String catalog (`Localizable.xcstrings`) set up
 
 ---
-*last updated: 2026-06-16*
+*last updated: 2026-06-17*
