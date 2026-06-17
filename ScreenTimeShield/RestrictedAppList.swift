@@ -38,11 +38,6 @@ struct RestrictedAppList: View {
           .labelStyle(.titleAndIcon)
           .lineLimit(1)
         Spacer(minLength: 0)
-        if model.insideInterval {
-          Image(systemName: "lock.fill")
-            .font(.footnote)
-            .foregroundStyle(.secondary)
-        }
       }
       .padding(.vertical, 10)
       Divider()

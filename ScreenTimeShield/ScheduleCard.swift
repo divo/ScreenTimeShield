@@ -23,6 +23,7 @@ struct ScheduleCard: View {
         Label("Schedule locked while a block is active", systemImage: "lock")
           .font(.caption)
           .foregroundStyle(.secondary)
+          .frame(maxWidth: .infinity, alignment: .center)
       } else {
         Text("Daily schedule")
           .font(.caption)

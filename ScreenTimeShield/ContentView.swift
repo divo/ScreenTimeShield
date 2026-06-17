@@ -124,6 +124,13 @@ struct ContentView: View {
       AlertToast(displayMode: .alert, type: .error(Style.errorColor), title: String(localized: "App selection was reset, please re-select apps"))
     })
     .onChange(of: model.selectionToRestrict) { _ in
+      // While a block is active, apps may be added but not removed. A removal fails
+      // validation: warn and revert to the saved (enforced) selection.
+      if model.insideInterval && !model.validateRestriction() {
+        showToast = true
+        model.loadSelection()
+        return
+      }
       model.saveSelection()
       showInvalidatedWarning = false
       applyScheduleIfPermitted()

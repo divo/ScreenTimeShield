@@ -14,15 +14,24 @@ struct StatusBanner: View {
     date.formatted(date: .omitted, time: .shortened)
   }
 
+  private func setPulsing(_ active: Bool) {
+    if active {
+      withAnimation(.easeInOut(duration: 1.1).repeatForever(autoreverses: true)) { isPulsing = true }
+    } else {
+      withAnimation(.easeInOut(duration: 0.2)) { isPulsing = false }
+    }
+  }
+
   var body: some View {
     HStack(spacing: 10) {
+      // Soft, position-stable strobe — only the opacity animates (explicit, scoped), so the
+      // dot never changes size or position.
       Circle()
         .fill(model.insideInterval ? Style.primaryColor : Color.secondary)
         .frame(width: 9, height: 9)
-        .opacity(model.insideInterval ? (isPulsing ? 0.3 : 1.0) : 1.0)
-        .animation(model.insideInterval ? .easeInOut(duration: 1).repeatForever(autoreverses: true) : .default, value: isPulsing)
-        .onChange(of: model.insideInterval) { isPulsing = $0 }
-        .onAppear { isPulsing = model.insideInterval }
+        .opacity(isPulsing ? 0.4 : 1.0)
+        .onAppear { setPulsing(model.insideInterval) }
+        .onChange(of: model.insideInterval) { setPulsing($0) }
 
       if model.insideInterval {
         Text("Block active").fontWeight(.semibold)

@@ -42,6 +42,7 @@ struct PaywallView: View {
               .padding(8)
           }
         }
+        .padding(.horizontal, 12)
 
         Spacer()
 
@@ -70,8 +71,8 @@ struct PaywallView: View {
             .font(.subheadline)
             .foregroundStyle(.white.opacity(0.7))
             .multilineTextAlignment(.center)
-            .padding(.horizontal, 24)
         }
+        .padding(.horizontal, 24)
 
         Spacer()
 

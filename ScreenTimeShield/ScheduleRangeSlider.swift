@@ -86,6 +86,8 @@ struct ScheduleRangeSlider: View {
 
       hourAxis
     }
+    // Headroom so the time pills floating above the handles clear the card's top edge.
+    .padding(.top, 22)
   }
 
   // MARK: Pieces
@@ -130,7 +132,7 @@ struct ScheduleRangeSlider: View {
       .fill(Style.primaryColor)
       .frame(width: 2, height: thumbSize + 6)
       .overlay {
-        Text("now \(label(date))")
+        Text(label(date))
           .font(.caption2.weight(.semibold))
           .foregroundStyle(Style.primaryColor)
           .fixedSize()
