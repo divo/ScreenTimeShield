@@ -43,3 +43,10 @@ struct AppGrid: View {
       }
   }
 }
+
+#Preview {
+  // Empty in previews — FamilyControls tokens can't be synthesized outside a real selection.
+  AppGrid()
+    .environmentObject(Model())
+    .padding()
+}

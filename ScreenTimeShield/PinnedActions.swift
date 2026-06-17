@@ -43,3 +43,8 @@ struct PinnedActions: View {
     }
   }
 }
+
+#Preview {
+  PinnedActions(isActive: false, quickRestrictDisabled: false, onPrimary: {}, onRestrictHour: {})
+    .padding()
+}

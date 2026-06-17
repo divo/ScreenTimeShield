@@ -27,3 +27,8 @@ struct TrialChip: View {
     }
   }
 }
+
+#Preview {
+  TrialChip(access: AccessController.shared) {}
+    .padding()
+}

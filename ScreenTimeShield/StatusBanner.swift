@@ -41,3 +41,9 @@ struct StatusBanner: View {
     .clipShape(RoundedRectangle(cornerRadius: 14))
   }
 }
+
+#Preview {
+  StatusBanner()
+    .environmentObject(Model())
+    .padding()
+}

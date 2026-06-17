@@ -36,3 +36,9 @@ struct ScheduleCard: View {
     .overlay(RoundedRectangle(cornerRadius: cardCorner).stroke(.secondary.opacity(0.12)))
   }
 }
+
+#Preview {
+  ScheduleCard()
+    .environmentObject(Model())
+    .padding()
+}

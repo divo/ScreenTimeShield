@@ -57,3 +57,9 @@ struct AppCard: View {
     .familyActivityPicker(isPresented: $pickerPresented, selection: $model.selectionToRestrict)
   }
 }
+
+#Preview {
+  AppCard(pickerPresented: .constant(false), onTap: {})
+    .environmentObject(Model())
+    .padding()
+}
