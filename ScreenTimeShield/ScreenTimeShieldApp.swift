@@ -94,7 +94,11 @@ struct ScreenTimeShieldApp: App {
     }
     .onChange(of: scenePhase) { newPhase in
       let isTesting = ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil
-      if newPhase == .active, !isTesting {
+      // QA hook: refreshAccess() hits AppTransaction/StoreKit, which prompts for an
+      // Apple-ID sign-in on a simulator without one. Skip under UNPLUG_SKIP_FC, same as
+      // ContentView's .task. (Reverted with the rest of the hook before production.)
+      let skipFC = ProcessInfo.processInfo.environment["UNPLUG_SKIP_FC"] != nil
+      if newPhase == .active, !isTesting, !skipFC {
         Task { await AccessController.shared.refreshAccess() }
       }
     }

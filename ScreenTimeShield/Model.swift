@@ -25,6 +25,17 @@ class Model: ObservableObject {
   @AppStorage("inside_interval", store: UserDefaults(suiteName: Model.userDefaultsSuite)) var insideInterval: Bool = false
   @AppStorage("notifications_enabled", store: UserDefaults(suiteName: Model.userDefaultsSuite)) var notificationsEnabled: Bool = true
   @AppStorage("has_selection", store: UserDefaults(suiteName: Model.userDefaultsSuite)) var hasSelection: Bool = false
+  /// false = block the picked window; true = allow only the picked window (block the rest of the day).
+  @AppStorage("block_outside_window", store: UserDefaults(suiteName: Model.userDefaultsSuite)) var blockOutsideWindow: Bool = false
+  /// Whether the daily schedule is currently registered (armed). Editing never sets this — only the
+  /// explicit "Start blocking" action does. Synced from DeviceActivityCenter on launch.
+  @AppStorage("is_armed", store: UserDefaults(suiteName: Model.userDefaultsSuite)) var isArmed: Bool = false
+
+  /// The interval actually handed to the schedule. In allow-only mode it's the inverse of the
+  /// picked window (start > end), which `DeviceActivitySchedule` interprets as wrapping midnight.
+  var blockedInterval: (start: Date, end: Date) {
+    blockOutsideWindow ? (start: end, end: start) : (start: start, end: end)
+  }
   
   @Published var selectionToRestrict: FamilyActivitySelection = FamilyActivitySelection()
   @Published var start: Date = (UserDefaults(suiteName: Model.userDefaultsSuite)?.object(forKey: "start") as? Date) ??

@@ -42,6 +42,7 @@ struct PaywallView: View {
               .padding(8)
           }
         }
+        .padding(.horizontal, 12)
 
         Spacer()
 
@@ -70,8 +71,8 @@ struct PaywallView: View {
             .font(.subheadline)
             .foregroundStyle(.white.opacity(0.7))
             .multilineTextAlignment(.center)
-            .padding(.horizontal, 24)
         }
+        .padding(.horizontal, 24)
 
         Spacer()
 
@@ -95,11 +96,8 @@ struct PaywallView: View {
             .foregroundStyle(.white)
             .frame(maxWidth: .infinity)
             .padding(.vertical, 14)
-            .background(
-              LinearGradient(colors: [Style.primaryColor, .purple],
-                             startPoint: .leading, endPoint: .trailing)
-            )
-            .clipShape(RoundedRectangle(cornerRadius: 12))
+            .background(Style.primaryGradient)
+            .clipShape(RoundedRectangle(cornerRadius: Style.Radius.button))
           }
           .disabled(purchasing || product == nil)
 
