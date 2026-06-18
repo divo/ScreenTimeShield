@@ -29,7 +29,7 @@ struct ContentView: View {
   private var hasApps: Bool { !model.isEmpty() }
 
   private var isQuickRestrictDisabled: Bool {
-    model.insideInterval || isExpired || model.selectionToRestrict.applicationTokens.isEmpty
+    !access.fcAuthorized || model.insideInterval || isExpired || model.selectionToRestrict.applicationTokens.isEmpty
   }
 
   // MARK: Primary button state (Start / Stop / Blocking)
@@ -41,6 +41,7 @@ struct ContentView: View {
   }
 
   private var primaryDisabled: Bool {
+    if !access.fcAuthorized { return true }          // can't enforce without Screen Time access
     if model.insideInterval { return true }          // active → locked
     if model.isArmed { return false }                // armed, inactive → can stop
     return !hasApps && !isExpired                    // not armed → need apps (or route expired to paywall)
@@ -185,7 +186,11 @@ struct ContentView: View {
           TrialChip(access: access) { showPaywall = true }
         }
 
-        AppCard(pickerPresented: $isShowingRestrict, onTap: openPicker)
+        if access.fcAuthorized {
+          AppCard(pickerPresented: $isShowingRestrict, onTap: openPicker)
+        } else {
+          PermissionDeniedView { Task { await access.requestAuthorization() } }
+        }
 
         ScheduleCard()
 

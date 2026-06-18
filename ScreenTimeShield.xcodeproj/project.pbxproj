@@ -53,6 +53,7 @@
 		BFA6E768C40D5F5A14DCBD28 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912F9D9B282616D8785C8978 /* SettingsView.swift */; };
 		C99F6A109280EE8AA6275103 /* QAMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2533604AB767B89C3AE6A63F /* QAMenuView.swift */; };
 		D5754AE38027ED9D0D25A17D /* AppCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ED3F83B01478F875A8A3C99 /* AppCard.swift */; };
+		9A1B2C3D4E5F60718293A4B5 /* PermissionDeniedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F7E6D5C4B3A29180A1B2C3D /* PermissionDeniedView.swift */; };
 		FEFB7AD28DCA1B4648564C4D /* UnplugCore in Frameworks */ = {isa = PBXBuildFile; productRef = ACF9D0F184FF8E25627514C5 /* UnplugCore */; };
 /* End PBXBuildFile section */
 
@@ -112,6 +113,7 @@
 
 /* Begin PBXFileReference section */
 		0ED3F83B01478F875A8A3C99 /* AppCard.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppCard.swift; sourceTree = "<group>"; };
+		8F7E6D5C4B3A29180A1B2C3D /* PermissionDeniedView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PermissionDeniedView.swift; sourceTree = "<group>"; };
 		1C23184A50D8C703A2A7C2B3 /* StoreTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = StoreTests.swift; sourceTree = "<group>"; };
 		2533604AB767B89C3AE6A63F /* QAMenuView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = QAMenuView.swift; sourceTree = "<group>"; };
 		26C1F2411CDBB447F76426F0 /* Store.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
@@ -267,6 +269,7 @@
 				7598E82AF0FB26C5A5B18FA7 /* StatusBanner.swift */,
 				A33BB92B0B13E4EBE5C7D262 /* TrialChip.swift */,
 				0ED3F83B01478F875A8A3C99 /* AppCard.swift */,
+				8F7E6D5C4B3A29180A1B2C3D /* PermissionDeniedView.swift */,
 				7D28D81632D22773FBBD2A35 /* ScheduleCard.swift */,
 				732C819C6911D7820E484A7A /* PinnedActions.swift */,
 				A8D8AFE52D2E982A1B980FB9 /* RestrictedAppList.swift */,
@@ -599,6 +602,7 @@
 				06F1096121C1F811122F36CC /* StatusBanner.swift in Sources */,
 				6827D8CFC99AF63FC88B6FCA /* TrialChip.swift in Sources */,
 				D5754AE38027ED9D0D25A17D /* AppCard.swift in Sources */,
+				9A1B2C3D4E5F60718293A4B5 /* PermissionDeniedView.swift in Sources */,
 				568B333628FCC7F1AA073397 /* ScheduleCard.swift in Sources */,
 				1C6438FA67D1DE098E0B4D8C /* PinnedActions.swift in Sources */,
 				AF69D4EFC01097B8E185AE13 /* RestrictedAppList.swift in Sources */,

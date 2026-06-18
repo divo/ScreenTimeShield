@@ -23,9 +23,18 @@ final class AccessController: ObservableObject {
   let storeKit = Store()
   private var cancellables = Set<AnyCancellable>()
 
+  /// QA hook: skip the Family Controls gate so the trial/paywall UI is testable on a
+  /// simulator without Screen Time auth. (Reverted with the rest of the hook before production.)
+  private let skipFC = ProcessInfo.processInfo.environment["UNPLUG_SKIP_FC"] != nil
+
   @Published private(set) var accessState: AccessState = .trial
+  /// Whether Family Controls (Screen Time) authorization is granted. When false the app
+  /// can't enforce blocks, so the UI shows the permission-denied state instead of the app list.
+  @Published private(set) var fcAuthorized: Bool = false
 
   init() {
+    fcAuthorized = skipFC || AuthorizationCenter.shared.authorizationStatus == .approved
+
     // `storeKit` is a nested ObservableObject: its @Published changes (e.g. `product`
     // finishing loading, `isPurchased`) fire Store's objectWillChange, which does NOT
     // bubble up to views observing AccessController. Forward it so the UI reacts —
@@ -33,6 +42,14 @@ final class AccessController: ObservableObject {
     storeKit.objectWillChange
       .sink { [weak self] _ in self?.objectWillChange.send() }
       .store(in: &cancellables)
+
+    // Live-track Screen Time authorization so granting/revoking it updates the UI.
+    if !skipFC {
+      AuthorizationCenter.shared.$authorizationStatus
+        .receive(on: RunLoop.main)
+        .sink { [weak self] status in self?.fcAuthorized = (status == .approved) }
+        .store(in: &cancellables)
+    }
   }
 
   var trialStartDate: Date? {
@@ -51,6 +68,18 @@ final class AccessController: ObservableObject {
 
   var hasFullAccess: Bool { storeKit.hasFullAccess || qaForceFullAccess }
 
+  /// Re-present the Family Controls system prompt. There's no per-app Screen Time toggle in
+  /// Settings, but re-calling `requestAuthorization` re-shows the dialog (even after a prior
+  /// "Don't Allow"), so this is how the denied state recovers.
+  func requestAuthorization() async {
+    do {
+      try await AuthorizationCenter.shared.requestAuthorization(for: .individual)
+    } catch {
+      print("Family Controls authorization request failed: \(error)")
+    }
+    fcAuthorized = skipFC || AuthorizationCenter.shared.authorizationStatus == .approved
+  }
+
   /// Begin the trial the first time the user sets up a block. No-op afterwards.
   func startTrialIfNeeded() {
     if trialStartDate == nil {
@@ -62,6 +91,8 @@ final class AccessController: ObservableObject {
 
   /// Recompute entitlement + access state, caching the enforcement gate the extensions read.
   func refreshAccess() async {
+    // Re-read Screen Time auth on foreground (scenePhase) so granting it in Settings reflects on return.
+    if !skipFC { fcAuthorized = AuthorizationCenter.shared.authorizationStatus == .approved }
     await storeKit.refreshPurchasedState()
     await storeKit.refreshGrandfatheredState(cutoverDate: PricingConfig.cutoverDate)
     recomputeAccessState()

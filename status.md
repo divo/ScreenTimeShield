@@ -5,6 +5,8 @@
 - [ ] P1: Triage remaning todos, grandfather logic and anything critical. Need to move to marketing
 
 ## Bugs
+- [~] **Family Controls authorization not handled** (release blocker) — was: request at launch + swallow errors, so a denied/revoked/restricted user saw a working-looking app that enforced nothing (also surfaced as the spurious "selection was reset" toast). **Implemented:** `AccessController` now tracks `AuthorizationCenter.authorizationStatus` (live + re-read on scenePhase); when not `.approved`, `ContentView` shows `PermissionDeniedView` in place of the app card and disables the arm/quick CTAs. **There is no per-app Screen Time toggle in iOS Settings**, but re-calling `requestAuthorization` re-shows the system prompt — so the denied view is a single **"Allow access"** button that re-requests directly (no Settings trip). `UNPLUG_SKIP_FC` bypasses the gate. Strings localized ×10. Builds clean. **Remaining:** on-device verification (deny → denied UI → tap Allow → prompt reappears → approve → returns to app list). Note: revoking auth in system settings while the app is running doesn't update `authorizationStatus` until next cold launch (Apple bug) — acceptable.
+- [x] "App selection was reset" toast firing every launch — `has_selection` persisted true while invalidated tokens decoded empty; now surfaced once then the flag is cleared (`ContentView.onAppear`).
 - [ ] Notifications bug — needs investigation and documenting
 - [ ] Outstanding bug mentioned in README — needs documenting
 
