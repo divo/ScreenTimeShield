@@ -66,14 +66,14 @@ final class Store: ObservableObject {
     isPurchased = purchased
   }
 
-  /// Recompute `isGrandfathered` from the original-download version vs the cutover build.
-  func refreshGrandfatheredState(cutoverBuild: Int) async {
+  /// Recompute `isGrandfathered` from the original-download date vs the IAP cutover date.
+  func refreshGrandfatheredState(cutoverDate: Date) async {
     do {
       let result = try await AppTransaction.shared
       guard case .verified(let appTransaction) = result else { return }
       isGrandfathered = Grandfather.isGrandfathered(
-        originalVersion: appTransaction.originalAppVersion,
-        cutoverBuild: cutoverBuild)
+        originalPurchaseDate: appTransaction.originalPurchaseDate,
+        cutoverDate: cutoverDate)
     } catch {
       // AppTransaction unavailable (e.g. offline first-run) — leave prior value untouched.
       print("Store: AppTransaction unavailable: \(error)")

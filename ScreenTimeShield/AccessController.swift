@@ -51,7 +51,7 @@ final class AccessController: ObservableObject {
   /// Recompute entitlement + access state, caching the enforcement gate the extensions read.
   func refreshAccess() async {
     await storeKit.refreshPurchasedState()
-    await storeKit.refreshGrandfatheredState(cutoverBuild: PricingConfig.cutoverBuild)
+    await storeKit.refreshGrandfatheredState(cutoverDate: PricingConfig.cutoverDate)
     recomputeAccessState()
   }
 

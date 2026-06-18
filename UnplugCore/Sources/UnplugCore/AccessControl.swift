@@ -17,9 +17,12 @@ public enum AccessState: Equatable {
 
 /// Central pricing constants.
 public enum PricingConfig {
-  /// Build number of the release that introduces the IAP. Users whose original
-  /// download predates this build are grandfathered. Must match the actual IAP release build.
-  public static let cutoverBuild = 12
+  /// The moment the IAP release goes live. Users whose original download predates this
+  /// date are grandfathered into permanent free access. Compared against
+  /// `AppTransaction.originalPurchaseDate`, which is monotonic and immune to our
+  /// per-version build-number resets (unlike the original `originalAppVersion` check).
+  /// TODO: replace with the real IAP go-live date before release — this is a placeholder.
+  public static let cutoverDate = Date(timeIntervalSince1970: 1_781_740_800) // 2026-06-18 00:00 UTC (placeholder)
   public static let trialLength: TimeInterval = 7 * 24 * 60 * 60
   public static let statThreshold = 5
   /// Debounce window for the noisy shield-presentation counter.
@@ -30,7 +33,7 @@ public enum PricingConfig {
 /// Abstracts the StoreKit entitlement source so callers (and tests) don't depend on StoreKit directly.
 public protocol EntitlementProviding {
   var isPurchased: Bool { get }
-  var originalAppVersion: String? { get }
+  var originalPurchaseDate: Date? { get }
 }
 
 /// Thin seam over the shared app-group UserDefaults for trial date + counters.
@@ -66,9 +69,9 @@ public enum AccessEvaluator {
 
 /// Decides whether a user predates the IAP and should be granted permanent access.
 public enum Grandfather {
-  public static func isGrandfathered(originalVersion: String?, cutoverBuild: Int) -> Bool {
-    guard let originalVersion, let original = Int(originalVersion) else { return false }
-    return original < cutoverBuild
+  public static func isGrandfathered(originalPurchaseDate: Date?, cutoverDate: Date) -> Bool {
+    guard let originalPurchaseDate else { return false }
+    return originalPurchaseDate < cutoverDate
   }
 }
 

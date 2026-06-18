@@ -84,20 +84,24 @@ final class AccessControlTests: XCTestCase {
 
   // MARK: Grandfather
 
-  func testGrandfatheredWhenOriginalBelowCutover() {
-    XCTAssertTrue(Grandfather.isGrandfathered(originalVersion: "8", cutoverBuild: 12))
+  private let cutover = Date(timeIntervalSince1970: 1_781_740_800) // matches PricingConfig.cutoverDate placeholder
+
+  func testGrandfatheredWhenOriginalPurchasePredatesCutover() {
+    let before = cutover.addingTimeInterval(-24 * 60 * 60) // one day before
+    XCTAssertTrue(Grandfather.isGrandfathered(originalPurchaseDate: before, cutoverDate: cutover))
   }
 
-  func testNotGrandfatheredWhenOriginalEqualsCutover() {
-    XCTAssertFalse(Grandfather.isGrandfathered(originalVersion: "12", cutoverBuild: 12))
+  func testNotGrandfatheredWhenOriginalPurchaseEqualsCutover() {
+    XCTAssertFalse(Grandfather.isGrandfathered(originalPurchaseDate: cutover, cutoverDate: cutover))
   }
 
-  func testNotGrandfatheredWhenOriginalAboveCutover() {
-    XCTAssertFalse(Grandfather.isGrandfathered(originalVersion: "15", cutoverBuild: 12))
+  func testNotGrandfatheredWhenOriginalPurchaseAfterCutover() {
+    let after = cutover.addingTimeInterval(24 * 60 * 60) // one day after
+    XCTAssertFalse(Grandfather.isGrandfathered(originalPurchaseDate: after, cutoverDate: cutover))
   }
 
-  func testNotGrandfatheredWhenOriginalMissing() {
-    XCTAssertFalse(Grandfather.isGrandfathered(originalVersion: nil, cutoverBuild: 12))
+  func testNotGrandfatheredWhenOriginalPurchaseMissing() {
+    XCTAssertFalse(Grandfather.isGrandfathered(originalPurchaseDate: nil, cutoverDate: cutover))
   }
 
   // MARK: StatGate

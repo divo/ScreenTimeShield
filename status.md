@@ -20,12 +20,13 @@
 
 ## Pricing (free trial + lifetime IAP — see [[.worklog/2026-06-16-pricing-rework]])
 - [x] Implement free download + 7-day trial + one-time "lifetime unlock" IAP, with grandfathering (code complete on `pricing-rework`, merged to main)
-- [ ] Revisit the grandfathering logic
+- [~] Revisit the grandfathering logic — **reworked**: switched from a build-number comparison (`cutoverBuild`/`originalAppVersion`) to a date comparison (`PricingConfig.cutoverDate` vs `AppTransaction.originalPurchaseDate`). The old check was broken by our per-version build-number resets (semver-style patch resets meant future low-build downloads would be wrongly grandfathered). Date is monotonic and immune to that. `swift test` green.
+  - [ ] **Pick the final cutover date before release** — `PricingConfig.cutoverDate` is currently a placeholder (2026-06-18). Set it to the actual IAP go-live date (and keep the test constant in `AccessControlTests.swift` in sync).
 - [ ] **Revert QA before production** — remove the QA/Debug menu exposure (commit `b90291f`), the `UNPLUG_SKIP_FC` launch hook (commit `778f8a6`), the `UNPLUG_SKIP_FC` guard added to the `scenePhase`/`AppDelegate` paths, and the "Reset to fresh install" QA button (`AccessController.qaResetToFreshInstall` + its QAMenu entry) on `ui-redesign`. These shipped intentionally for TestFlight QA; pull them before the App Store submission.
 - [ ] Manual QA the trial → paywall → purchase flow on a real device (simulator blocked by Family Controls Apple-ID auth)
 - [ ] Verify the main-screen layout in block-active state on a real device — the old `ScrollView`/`minHeight` hack was removed on `ui-redesign` (now a fixed layout with a flexible, internally-scrolling app list); confirm it holds on short + tall devices and while a block is active
 - [ ] App Store Connect: create the Non-Consumable IAP (`com.halfspud.ScreenTimeShield.lifetime`), set price → Free, submit first IAP with a build (blocked by US→Ireland account move)
-- [ ] Confirm `MARKETING_VERSION` (1.3 may be released → likely bump) and that cutover build = 12 matches the actual IAP release
+- [ ] Confirm `MARKETING_VERSION` (1.3 may be released → likely bump). Grandfathering no longer depends on the build number (now date-based — see Pricing section); just set `PricingConfig.cutoverDate` to the real IAP go-live date.
 
 ## Marketing
 - [ ] Execute marketing plan — see [[marketing-plan]]
