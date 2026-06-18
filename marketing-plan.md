@@ -38,7 +38,7 @@ iOS Screen Time can be bypassed in 10 seconds. Unplug can't. That's the entire d
 You are the story. Someone who built a tool because they had a real problem with their own phone. Authentic, first-person content outperforms ads in this niche.
 
 ### Formats to Make
-1. **"I built an unbypassable app blocker — here's what happened"**
+1. **"I built an unskippable app blocker — here's what happened"**
    - Your own experience using it. 30-day angle. Hero piece.
 
 2. **"Every other app blocker has this loophole"**

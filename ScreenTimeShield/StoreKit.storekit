@@ -20,9 +20,54 @@
       "internalID" : "F1FA77E5-2B27-449D-ACBC-5BA53739376C",
       "localizations" : [
         {
-          "description" : "Unlock unbypassable app blocking forever. One-time purchase, no subscription.",
+          "description" : "Unlock unskippable app blocking forever. One-time purchase, no subscription.",
           "displayName" : "Lifetime Unlock",
           "locale" : "en_US"
+        },
+        {
+          "description" : "Schalte unumgehbare App-Sperren für immer frei. Einmaliger Kauf, kein Abo.",
+          "displayName" : "Lebenslange Freischaltung",
+          "locale" : "de_DE"
+        },
+        {
+          "description" : "Desbloquea para siempre el bloqueo de apps imposible de evitar. Pago único, sin suscripción.",
+          "displayName" : "Desbloqueo de por vida",
+          "locale" : "es_ES"
+        },
+        {
+          "description" : "Débloquez à vie le blocage d'applications impossible à contourner. Achat unique, sans abonnement.",
+          "displayName" : "Déblocage à vie",
+          "locale" : "fr_FR"
+        },
+        {
+          "description" : "Sblocca per sempre il blocco delle app impossibile da aggirare. Acquisto singolo, nessun abbonamento.",
+          "displayName" : "Sblocco a vita",
+          "locale" : "it_IT"
+        },
+        {
+          "description" : "回避できないアプリブロックを永久に解除。買い切り、サブスクなし。",
+          "displayName" : "永久アンロック",
+          "locale" : "ja_JP"
+        },
+        {
+          "description" : "우회할 수 없는 앱 차단을 영구적으로 해제하세요. 일회성 구매, 구독 없음.",
+          "displayName" : "평생 잠금 해제",
+          "locale" : "ko_KR"
+        },
+        {
+          "description" : "Desbloqueie para sempre o bloqueio de apps impossível de contornar. Compra única, sem subscrição.",
+          "displayName" : "Desbloqueio vitalício",
+          "locale" : "pt_PT"
+        },
+        {
+          "description" : "永久解锁无法绕过的应用屏蔽。一次性购买，无需订阅。",
+          "displayName" : "永久解锁",
+          "locale" : "zh_Hans"
+        },
+        {
+          "description" : "永久解鎖無法繞過的應用程式封鎖。一次性購買，無需訂閱。",
+          "displayName" : "永久解鎖",
+          "locale" : "zh_Hant"
         }
       ],
       "productID" : "com.halfspud.ScreenTimeShield.lifetime",

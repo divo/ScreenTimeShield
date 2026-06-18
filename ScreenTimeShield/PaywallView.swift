@@ -61,13 +61,13 @@ struct PaywallView: View {
               .foregroundStyle(.white)
               .multilineTextAlignment(.center)
           } else {
-            Text("Your blocks are unbypassable — keep them that way.")
+            Text("Your blocks are unskippable. Keep them that way.")
               .font(.title3.weight(.medium))
               .foregroundStyle(.white.opacity(0.9))
               .multilineTextAlignment(.center)
           }
 
-          Text("Unlock unbypassable app blocking forever. One-time purchase, no subscription.")
+          Text("Unlock unskippable app blocking forever. One-time purchase, no subscription.")
             .font(.subheadline)
             .foregroundStyle(.white.opacity(0.7))
             .multilineTextAlignment(.center)
@@ -124,7 +124,7 @@ struct PaywallView: View {
 
   private var buyButtonTitle: String {
     if let price = product?.displayPrice {
-      return String(localized: "Unlock forever — \(price)")
+      return String(localized: "Unlock forever (\(price))")
     }
     return String(localized: "Unlock forever")
   }
