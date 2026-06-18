@@ -21,8 +21,11 @@ public enum PricingConfig {
   /// date are grandfathered into permanent free access. Compared against
   /// `AppTransaction.originalPurchaseDate`, which is monotonic and immune to our
   /// per-version build-number resets (unlike the original `originalAppVersion` check).
-  /// TODO: replace with the real IAP go-live date before release — this is a placeholder.
-  public static let cutoverDate = Date(timeIntervalSince1970: 1_781_740_800) // 2026-06-18 00:00 UTC (placeholder)
+  /// TODO: replace with the real IAP go-live date before release. Currently a PAST
+  /// placeholder so test installs (StoreKit testing reports originalPurchaseDate ≈ now)
+  /// land *after* the cutover and are therefore NOT grandfathered — lets the paywall/IAP
+  /// surface during local testing.
+  public static let cutoverDate = Date(timeIntervalSince1970: 1_781_654_400) // 2026-06-17 00:00 UTC (placeholder, yesterday)
   public static let trialLength: TimeInterval = 7 * 24 * 60 * 60
   public static let statThreshold = 5
   /// Debounce window for the noisy shield-presentation counter.

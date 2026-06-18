@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -53,7 +53,6 @@
 		BFA6E768C40D5F5A14DCBD28 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912F9D9B282616D8785C8978 /* SettingsView.swift */; };
 		C99F6A109280EE8AA6275103 /* QAMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2533604AB767B89C3AE6A63F /* QAMenuView.swift */; };
 		D5754AE38027ED9D0D25A17D /* AppCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ED3F83B01478F875A8A3C99 /* AppCard.swift */; };
-		F38A668809FB4BED0792234C /* AccessControlTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56D6AEDD73066A43E1D44BE1 /* AccessControlTests.swift */; };
 		FEFB7AD28DCA1B4648564C4D /* UnplugCore in Frameworks */ = {isa = PBXBuildFile; productRef = ACF9D0F184FF8E25627514C5 /* UnplugCore */; };
 /* End PBXBuildFile section */
 
@@ -117,7 +116,6 @@
 		2533604AB767B89C3AE6A63F /* QAMenuView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = QAMenuView.swift; sourceTree = "<group>"; };
 		26C1F2411CDBB447F76426F0 /* Store.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		507894EFD724C5277117DC54 /* AppGroupStore.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppGroupStore.swift; sourceTree = "<group>"; };
-		56D6AEDD73066A43E1D44BE1 /* AccessControlTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AccessControlTests.swift; sourceTree = "<group>"; };
 		60ABAF720C80920CF87D2492 /* ScheduleRangeSlider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ScheduleRangeSlider.swift; sourceTree = "<group>"; };
 		732C819C6911D7820E484A7A /* PinnedActions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PinnedActions.swift; sourceTree = "<group>"; };
 		7598E82AF0FB26C5A5B18FA7 /* StatusBanner.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = StatusBanner.swift; sourceTree = "<group>"; };
@@ -161,7 +159,7 @@
 		9CDEEA7261E4C98B75C6367D /* AccessController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AccessController.swift; sourceTree = "<group>"; };
 		A33BB92B0B13E4EBE5C7D262 /* TrialChip.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TrialChip.swift; sourceTree = "<group>"; };
 		A8D8AFE52D2E982A1B980FB9 /* RestrictedAppList.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = RestrictedAppList.swift; sourceTree = "<group>"; };
-		D0D4E35CAA82A943631086D1 /* StoreKit.storekit */ = {isa = PBXFileReference; includeInIndex = 1; path = StoreKit.storekit; sourceTree = "<group>"; };
+		D0D4E35CAA82A943631086D1 /* StoreKit.storekit */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = StoreKit.storekit; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -288,7 +286,6 @@
 			isa = PBXGroup;
 			children = (
 				93B0132C2A8E557800B97CA0 /* ScreenTimeShieldTests.swift */,
-				56D6AEDD73066A43E1D44BE1 /* AccessControlTests.swift */,
 				1C23184A50D8C703A2A7C2B3 /* StoreTests.swift */,
 			);
 			path = ScreenTimeShieldTests;
@@ -613,7 +610,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				93B0132D2A8E557800B97CA0 /* ScreenTimeShieldTests.swift in Sources */,
-				F38A668809FB4BED0792234C /* AccessControlTests.swift in Sources */,
 				B1D3AE259C2136E170FDD474 /* StoreTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

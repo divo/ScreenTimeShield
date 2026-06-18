@@ -1,4 +1,7 @@
 # Unplug — Status Tracker
+- [ ] **P1: Set up & test the lifetime IAP** (`com.halfspud.ScreenTimeShield.lifetime`, Non-Consumable). Two *independent* parts — don't conflate them:
+  - **Testing — NOT blocked, do now:** the full trial → paywall → purchase → grandfather flow runs against the local **StoreKit Configuration file** (`StoreKit.storekit` in the project), with no App Store Connect and no dependency on the account move. Verify the lifetime product is defined there, then exercise purchase/restore in the simulator.
+  - **Production — blocked by the account move:** creating/selling the IAP in App Store Connect requires an active **Paid Applications Agreement**, which is pending until Step 2 of the US→Ireland move (banking/tax/agreement) completes — see [[account-country-move]]. The country change itself does *not* touch existing apps or IAPs (app IDs unchanged), so nothing needs recreating.
 - [ ] P1: Triage remaning todos, grandfather logic and anything critical. Need to move to marketing
 
 ## Bugs
@@ -23,9 +26,9 @@
 - [~] Revisit the grandfathering logic — **reworked**: switched from a build-number comparison (`cutoverBuild`/`originalAppVersion`) to a date comparison (`PricingConfig.cutoverDate` vs `AppTransaction.originalPurchaseDate`). The old check was broken by our per-version build-number resets (semver-style patch resets meant future low-build downloads would be wrongly grandfathered). Date is monotonic and immune to that. `swift test` green.
   - [ ] **Pick the final cutover date before release** — `PricingConfig.cutoverDate` is currently a placeholder (2026-06-18). Set it to the actual IAP go-live date (and keep the test constant in `AccessControlTests.swift` in sync).
 - [ ] **Revert QA before production** — remove the QA/Debug menu exposure (commit `b90291f`), the `UNPLUG_SKIP_FC` launch hook (commit `778f8a6`), the `UNPLUG_SKIP_FC` guard added to the `scenePhase`/`AppDelegate` paths, and the "Reset to fresh install" QA button (`AccessController.qaResetToFreshInstall` + its QAMenu entry) on `ui-redesign`. These shipped intentionally for TestFlight QA; pull them before the App Store submission.
-- [ ] Manual QA the trial → paywall → purchase flow on a real device (simulator blocked by Family Controls Apple-ID auth)
+- [ ] Manual QA the trial → paywall → purchase flow — the **purchase** part is testable now via the local StoreKit Configuration file (no App Store Connect / account-move dependency); only the Family-Controls bits need a real device (simulator blocked by Family Controls Apple-ID auth)
 - [ ] Verify the main-screen layout in block-active state on a real device — the old `ScrollView`/`minHeight` hack was removed on `ui-redesign` (now a fixed layout with a flexible, internally-scrolling app list); confirm it holds on short + tall devices and while a block is active
-- [ ] App Store Connect: create the Non-Consumable IAP (`com.halfspud.ScreenTimeShield.lifetime`), set price → Free, submit first IAP with a build (blocked by US→Ireland account move)
+- [ ] App Store Connect: create the Non-Consumable IAP (`com.halfspud.ScreenTimeShield.lifetime`) and submit with a build. **Blocked specifically by Step 2 of the country move** — the Paid Applications Agreement + Irish banking/tax must be active before an IAP can be created/sold in ASC (see [[account-country-move]]). NOTE: IAPs have **no free price tier** (min ~$0.49); the earlier "price → Free" wording is wrong unless it meant the app *download* is free — resolve the intended price before setup.
 - [ ] Confirm `MARKETING_VERSION` (1.3 may be released → likely bump). Grandfathering no longer depends on the build number (now date-based — see Pricing section); just set `PricingConfig.cutoverDate` to the real IAP go-live date.
 
 ## Marketing
@@ -41,4 +44,4 @@
 - [x] String catalog (`Localizable.xcstrings`) set up
 
 ---
-*last updated: 2026-06-17*
+*last updated: 2026-06-18*
