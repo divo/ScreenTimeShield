@@ -41,8 +41,7 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
     let subtitleLabel = ShieldConfiguration.Label(text: String(localized: "App limits reached"), color: UIColor.lightGray)
     
     let primaryButton = ShieldConfiguration.Label(text: String(localized:"Close"), color: .black)
-    let secondaryButton = ShieldConfiguration.Label(text: "", color: UIColor.lightGray)
-    
+
     return ShieldConfiguration(backgroundBlurStyle: UIBlurEffect.Style.systemMaterialDark,
                                backgroundColor: UIColor.black,
                                icon: UIImage(named: "unplug")?.withTintColor(.lightGray),
@@ -50,7 +49,7 @@ class ShieldConfigurationExtension: ShieldConfigurationDataSource {
                                subtitle: subtitleLabel,
                                primaryButtonLabel: primaryButton,
                                primaryButtonBackgroundColor: Style.primaryUIColor,
-                               secondaryButtonLabel: secondaryButton)
+                               secondaryButtonLabel: nil)
   }
 
   /// Count a "stop" when the shield is presented. The system calls this repeatedly for a
