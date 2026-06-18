@@ -13,6 +13,7 @@ import UserNotifications
 import UnplugCore
 import DeviceActivity
 import FamilyControls
+import Combine
 
 @MainActor
 final class AccessController: ObservableObject {
@@ -20,8 +21,19 @@ final class AccessController: ObservableObject {
 
   private let kv = AppGroupStore()
   let storeKit = Store()
+  private var cancellables = Set<AnyCancellable>()
 
   @Published private(set) var accessState: AccessState = .trial
+
+  init() {
+    // `storeKit` is a nested ObservableObject: its @Published changes (e.g. `product`
+    // finishing loading, `isPurchased`) fire Store's objectWillChange, which does NOT
+    // bubble up to views observing AccessController. Forward it so the UI reacts —
+    // otherwise the buy button stays disabled until some other @Published here changes.
+    storeKit.objectWillChange
+      .sink { [weak self] _ in self?.objectWillChange.send() }
+      .store(in: &cancellables)
+  }
 
   var trialStartDate: Date? {
     get { kv.date(forKey: AppGroupKeys.trialStart) }

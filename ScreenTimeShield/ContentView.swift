@@ -241,6 +241,9 @@ struct ContentView: View {
       model.isArmed = DeviceActivityCenter().activities.contains(.daily)
       if model.selectionIsInvalidated() {
         showInvalidatedWarning = true
+        // Clear the stale flag so the reset is surfaced once, not on every launch.
+        // Re-selecting apps sets it true again via saveSelection().
+        model.hasSelection = false
       }
     }
     .task {
