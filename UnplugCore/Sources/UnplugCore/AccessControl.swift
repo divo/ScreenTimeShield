@@ -21,11 +21,10 @@ public enum PricingConfig {
   /// date are grandfathered into permanent free access. Compared against
   /// `AppTransaction.originalPurchaseDate`, which is monotonic and immune to our
   /// per-version build-number resets (unlike the original `originalAppVersion` check).
-  /// TODO: replace with the real IAP go-live date before release. Placeholder is the
-  /// distant past so no originalPurchaseDate can precede it — nobody is grandfathered,
-  /// which lets the paywall/trial surface during testing. (StoreKit testing reports an
-  /// originalPurchaseDate well before "now", so a recent cutover would grandfather testers.)
-  public static let cutoverDate = Date(timeIntervalSince1970: 0) // 1970 — placeholder, never grandfathers
+  /// The IAP go-live date. Users whose original download predates this are grandfathered
+  /// into permanent free access (compared against `AppTransaction.originalPurchaseDate`).
+  /// Keep in sync with the actual App Store release; adjust if the release date slips.
+  public static let cutoverDate = Date(timeIntervalSince1970: 1_782_345_600) // 2026-06-25 00:00 UTC
   public static let trialLength: TimeInterval = 7 * 24 * 60 * 60
   public static let statThreshold = 5
   /// Debounce window for the noisy shield-presentation counter.
