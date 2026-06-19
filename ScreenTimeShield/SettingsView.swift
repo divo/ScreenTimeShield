@@ -22,11 +22,11 @@ struct SettingsView: View {
           Text("Get notified when using restricted apps outside of blocked hours")
         }
 
-        // QA / Debug entry point — remove (revert this commit) before production.
-        Section {
-          Button("QA / Debug") { showQAMenu = true }
-            .foregroundStyle(.secondary)
-        }
+        // QA / Debug entry point — hidden for production. (Re-enable to access the QA menu.)
+        // Section {
+        //   Button("QA / Debug") { showQAMenu = true }
+        //     .foregroundStyle(.secondary)
+        // }
       }
       .navigationTitle("Settings")
       .navigationBarTitleDisplayMode(.inline)
