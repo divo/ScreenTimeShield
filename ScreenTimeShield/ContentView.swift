@@ -62,7 +62,8 @@ struct ContentView: View {
     let bi = model.blockedInterval
     Schedule.setSchedule(start: bi.start, end: bi.end, event: model.activityEvent(), repeats: true)
     if model.notificationsEnabled {
-      Schedule.setNotificationSchedule(restrictionStart: bi.start, restrictionEnd: bi.end)
+      Schedule.setNotificationSchedule(restrictionStart: bi.start, restrictionEnd: bi.end,
+                                       events: model.notificationEvents())
     }
   }
 
@@ -80,7 +81,7 @@ struct ContentView: View {
 
   private func stop() {
     model.isArmed = false
-    DeviceActivityCenter().stopMonitoring([.daily, .notificationSchedule])
+    Schedule.stopMonitoring([.daily, .notificationSchedule])
     model.clearRestrictions()
   }
 
@@ -235,9 +236,10 @@ struct ContentView: View {
     .onChange(of: model.notificationsEnabled) { newValue in
       if newValue && !model.isEmpty() {
         let bi = model.blockedInterval
-        Schedule.setNotificationSchedule(restrictionStart: bi.start, restrictionEnd: bi.end)
+        Schedule.setNotificationSchedule(restrictionStart: bi.start, restrictionEnd: bi.end,
+                                         events: model.notificationEvents())
       } else {
-        DeviceActivityCenter().stopMonitoring([.notificationSchedule])
+        Schedule.stopMonitoring([.notificationSchedule])
       }
     }
     .onAppear {
