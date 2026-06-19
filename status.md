@@ -26,7 +26,7 @@
 - [x] Implement free download + 7-day trial + one-time "lifetime unlock" IAP, with grandfathering (code complete on `pricing-rework`, merged to main)
 - [~] Revisit the grandfathering logic — **reworked**: switched from a build-number comparison (`cutoverBuild`/`originalAppVersion`) to a date comparison (`PricingConfig.cutoverDate` vs `AppTransaction.originalPurchaseDate`). The old check was broken by our per-version build-number resets (semver-style patch resets meant future low-build downloads would be wrongly grandfathered). Date is monotonic and immune to that. `swift test` green.
   - [x] **Cutover date set** — `PricingConfig.cutoverDate` = **2026-06-25** (target release, ~1 week out). Users who downloaded before this are grandfathered. **Adjust if the release date slips.** (Tests use their own boundary constant and stay green.)
-- [ ] **Revert QA before production** — remove the QA/Debug menu exposure (commit `b90291f`), the `UNPLUG_SKIP_FC` launch hook (commit `778f8a6`), the `UNPLUG_SKIP_FC` guard added to the `scenePhase`/`AppDelegate` paths, and the "Reset to fresh install" QA button (`AccessController.qaResetToFreshInstall` + its QAMenu entry) on `ui-redesign`. These shipped intentionally for TestFlight QA; pull them before the App Store submission.
+- [x] **QA hidden for production** — decided that hiding the QA/Debug menu entry (commented out in `SettingsView`) is sufficient; not stripping the rest of the scaffolding. The `UNPLUG_SKIP_FC` launch hook + `scenePhase`/`AppDelegate` guards only fire when that env var is set (Xcode scheme only — never in a release build), and `qaResetToFreshInstall`/`QAMenuView` are only reachable from the now-hidden entry. So it's all inert/unreachable in production. (Re-enable QA by uncommenting the Section in `SettingsView`.)
 - [ ] Manual QA the trial → paywall → purchase flow — the **purchase** part is testable now via the local StoreKit Configuration file (no App Store Connect / account-move dependency); only the Family-Controls bits need a real device (simulator blocked by Family Controls Apple-ID auth)
 - [ ] Verify the main-screen layout in block-active state on a real device — the old `ScrollView`/`minHeight` hack was removed on `ui-redesign` (now a fixed layout with a flexible, internally-scrolling app list); confirm it holds on short + tall devices and while a block is active
 - [x] App Store Connect: created the Non-Consumable IAP (`com.halfspud.ScreenTimeShield.lifetime`), $4.99, 175 territories, 10 localizations, review screenshot + notes — status **Ready to Submit** (driven via Chrome). Only gate was accepting the updated Paid Applications agreement (done); account still US. **Still must be submitted *with* an app build to go live.**
@@ -45,4 +45,4 @@
 - [x] String catalog (`Localizable.xcstrings`) set up
 
 ---
-*last updated: 2026-06-18*
+*last updated: 2026-06-19*
