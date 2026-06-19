@@ -1,0 +1,20 @@
+Bildschirmzeit-Limits lassen sich in 10 Sekunden umgehen. Unplug nicht.
+
+Lege einen Zeitplan fest. Wähle deine Apps. Wenn die Sperre aktiv ist, gibt es kein Übergehen, keinen Trick mit dem Code, kein „nur noch 15 Minuten". Die Apps bleiben gesperrt, bis deine Zeit um ist.
+
+SO FUNKTIONIERT ES
+Wähle die Apps und Websites, die blockiert werden sollen. Lege Start- und Endzeit fest. Unplug sperrt sie nach Plan – ganz ohne Willenskraft.
+
+WARUM ES ANDERS IST
+Bei der nativen Bildschirmzeit tippst du auf „Limit ignorieren" und scrollst weiter. Unplug nutzt Apples Framework zur Geräteverwaltung, um Einschränkungen durchzusetzen, die sich nicht aufheben lassen. Es gibt keine Hintertür.
+
+DAS BEKOMMST DU
+· Unumgehbares Blockieren von Apps und Websites nach Tagesplan
+· Schnellsperre: Apps mit einem Tippen für die nächste Stunde sperren
+· Refokus-Benachrichtigungen, wenn du gesperrte Apps außerhalb der Sperrzeiten öffnest
+· Funktioniert mit jeder App und Website
+· Kein Konto nötig, keine Datenerfassung
+
+Einmaliger Kauf. Kein Abo. Keine Werbung.
+
+Unplug – Limits nicht nur setzen. Sperren.

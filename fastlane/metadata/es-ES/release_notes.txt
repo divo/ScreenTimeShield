@@ -1,0 +1,2 @@
+- Interfaz completamente rediseñada: configurar un bloqueo y ver qué apps están bloqueadas es más fácil que nunca.
+- Añadidas traducciones para 9 idiomas

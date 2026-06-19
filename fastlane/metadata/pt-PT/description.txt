@@ -1,0 +1,20 @@
+Os limites do Tempo de Ecrã contornam-se em 10 segundos. O Unplug não.
+
+Define um horário. Escolhe as tuas apps. Quando o bloqueio está ativo, não há forma de anular, nem truque com o código, nem "só mais 15 minutos". As apps ficam bloqueadas até o teu tempo terminar.
+
+COMO FUNCIONA
+Escolhe que apps e sites bloquear. Define a hora de início e de fim. O Unplug bloqueia-os segundo o horário, sem força de vontade.
+
+PORQUE É DIFERENTE
+No Tempo de Ecrã nativo, tocas em "Ignorar limite" e voltas a deslizar. O Unplug usa a framework de gestão de dispositivos da Apple para aplicar restrições que não podem ser dispensadas. Não há porta das traseiras.
+
+O QUE RECEBES
+· Bloqueio impossível de saltar de apps e sites, com horário diário
+· Bloqueio rápido: restringe apps na próxima hora com um toque
+· Notificações de refoco quando abres apps restritas fora do horário
+· Funciona com qualquer app ou site
+· Sem conta, sem recolha de dados
+
+Compra única. Sem subscrição. Sem anúncios.
+
+Unplug — Não te limites a definir limites. Bloqueia-os.

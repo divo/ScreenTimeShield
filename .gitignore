@@ -10,3 +10,7 @@ xcuserdata/
 
 # macOS
 .DS_Store
+
+# App Store Connect API credentials — never commit
+.secrets/
+*.p8

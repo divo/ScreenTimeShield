@@ -1,0 +1,20 @@
+I limiti di Tempo di utilizzo si aggirano in 10 secondi. Unplug no.
+
+Imposta un orario. Scegli le tue app. Quando il blocco è attivo, niente scorciatoie, nessun trucco con il codice, nessun "solo altri 15 minuti". Le app restano bloccate finché il tuo tempo non scade.
+
+COME FUNZIONA
+Scegli quali app e siti bloccare. Imposta l'ora di inizio e di fine. Unplug li blocca secondo il programma, senza forza di volontà.
+
+PERCHÉ È DIVERSO
+Con Tempo di utilizzo nativo basta toccare "Ignora limite" e torni a scorrere. Unplug usa il framework di gestione dei dispositivi di Apple per applicare restrizioni che non si possono ignorare. Nessuna scorciatoia.
+
+COSA OTTIENI
+· Blocco di app e siti impossibile da saltare, con programma giornaliero
+· Blocco rapido: limita le app per l'ora successiva con un tocco
+· Notifiche di rifocalizzazione quando apri app bloccate fuori orario
+· Funziona con qualsiasi app o sito
+· Nessun account richiesto, nessun dato raccolto
+
+Acquisto singolo. Nessun abbonamento. Nessuna pubblicità.
+
+Unplug — Non limitarti a impostare i limiti. Bloccali.
