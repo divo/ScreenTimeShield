@@ -19,6 +19,7 @@ struct ContentView: View {
   @StateObject private var access = AccessController.shared
   @State var showToast: Bool = false
   @State var showInvalidatedWarning: Bool = false
+  @State private var showScheduleError = false
   @State private var showPaywall = false
   @State private var showSettings = false
   @State private var armRequest: ArmRequest?
@@ -60,7 +61,14 @@ struct ContentView: View {
     guard model.isArmed, !isExpired, !model.isEmpty() else { return }
     access.startTrialIfNeeded()
     let bi = model.blockedInterval
-    Schedule.setSchedule(start: bi.start, end: bi.end, event: model.activityEvent(), repeats: true)
+    Schedule.setSchedule(start: bi.start, end: bi.end, event: model.activityEvent(), repeats: true) { error in
+      guard error != nil else { return }
+      // Registration failed, so nothing is monitoring. Drop back to disarmed rather than showing a
+      // "Blocking" state the system never accepted, and take the notification schedule down with it.
+      model.isArmed = false
+      Schedule.stopMonitoring([.daily, .notificationSchedule])
+      showScheduleError = true
+    }
     if model.notificationsEnabled {
       Schedule.setNotificationSchedule(restrictionStart: bi.start, restrictionEnd: bi.end,
                                        events: model.notificationEvents())
@@ -106,7 +114,9 @@ struct ContentView: View {
     access.startTrialIfNeeded()
     let now = Date()
     let oneHourLater = Calendar.current.date(byAdding: .hour, value: 1, to: now)!
-    Schedule.setSchedule(start: now, end: oneHourLater, event: model.activityEvent(), repeats: false)
+    Schedule.setSchedule(start: now, end: oneHourLater, event: model.activityEvent(), repeats: false) { error in
+      if error != nil { showScheduleError = true }
+    }
   }
 
   // MARK: Risk / confirmation
@@ -211,6 +221,10 @@ struct ContentView: View {
     }
     .toast(isPresenting: $showToast, alert: {
       AlertToast(displayMode: .alert, type: .error(Style.errorColor), title: String(localized: "Cannot remove apps from block"))
+    })
+    .toast(isPresenting: $showScheduleError, alert: {
+      AlertToast(displayMode: .alert, type: .error(Style.errorColor),
+                 title: String(localized: "Couldn't start blocking, please try again"))
     })
     .toast(isPresenting: $showInvalidatedWarning, duration: 0, tapToDismiss: true, alert: {
       AlertToast(displayMode: .alert, type: .error(Style.errorColor), title: String(localized: "App selection was reset, please re-select apps"))

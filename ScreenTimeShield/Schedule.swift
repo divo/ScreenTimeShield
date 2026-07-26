@@ -22,7 +22,12 @@ class Schedule {
   /// thread first, so nothing here touches Model off-main.
   private static let queue = DispatchQueue(label: "com.halfspud.unplug.deviceactivity")
 
-  static public func setSchedule(start: Date, end: Date, event: DeviceActivityEvent, repeats: Bool = true) {
+  /// `completion` reports the registration outcome on the main queue. It must not be ignored for the
+  /// arming path: a thrown `startMonitoring` leaves nothing registered, so a caller that assumes
+  /// success shows a user a block that will never fire.
+  static public func setSchedule(start: Date, end: Date, event: DeviceActivityEvent,
+                                 repeats: Bool = true,
+                                 completion: ((Error?) -> Void)? = nil) {
     let schedule = DeviceActivitySchedule(intervalStart: components(from: start),
                                           intervalEnd: components(from: end),
                                           repeats: repeats)
@@ -32,17 +37,23 @@ class Schedule {
     queue.async {
       let center = DeviceActivityCenter()
       center.stopMonitoring([activityName])
+      var failure: Error?
       do {
         try center.startMonitoring(activityName, during: schedule, events: [eventName: event])
       } catch {
+        failure = error
         print("Error setting schedule: \(error)")
+      }
+      if let completion {
+        DispatchQueue.main.async { completion(failure) }
       }
     }
   }
 
   static public func setNotificationSchedule(restrictionStart: Date,
                                              restrictionEnd: Date,
-                                             events: [DeviceActivityEvent.Name: DeviceActivityEvent]) {
+                                             events: [DeviceActivityEvent.Name: DeviceActivityEvent],
+                                             completion: ((Error?) -> Void)? = nil) {
     // Inverse schedule: active when restrictions are *not* (the gap between restrictionEnd and the
     // next restrictionStart), so refocus notifications fire outside blocked hours.
     let notificationSchedule = DeviceActivitySchedule(intervalStart: components(from: restrictionEnd),
@@ -51,10 +62,15 @@ class Schedule {
     queue.async {
       let center = DeviceActivityCenter()
       center.stopMonitoring([.notificationSchedule])
+      var failure: Error?
       do {
         try center.startMonitoring(.notificationSchedule, during: notificationSchedule, events: events)
       } catch {
+        failure = error
         print("Error setting notification schedule: \(error)")
+      }
+      if let completion {
+        DispatchQueue.main.async { completion(failure) }
       }
     }
   }
