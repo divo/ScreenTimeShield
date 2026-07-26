@@ -18,9 +18,24 @@ This is an Xcode project (no SPM Package.swift or CocoaPods). Open `ScreenTimeSh
 # Build
 xcodebuild -scheme ScreenTimeShield -destination 'platform=iOS Simulator,name=iPhone 16'
 
-# Run tests
-xcodebuild test -scheme ScreenTimeShield -destination 'platform=iOS Simulator,name=iPhone 16'
+# Run the tests — BOTH commands are required, see the warning below
+swift test --package-path UnplugCore
+xcodebuild test -scheme ScreenTimeShield -destination 'platform=iOS Simulator,name=iPhone 17 Pro'
 ```
+
+`fastlane test` runs both in one step, if you have fastlane installed.
+
+Simulator names change between Xcode versions; `xcrun simctl list devices available` shows what
+exists. A destination that doesn't exist makes `xcodebuild` print the device list **and still exit
+0**, so check for `BUILD SUCCEEDED`/`TEST SUCCEEDED` rather than trusting the exit code.
+
+### ⚠️ `xcodebuild test` and ⌘U do not run every test
+
+The pure schedule and pricing logic is tested in the **`UnplugCore`** SwiftPM package. Its test
+target cannot be referenced from the app scheme's `TestAction`, so neither ⌘U nor
+`xcodebuild test -scheme ScreenTimeShield` executes it — they report success while those tests fail.
+
+A green ⌘U on its own does not mean the test suite passes. Always run `swift test` too.
 
 The app requires the **Family Controls** entitlement and must be run on a real device or simulator with Screen Time capabilities. It uses the `group.screentimeshield` app group for shared UserDefaults between the main app and extensions.
 

@@ -23,6 +23,18 @@ def asc_api_key
 end
 
 platform :ios do
+  # UnplugCore is a local SwiftPM package, and its test target cannot be referenced from the app
+  # scheme's TestAction — so ⌘U and a bare `xcodebuild test` silently skip it. Since that is where
+  # the pure schedule/pricing logic is tested, this lane is the only thing that runs everything.
+  desc "Run every test suite: the UnplugCore package and the app test targets"
+  lane :test do
+    sh("swift", "test", "--package-path", File.expand_path("../UnplugCore", __dir__))
+    run_tests(
+      scheme: "ScreenTimeShield",
+      devices: [ENV.fetch("UNPLUG_TEST_DEVICE", "iPhone 17 Pro")],
+    )
+  end
+
   desc "Upload localized App Store metadata + screenshots as drafts (does NOT submit)"
   lane :upload_listing do
     upload_to_app_store(
