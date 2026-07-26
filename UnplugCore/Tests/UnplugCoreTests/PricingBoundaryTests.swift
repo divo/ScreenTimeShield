@@ -100,8 +100,22 @@ final class PricingBoundaryTests: XCTestCase {
   }
 
   // MARK: V23 — an expired trial must not be restored by a backdated clock
+  //
+  // ACCEPTED RISK, 2026-07-26. Steven's call: "That's fine, no one will bother doing that." Rolling
+  // the device clock back does revive an expired trial, and we are choosing to live with it — it
+  // takes a deliberate trip into Settings and the prize is one $4.99 unlock.
+  //
+  // The two tests below therefore assert behaviour the app does NOT have, and are marked as expected
+  // failures rather than deleted: the reasoning stays discoverable, and if anything ever makes
+  // accessState monotonic these turn into unexpected passes and ask to be re-enabled.
+  //
+  // Closing it properly is roughly five lines — persist a high-water mark of the largest instant
+  // seen and never let `now` regress below it — worth doing if the Keychain work (V18/V25) lands
+  // and this code is open anyway.
 
   func testV23_expiredTrialIsNotRestoredWhenTheSuppliedInstantMovesBackwards() {
+    XCTExpectFailure("V23 accepted as won't-fix on 2026-07-26 — see the note above this test.")
+
     // V23: accessState has no monotonic anchor, so a decreasing `now` currently revives the trial.
     let trialStart = midGapPurchase
 
@@ -127,6 +141,8 @@ final class PricingBoundaryTests: XCTestCase {
   }
 
   func testV23_noInstantBeforeTrialStartYieldsTrial() {
+    XCTExpectFailure("V23 accepted as won't-fix on 2026-07-26 — see the note above.")
+
     // V23: sweep the supplied instant downwards past trial_start; none of it may read as .trial.
     let trialStart = midGapPurchase
     let offsets: [TimeInterval] = [8 * day, -1, -60, -day, -11 * day, -365 * day]
