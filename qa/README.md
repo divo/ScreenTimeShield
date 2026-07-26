@@ -20,13 +20,17 @@ decisions (26 Jul). No code changed yet.
 
 | Disposition | Items |
 |---|---|
-| **Fix** | `V01` `V02` `V04` `V05` `V07` `V09` `V11`+`V14` `V18` `V19` `V20` `V21` `V22` `N1` |
+| **Fix** | `V01` `V02` `V04` `V05` `V07` `V11`+`V14` `V18` `V19` `V20` `V21` `V22` `N1` |
 | **Fix — one piece of work: "complete the payment flow"** | `V15` + `V16` + `V18`'s persistence |
 | **Fix — two defensive lines** | `V12` |
-| **Won't fix — accepted** | `V06` `V17` `V23` `V24` |
+| **Won't fix — accepted** | `V06` `V09` `V17` `V23` `V24` |
 | **Verify on device, then harden with Keychain** | `V25` `N3` |
 | **Verify on device** | `V13` |
 | **Housekeeping created by this triage** | `N2` |
+
+All three open questions are now resolved (`V09` dropped, `V02`'s migration solved by reading the
+registered schedule, `V07` scoped to completing a guard that already exists). Nothing is blocked on a
+decision.
 
 ### Work that clusters — do these together, not item by item
 
@@ -40,11 +44,13 @@ decisions (26 Jul). No code changed yet.
   of a flag, and three findings collapse into one fix.
 - **Durability** — `V25` + `N3` + the Keychain move, gated on the device check first.
 
-### Three open questions before I start
+### Two things to know before touching any of it
 
-Each is a fork where guessing wrong means doing the work twice. They're marked ⚠️ in place below:
-`V09` (which removal rule to lock in), `V02` (how to handle the one-hour migration ambiguity), and
-`V07` (whether to refuse an overlapping quick-hour block).
+- **`V02` and `V01` want doing together.** Moving the schedule to minutes-of-day deletes the `Date`
+  round trip that causes `V01`, so fixing `V01` first means writing it twice.
+- **`V11` is load-bearing for more than itself.** `V07`'s existing guard, `V13`'s stuck-flag symptom
+  and `V14` all depend on the app knowing whether a block is active. Fix that once and three findings
+  get quieter.
 
 Three of the annotations rested on a claim that turned out to be wrong or incomplete — `V09`
 (deselection is *not* currently prevented), `V15` ("only one purchasing flow"), and `V25`
@@ -142,19 +148,33 @@ Touch points:
 - `AccessController.updateTrialEndedNotification` reads the same integer.
 - `ScheduleMath` already speaks minutes-of-day, so the call sites get simpler, not harder.
 
-**The migration is the risky part, and it has an unavoidable flaw worth stating plainly.** Existing
-users have a stored `Date` whose intended wall-clock time can only be recovered by applying *some*
-UTC offset — and the offset that was in force when they last dragged the slider is not recorded
-anywhere. So migration must read it with the current calendar, which is correct for everyone who
-hasn't changed zone or crossed a DST boundary since, and one hour out for those who have. There is no
-way to do better with the data we have.
+> **You asked: don't we re-arm the block every day?**
+>
+> **No — and that detail is what makes the bug's shape clear.**
 
-⚠️ **Open question — what do we do about the hour we can't recover?** Three options: (a) migrate
-silently and accept that a minority wake up with a window an hour off from what they last saw;
-(b) migrate silently but **disarm** anyone whose values migrate, forcing a deliberate re-arm — safest
-for correctness, annoying for people whose schedule was fine; (c) migrate and show a one-time
-"check your block times" notice. I'd take (c): it's honest, it's one alert, and it costs a user who
-was unaffected two seconds. (a) is defensible given the affected slice is small.
+`setSchedule` has exactly two callers: `applySchedule()` (`ContentView.swift:63`, on arming and on a
+selection edit) and `performRestrictHour()` (`:109`). The daily schedule is registered **once**, with
+`repeats: true`, and iOS repeats it from then on. The extension never registers anything.
+
+The consequence is worth internalising: because the registration carries bare hour/minute components,
+**iOS's own enforcement is already DST-correct** — it fires at 22:00 local every day, forever. The
+drift exists only in the app's stored `Date`. So nothing breaks at the DST boundary itself; what breaks
+is the *next* re-registration, when the app overwrites a correct schedule with drifted values. The
+symptom order is: display goes wrong first, enforcement follows later when you next edit anything.
+
+**Which also gives us a much better migration than I first thought.** `DeviceActivityCenter` exposes
+`schedule(for:) -> DeviceActivitySchedule?` — confirmed present in the iOS 26.2 SDK — and the schedule
+it returns holds the `intervalStart`/`intervalEnd` components **as originally registered**, undrifted.
+So for armed users we can recover the true intended hour and minute from the system rather than
+guessing at the stored `Date`:
+
+1. If a `.daily` schedule is registered, migrate from its components. Exact, no ambiguity.
+2. Otherwise fall back to reading the stored `Date` with the current calendar — possibly an hour off,
+   but nothing is being enforced for these users, so the stakes are low and they'll see the value on
+   the slider before they arm.
+
+That removes the unrecoverable-hour problem for precisely the users it mattered for, and the earlier
+open question about whether to warn them goes away with it.
 
 One piece is already covered: the composed case where drift inverts the window is proven red in
 `ScheduleMathBoundaryTests:256`, and the `V05` fix resolves that half.
@@ -228,12 +248,30 @@ whether *any* block should still be in force, and only clear if not:
   and leave `inside_interval` true.
 - Only clear when nothing is currently in force.
 
-⚠️ **Open question.** Should the quick hour block be *refusable* when a scheduled block is already
-running? Right now it happily registers a second overlapping activity, and that overlap is the root of
-the collision — the conditional teardown above is a guard against a situation we could decline to
-create. Refusing it (or greying out the button while a block is active) removes the whole class of
-problem; it also changes behaviour someone may rely on. I'd do both: conditional teardown as the
-safety net, plus declining the redundant overlap. Your call on the second half.
+> **You said: "that should be the behaviour already."**
+>
+> **It partly is — and finding out why it doesn't hold is the more useful answer.**
+
+The guard exists. `isQuickRestrictDisabled` (`ContentView.swift:31-33`) includes
+`model.insideInterval`, so the button *is* greyed out during an active block. Your memory of the intent
+is correct. It fails in two specific ways:
+
+1. **It only covers "a block is active right now", not "the hour I'm booking will overlap the window
+   that starts soon".** Tap it at 21:30 with a 22:00 block armed, and nothing objects: the hour block
+   is registered, the nightly block starts at 22:00, and at 22:30 the hour block's end tears down both.
+   This matches the verifier's frequency note exactly — *"needs quick-restrict tapped inside the 60 min
+   before the armed window starts"*.
+2. **The guard reads the flag `V11` says the app never sees updated.** So even the case it does cover is
+   unreliable: if the block started while the app was foregrounded, `model.insideInterval` is still
+   `false` and the button stays live.
+
+**Plan, then, is to make the existing intent actually hold** rather than invent new behaviour:
+
+- Extend `isQuickRestrictDisabled` to also disable when `now + 1 hour` would intersect the armed
+  window, computed from `blockedInterval` with `ScheduleMath` — no new state, just a better predicate.
+- Fix (2) by way of the `V11` change, so the flag it relies on is no longer the weak link.
+- Keep the conditional teardown in the extension regardless, as the safety net for any overlap that
+  still gets created (a schedule edit, a race at the boundary).
 
 **Device answer needed first** (matrix step for `V07`): whether re-applying inside `intervalDidEnd`
 actually sticks, or whether iOS treats that callback as terminal for the store.
@@ -284,24 +322,23 @@ called.
 any test target. `ScreenTimeShieldTests` contains only `StoreTests` and a placeholder. The invariant
 is enforced by one `if` statement in a view and nothing else.
 
-> **Decision: fix, and lock it in with a test.**
+> **Decision: won't fix.** — "drop 09, who cares."
 
-**Plan.** Lift `validateRestriction`'s logic out of `Model` so it can be tested at all — it is pure
-set arithmetic over token collections, so a small pure function in `UnplugCore` taking
-(previous tokens, new tokens, current state) and returning a verdict is enough. `Model` keeps a thin
-wrapper so the call site doesn't change shape.
+Accepted. Recording the consequence so it isn't a surprise later: during armed-but-inactive, a user
+can empty their selection, and the block will still activate on schedule — locking the UI while
+shielding nothing. It resolves itself when the window ends, and a user who just deselected everything
+probably doesn't want a block anyway. The `V11` fix makes the UI honest about it (a block genuinely
+*is* active; it just has nothing to shield). No test, and the removal-while-active guard stays
+enforced by a single `if` statement in a view.
 
-Then widen the guard from `insideInterval` to cover the armed state, and add tests pinning the whole
-truth table: removal while idle (allowed), removal while armed-but-inactive (currently allowed —
-**see open question below**), removal while active (blocked), addition in every state (always
-allowed), and emptying the selection entirely.
+<details><summary>The plan, if this is ever revisited</summary>
 
-⚠️ **Open question — which behaviour do we lock in for armed-but-inactive?** Two defensible answers
-and I don't want to pin the wrong one into a test: (a) **block the removal**, matching what you
-expected the code to do, which keeps an armed block's promise intact all day; or (b) **let it through
-and auto-disarm**, matching the existing "editing the schedule while inactive disarms" rule at
-`ContentView.swift:90-92`. I lean to (b) for consistency, but (a) is the stronger promise. Deciding
-this *is* the fix — the test just makes it permanent.
+Lift `validateRestriction`'s set arithmetic out of `Model` into `UnplugCore` so it is reachable from a
+test, widen the guard from `insideInterval` to the armed state, then pin the truth table: removal
+while idle / armed / active, addition in every state, and emptying the selection.
+
+</details>
+
 
 ### ❓ Turning Screen Time off mid-block may brick the app · `V13`
 *unresolved — depends on undocumented iOS behaviour*
