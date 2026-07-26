@@ -91,4 +91,29 @@ public struct TrackMapping {
     let snapped = Int((bounded / Double(snapMinutes)).rounded()) * snapMinutes
     return Swift.min(Swift.max(snapped, 0), MinuteOfDay.perDay)
   }
+
+  /// Which handle a drag should move.
+  ///
+  /// Normally the nearer one. When the two thumbs overlap, the touch cannot disambiguate them — the
+  /// one drawn on top would win every time and the other would be unreachable (V04) — so the drag
+  /// direction decides instead: dragging left takes the start handle, right takes the end handle.
+  /// That makes the buried handle reachable by dragging away from its neighbour, which is the
+  /// gesture someone would try anyway.
+  public func handle(forTouchX px: Double,
+                     startMinute: Int,
+                     endMinute: Int,
+                     thumbWidth: Double,
+                     movingRight: Bool) -> SliderHandle {
+    let startX = x(forMinute: startMinute)
+    let endX = x(forMinute: endMinute)
+    if abs(startX - endX) < thumbWidth {
+      return movingRight ? .end : .start
+    }
+    return abs(px - startX) <= abs(px - endX) ? .start : .end
+  }
+}
+
+public enum SliderHandle: Equatable {
+  case start
+  case end
 }

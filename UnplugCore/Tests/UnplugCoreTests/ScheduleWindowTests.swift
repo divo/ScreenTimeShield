@@ -101,6 +101,77 @@ final class ScheduleWindowTests: XCTestCase {
     }
   }
 
+  // MARK: - Handle selection (V04)
+
+  /// V04 — with the thumbs far apart, proximity decides and direction is irrelevant.
+  func testSeparatedHandlesAreChosenByProximity() {
+    let mapping = TrackMapping(width: trackWidth, inset: inset)
+    let start = 9 * 60
+    let end = 17 * 60
+
+    for movingRight in [true, false] {
+      XCTAssertEqual(mapping.handle(forTouchX: mapping.x(forMinute: start),
+                                    startMinute: start, endMinute: end,
+                                    thumbWidth: 28, movingRight: movingRight), .start)
+      XCTAssertEqual(mapping.handle(forTouchX: mapping.x(forMinute: end),
+                                    startMinute: start, endMinute: end,
+                                    thumbWidth: 28, movingRight: movingRight), .end)
+    }
+  }
+
+  /// V04 — the bug itself: when the thumbs overlap, the start handle is unreachable by proximity,
+  /// so direction must be able to select it.
+  func testOverlappingHandlesAreSelectableByDragDirection() {
+    let mapping = TrackMapping(width: trackWidth, inset: inset)
+    let start = 9 * 60
+    let end = start + 15   // the minimum window: the thumbs are drawn on top of each other
+
+    XCTAssertLessThan(abs(mapping.x(forMinute: start) - mapping.x(forMinute: end)), 28,
+                      "precondition: this window must actually overlap the thumbs")
+
+    let touch = mapping.x(forMinute: end)
+    XCTAssertEqual(mapping.handle(forTouchX: touch, startMinute: start, endMinute: end,
+                                  thumbWidth: 28, movingRight: false), .start,
+                   "V04: dragging left from an overlapping pair must be able to reach the start handle")
+    XCTAssertEqual(mapping.handle(forTouchX: touch, startMinute: start, endMinute: end,
+                                  thumbWidth: 28, movingRight: true), .end)
+  }
+
+  /// V04 — at every window length, each handle is reachable by *some* gesture: by touching it when
+  /// the thumbs are apart, and by drag direction when they overlap. That is what "not occluded"
+  /// means, and it is the property the old two-gesture version broke.
+  func testBothHandlesRemainReachableAtEveryWindowLength() {
+    let mapping = TrackMapping(width: trackWidth, inset: inset)
+    let thumb = 28.0
+    let start = 8 * 60
+
+    for length in stride(from: 15, through: 1425, by: 5) {
+      let end = MinuteOfDay.normalized(start + length)
+      let startX = mapping.x(forMinute: start)
+      let endX = mapping.x(forMinute: end)
+
+      func selection(touchingX px: Double, movingRight: Bool) -> SliderHandle {
+        mapping.handle(forTouchX: px, startMinute: start, endMinute: end,
+                       thumbWidth: thumb, movingRight: movingRight)
+      }
+
+      if abs(startX - endX) < thumb {
+        XCTAssertEqual(selection(touchingX: endX, movingRight: false), .start,
+                       "length \(length): overlapping thumbs, dragging left cannot reach start")
+        XCTAssertEqual(selection(touchingX: endX, movingRight: true), .end,
+                       "length \(length): overlapping thumbs, dragging right cannot reach end")
+      } else {
+        // Separated: proximity decides and must win regardless of which way the finger moves.
+        for movingRight in [true, false] {
+          XCTAssertEqual(selection(touchingX: startX, movingRight: movingRight), .start,
+                         "length \(length): touching the start thumb selected the wrong handle")
+          XCTAssertEqual(selection(touchingX: endX, movingRight: movingRight), .end,
+                         "length \(length): touching the end thumb selected the wrong handle")
+        }
+      }
+    }
+  }
+
   /// The mapping must hold across the device range, not just one width.
   func testRoundTripHoldsAcrossDeviceWidths() {
     for width in [320.0, 329.0, 361.0, 393.0, 430.0, 1024.0] {

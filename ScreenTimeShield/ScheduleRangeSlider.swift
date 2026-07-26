@@ -22,6 +22,12 @@ struct ScheduleRangeSlider: View {
   /// is drawn as the two segments flanking the window rather than the window itself.
   var inverted: Bool = false
 
+  /// Which handle the in-flight drag is moving, and where it was grabbed relative to that handle's
+  /// centre. Held for the whole drag so a gesture can't switch handles halfway through, and so the
+  /// handle moves with the finger instead of jumping to it.
+  @State private var activeHandle: SliderHandle?
+  @State private var grabOffsetX: CGFloat = 0
+
   private static let trackSpace = "ScheduleRangeSliderTrack"
   private let snapMinutes = 5
   private let minGap = 15            // minimum window length, in minutes
@@ -64,11 +70,16 @@ struct ScheduleRangeSlider: View {
             nowMarker(at: x(for: nowMinute, width: w), minute: nowMinute)
           }
 
-          handle(at: startX, minute: start, edge: .start, width: w)
-          handle(at: endX, minute: end, edge: .end, width: w)
+          handle(at: startX, minute: start)
+          handle(at: endX, minute: end)
         }
         .frame(height: thumbSize + 28, alignment: .center)
         .coordinateSpace(name: Self.trackSpace)
+        // One gesture for both handles. Two per-handle gestures meant that when the thumbs
+        // overlapped, whichever was drawn on top swallowed every touch and the other could not be
+        // grabbed at all (V04).
+        .contentShape(Rectangle())
+        .gesture(locked ? nil : trackDrag(width: w))
       }
       .frame(height: thumbSize + 28)
 
@@ -88,9 +99,52 @@ struct ScheduleRangeSlider: View {
       .opacity(locked ? 0.45 : 1)
   }
 
-  private enum Edge { case start, end }
+  private func trackDrag(width: CGFloat) -> some Gesture {
+    DragGesture(minimumDistance: 0, coordinateSpace: .named(Self.trackSpace))
+      .onChanged { value in
+        let map = mapping(width)
 
-  private func handle(at cx: CGFloat, minute: Int, edge: Edge, width: CGFloat) -> some View {
+        if activeHandle == nil {
+          let chosen = map.handle(forTouchX: value.startLocation.x,
+                                  startMinute: start,
+                                  endMinute: end,
+                                  thumbWidth: Double(thumbSize),
+                                  movingRight: value.translation.width >= 0)
+          activeHandle = chosen
+          // Grabbing anywhere on the thumb should move it by the drag distance, not teleport its
+          // centre to the finger. Taps on open track have no offset worth keeping.
+          let handleX = map.x(forMinute: chosen == .start ? start : end)
+          let offset = value.startLocation.x - CGFloat(handleX)
+          grabOffsetX = abs(offset) <= thumbSize / 2 ? offset : 0
+        }
+
+        let target = map.minute(forX: Double(value.location.x - grabOffsetX))
+        let candidate = MinuteOfDay.normalized(target)
+
+        // The gap is enforced on the window's wrap-aware length, not on raw ordering. Comparing
+        // integers directly underflows once an endpoint reaches midnight (end - minGap goes
+        // negative and normalizes to 23:45), and a wrapping window is legitimate here — an
+        // overnight block is the app's main use case.
+        switch activeHandle {
+        case .start:
+          start = ScheduleMath.windowLength(windowStart: candidate, windowEnd: end) >= minGap
+            ? candidate
+            : MinuteOfDay.normalized(end - minGap)
+        case .end:
+          end = ScheduleMath.windowLength(windowStart: start, windowEnd: candidate) >= minGap
+            ? candidate
+            : MinuteOfDay.normalized(start + minGap)
+        case nil:
+          break
+        }
+      }
+      .onEnded { _ in
+        activeHandle = nil
+        grabOffsetX = 0
+      }
+  }
+
+  private func handle(at cx: CGFloat, minute: Int) -> some View {
     // The circle is the layout element — vertically centered in the track ZStack so it lands
     // on the track line. The time pill floats above it as an overlay (fixed upward offset) so
     // it doesn't shift the circle's center.
@@ -110,25 +164,8 @@ struct ScheduleRangeSlider: View {
           .offset(y: -(thumbSize / 2 + 18))
       }
       .opacity(locked ? 0.6 : 1)
+      .allowsHitTesting(false)   // the track owns the gesture; see trackDrag(width:)
       .offset(x: cx - thumbSize / 2)
-      .gesture(locked ? nil : DragGesture(coordinateSpace: .named(Self.trackSpace))
-        .onChanged { value in
-          // The gap is enforced on the window's wrap-aware length, not on raw ordering. Comparing
-          // integers directly underflows once an endpoint reaches midnight (end - minGap goes
-          // negative and normalizes to 23:45), and a wrapping window is legitimate here — an
-          // overnight block is the app's main use case.
-          let candidate = MinuteOfDay.normalized(mapping(width).minute(forX: value.location.x))
-          switch edge {
-          case .start:
-            start = ScheduleMath.windowLength(windowStart: candidate, windowEnd: end) >= minGap
-              ? candidate
-              : MinuteOfDay.normalized(end - minGap)
-          case .end:
-            end = ScheduleMath.windowLength(windowStart: start, windowEnd: candidate) >= minGap
-              ? candidate
-              : MinuteOfDay.normalized(start + minGap)
-          }
-        })
   }
 
   private func nowMarker(at cx: CGFloat, minute: Int) -> some View {
