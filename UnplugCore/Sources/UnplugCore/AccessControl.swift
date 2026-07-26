@@ -67,7 +67,10 @@ public enum AccessEvaluator {
     guard let trialStart else {
       return Int(ceil(trialLength / PricingConfig.secondsPerDay))
     }
-    let remaining = trialLength - now.timeIntervalSince(trialStart)
+    // Clamped to the trial length: elapsed time is a signed interval, so an instant before
+    // trialStart would otherwise inflate the count past the trial itself ("18 days left" in a
+    // 7-day trial). The count shown to the user can never exceed what they were given.
+    let remaining = min(trialLength, trialLength - now.timeIntervalSince(trialStart))
     guard remaining > 0 else { return 0 }
     return Int(ceil(remaining / PricingConfig.secondsPerDay))
   }
