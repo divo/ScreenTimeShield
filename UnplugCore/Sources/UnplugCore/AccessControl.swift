@@ -23,8 +23,12 @@ public enum PricingConfig {
   /// per-version build-number resets (unlike the original `originalAppVersion` check).
   /// The IAP go-live date. Users whose original download predates this are grandfathered
   /// into permanent free access (compared against `AppTransaction.originalPurchaseDate`).
-  /// Keep in sync with the actual App Store release; adjust if the release date slips.
-  public static let cutoverDate = Date(timeIntervalSince1970: 1_782_345_600) // 2026-06-25 00:00 UTC
+  ///
+  /// **Must be at or after the actual 1.3 App Store release, and re-verified at every submission.**
+  /// Erring late is the expensive direction: anyone who bought the pre-IAP paid app after this date
+  /// is treated as a new user and asked to pay again. Erring early only gives a few $0.99 buyers
+  /// free access. `PricingBoundaryTests` fails while this predates the last known pre-IAP sale day.
+  public static let cutoverDate = Date(timeIntervalSince1970: 1_788_220_800) // 2026-09-01 00:00 UTC
   public static let trialLength: TimeInterval = 7 * 24 * 60 * 60
   public static let statThreshold = 5
   /// Debounce window for the noisy shield-presentation counter.
