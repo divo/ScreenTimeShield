@@ -4,12 +4,18 @@
 //
 
 import SwiftUI
+import UnplugCore
 
 /// Card wrapping the 24h schedule range slider, with a locked caption while active.
 struct ScheduleCard: View {
   @EnvironmentObject var model: Model
 
   private let cardCorner = Style.Radius.card
+
+  private static func currentMinute() -> Int {
+    let c = Calendar.current.dateComponents([.hour, .minute], from: Date())
+    return MinuteOfDay.normalized((c.hour ?? 0) * 60 + (c.minute ?? 0))
+  }
 
   var body: some View {
     VStack(alignment: .leading, spacing: 12) {
@@ -24,7 +30,7 @@ struct ScheduleCard: View {
         start: $model.start,
         end: $model.end,
         locked: model.insideInterval,
-        now: model.insideInterval ? Date() : nil,
+        nowMinute: model.insideInterval ? Self.currentMinute() : nil,
         inverted: model.blockOutsideWindow
       )
       if model.insideInterval {

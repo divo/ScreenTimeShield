@@ -54,6 +54,7 @@
 		BFA6E768C40D5F5A14DCBD28 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912F9D9B282616D8785C8978 /* SettingsView.swift */; };
 		C99F6A109280EE8AA6275103 /* QAMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2533604AB767B89C3AE6A63F /* QAMenuView.swift */; };
 		D5754AE38027ED9D0D25A17D /* AppCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ED3F83B01478F875A8A3C99 /* AppCard.swift */; };
+		A1C0DE0000000000000000B1 /* UnplugCore in Frameworks */ = {isa = PBXBuildFile; productRef = A1C0DE0000000000000000B2 /* UnplugCore */; };
 		FEFB7AD28DCA1B4648564C4D /* UnplugCore in Frameworks */ = {isa = PBXBuildFile; productRef = ACF9D0F184FF8E25627514C5 /* UnplugCore */; };
 /* End PBXBuildFile section */
 
@@ -212,6 +213,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				93EA81C32A8F8BB4005258D5 /* DeviceActivity.framework in Frameworks */,
+				A1C0DE0000000000000000B1 /* UnplugCore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -460,6 +462,9 @@
 			dependencies = (
 			);
 			name = CustomDeviceActivityMonitor;
+			packageProductDependencies = (
+				A1C0DE0000000000000000B2 /* UnplugCore */,
+			);
 			productName = CustomDeviceActivityMonitor;
 			productReference = 93EA81C12A8F8BB4005258D5 /* CustomDeviceActivityMonitor.appex */;
 			productType = "com.apple.product-type.app-extension";
@@ -1192,6 +1197,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 93B64D702B5FCC38009786B9 /* XCRemoteSwiftPackageReference "AlertToast" */;
 			productName = AlertToast;
+		};
+		A1C0DE0000000000000000B2 /* UnplugCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 82002CB1DD90A376DAA689FB /* XCLocalSwiftPackageReference "UnplugCore" */;
+			productName = UnplugCore;
 		};
 		ACF9D0F184FF8E25627514C5 /* UnplugCore */ = {
 			isa = XCSwiftPackageProductDependency;

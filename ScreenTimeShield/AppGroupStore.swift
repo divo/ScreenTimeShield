@@ -35,6 +35,12 @@ struct AppGroupStore: KeyValueStore {
     defaults.integer(forKey: key)
   }
 
+  /// Distinguishes "absent" from "zero", which `integer(forKey:)` cannot — 0 is a legitimate
+  /// minute-of-day (midnight), so callers reading a schedule time need the difference.
+  func integerIfPresent(forKey key: String) -> Int? {
+    defaults.object(forKey: key) as? Int
+  }
+
   func setInteger(_ value: Int, forKey key: String) {
     defaults.set(value, forKey: key)
   }

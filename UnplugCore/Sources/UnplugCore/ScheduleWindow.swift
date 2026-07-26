@@ -40,9 +40,20 @@ public enum MinuteOfDay {
   public static func minuteOfHour(_ minute: Int) -> Int { normalized(minute) % 60 }
 
   /// 24-hour `HH:mm`. Only for contexts that need a locale-independent label; user-facing times
-  /// should be formatted by the view against the user's locale.
+  /// should use `localizedTime(_:)`.
   public static func hhmm(_ minute: Int) -> String {
     String(format: "%02d:%02d", hour(minute), minuteOfHour(minute))
+  }
+
+  /// Time of day in the user's locale (so a 12-hour locale gets "10:30 PM"). The `Calendar` call
+  /// cannot fail here — `hour` is always 0...23 — and falls back to a real 24-hour label rather
+  /// than to `Date()`, which is the substitution that caused V01.
+  public static func localizedTime(_ minute: Int) -> String {
+    var components = DateComponents()
+    components.hour = hour(minute)
+    components.minute = minuteOfHour(minute)
+    guard let date = Calendar.current.date(from: components) else { return hhmm(minute) }
+    return date.formatted(date: .omitted, time: .shortened)
   }
 }
 

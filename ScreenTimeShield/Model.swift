@@ -10,6 +10,7 @@ import FamilyControls
 import ManagedSettings
 import DeviceActivity
 import SwiftUI
+import UnplugCore
 
 private let _model = Model()
 
@@ -31,31 +32,89 @@ class Model: ObservableObject {
   /// explicit "Start blocking" action does. Synced from DeviceActivityCenter on launch.
   @AppStorage("is_armed", store: UserDefaults(suiteName: Model.userDefaultsSuite)) var isArmed: Bool = false
 
-  /// The interval actually handed to the schedule. In allow-only mode it's the inverse of the
-  /// picked window (start > end), which `DeviceActivitySchedule` interprets as wrapping midnight.
-  var blockedInterval: (start: Date, end: Date) {
+  /// The interval actually handed to the schedule, in minutes-of-day. In allow-only mode it's the
+  /// inverse of the picked window (start > end), which `DeviceActivitySchedule` interprets as
+  /// wrapping midnight.
+  var blockedInterval: (start: Int, end: Int) {
     blockOutsideWindow ? (start: end, end: start) : (start: start, end: end)
   }
-  
+
   @Published var selectionToRestrict: FamilyActivitySelection = FamilyActivitySelection()
-  @Published var start: Date = (UserDefaults(suiteName: Model.userDefaultsSuite)?.object(forKey: "start") as? Date) ??
-    Calendar.current.date(bySettingHour: 9, minute: 0, second: 0, of: Date.now)! {
+
+  /// Window bounds as minutes since midnight. Stored as integers rather than `Date` instants: an
+  /// instant has to be re-interpreted through `Calendar.current` on every read, which is what made
+  /// the window drift an hour at each DST change and shift again on travel (V02).
+  @Published var start: Int = Model.storedMinutes(forKey: Model.startMinutesKey, fallback: 9 * 60) {
     didSet {
-      UserDefaults(suiteName: Model.userDefaultsSuite)!.set(start, forKey: "start")
+      UserDefaults(suiteName: Model.userDefaultsSuite)!.set(start, forKey: Model.startMinutesKey)
     }
   }
-  
-  @Published var end: Date = (UserDefaults(suiteName: Model.userDefaultsSuite)?.object(forKey: "end") as? Date) ??
-    Calendar.current.date(bySettingHour: 17, minute: 0, second: 0, of: Date.now)! {
+
+  @Published var end: Int = Model.storedMinutes(forKey: Model.endMinutesKey, fallback: 17 * 60) {
     didSet {
-      UserDefaults(suiteName: Model.userDefaultsSuite)!.set(end, forKey: "end")
+      UserDefaults(suiteName: Model.userDefaultsSuite)!.set(end, forKey: Model.endMinutesKey)
     }
   }
-  
+
   class var shared: Model {
     return _model
   }
-  
+
+  // MARK: - Schedule storage (minutes-of-day) + one-time migration from Date instants
+
+  static let startMinutesKey = "start_minutes"
+  static let endMinutesKey = "end_minutes"
+
+  private static func storedMinutes(forKey key: String, fallback: Int) -> Int {
+    _ = migrateScheduleStorage
+    let defaults = UserDefaults(suiteName: userDefaultsSuite)!
+    guard let stored = defaults.object(forKey: key) as? Int else { return fallback }
+    return MinuteOfDay.normalized(stored)
+  }
+
+  /// Runs once, before `start`/`end` are first read.
+  ///
+  /// The old `Date` instants can only be turned back into wall-clock times by applying *some* UTC
+  /// offset, and the one in force when the user last dragged the slider was never recorded — so
+  /// converting them is a guess that is an hour wrong for anyone who has since changed zone or
+  /// crossed a DST boundary. The system holds the answer though: a registered `.daily` activity
+  /// carries the hour/minute components as they were originally registered, undrifted. Prefer those,
+  /// and fall back to converting the stored instants only for users with nothing registered — for
+  /// whom nothing is being enforced, so a one-hour error costs them nothing before they next look.
+  private static let migrateScheduleStorage: Void = {
+    let defaults = UserDefaults(suiteName: userDefaultsSuite)!
+    guard defaults.object(forKey: startMinutesKey) == nil else { return }
+
+    let blockOutside = defaults.bool(forKey: "block_outside_window")
+
+    if let schedule = DeviceActivityCenter().schedule(for: .daily),
+       let registeredStart = minutes(from: schedule.intervalStart),
+       let registeredEnd = minutes(from: schedule.intervalEnd) {
+      // The registered interval is the *blocked* one, so undo the allow-only inversion.
+      let picked = blockOutside ? (start: registeredEnd, end: registeredStart)
+                                : (start: registeredStart, end: registeredEnd)
+      defaults.set(picked.start, forKey: startMinutesKey)
+      defaults.set(picked.end, forKey: endMinutesKey)
+      return
+    }
+
+    if let legacyStart = defaults.object(forKey: "start") as? Date,
+       let legacyEnd = defaults.object(forKey: "end") as? Date {
+      defaults.set(minutesOfDay(legacyStart), forKey: startMinutesKey)
+      defaults.set(minutesOfDay(legacyEnd), forKey: endMinutesKey)
+    }
+  }()
+
+  private static func minutes(from components: DateComponents) -> Int? {
+    guard let hour = components.hour else { return nil }
+    return MinuteOfDay.normalized(hour * 60 + (components.minute ?? 0))
+  }
+
+  private static func minutesOfDay(_ date: Date) -> Int {
+    let components = Calendar.current.dateComponents([.hour, .minute], from: date)
+    return MinuteOfDay.normalized((components.hour ?? 0) * 60 + (components.minute ?? 0))
+  }
+
   func loadSelection() {
     self.selectionToRestrict = savedSelection() ?? FamilyActivitySelection()
     if !isEmpty() {

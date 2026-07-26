@@ -4,16 +4,20 @@
 //
 
 import SwiftUI
+import UnplugCore
 
-/// A horizontal 24-hour dual-handle range selector bound to two `Date` values
-/// (hour/minute only). Same-day window for now — overnight (end < start) is a
-/// known follow-up.
+/// A horizontal 24-hour dual-handle range selector over minutes-of-day.
+///
+/// Bound to `Int` minutes rather than `Date` instants: the old version converted back and forth
+/// through `Calendar`, which meant the right-hand edge asked for hour 24, got nil, and silently
+/// substituted the current time (V01). The pixel↔minute mapping lives in `UnplugCore.TrackMapping`
+/// so it can be tested; this view only draws.
 struct ScheduleRangeSlider: View {
-  @Binding var start: Date
-  @Binding var end: Date
+  @Binding var start: Int
+  @Binding var end: Int
   var locked: Bool = false
   /// When non-nil, draws a "now" marker on the track (used while a block is active).
-  var now: Date? = nil
+  var nowMinute: Int? = nil
   /// When true, the blocked region is *outside* the picked window (allow-only mode), so the fill
   /// is drawn as the two segments flanking the window rather than the window itself.
   var inverted: Bool = false
@@ -21,46 +25,27 @@ struct ScheduleRangeSlider: View {
   private static let trackSpace = "ScheduleRangeSliderTrack"
   private let snapMinutes = 5
   private let minGap = 15            // minimum window length, in minutes
-  private let totalMinutes = 24 * 60
   private let trackHeight: CGFloat = 8
   private let thumbSize: CGFloat = 28
-  // Half the widest hour-axis label. The track, fill, handles, and labels all map
-  // time onto [labelInset, width - labelInset] so everything shares one coordinate
-  // system and the endpoint labels never clip.
+  // Half the widest hour-axis label. The track, fill, handles, and labels all map time onto
+  // [labelInset, width - labelInset] so everything shares one coordinate system and the endpoint
+  // labels never clip.
   private let labelInset: CGFloat = 24
 
-  private func usable(_ width: CGFloat) -> CGFloat { max(width - 2 * labelInset, 1) }
-
-  private func minutes(of date: Date) -> Int {
-    let c = Calendar.current.dateComponents([.hour, .minute], from: date)
-    return (c.hour ?? 0) * 60 + (c.minute ?? 0)
-  }
-
-  private func dateAtMinute(_ minute: Int) -> Date {
-    let m = max(0, min(totalMinutes, minute))
-    return Calendar.current.date(bySettingHour: m / 60, minute: m % 60, second: 0, of: Date()) ?? Date()
+  private func mapping(_ width: CGFloat) -> TrackMapping {
+    TrackMapping(width: width, inset: labelInset, snapMinutes: snapMinutes)
   }
 
   private func x(for minute: Int, width: CGFloat) -> CGFloat {
-    labelInset + usable(width) * CGFloat(minute) / CGFloat(totalMinutes)
-  }
-
-  private func minute(forX px: CGFloat, width: CGFloat) -> Int {
-    let raw = Int(((px - labelInset) / usable(width)) * CGFloat(totalMinutes))
-    let snapped = Int((Double(raw) / Double(snapMinutes)).rounded()) * snapMinutes
-    return max(0, min(totalMinutes, snapped))
-  }
-
-  private func label(_ date: Date) -> String {
-    date.formatted(date: .omitted, time: .shortened)
+    CGFloat(mapping(width).x(forMinute: minute))
   }
 
   var body: some View {
     VStack(spacing: 10) {
       GeometryReader { geo in
         let w = geo.size.width
-        let startX = x(for: minutes(of: start), width: w)
-        let endX = x(for: minutes(of: end), width: w)
+        let startX = x(for: start, width: w)
+        let endX = x(for: end, width: w)
 
         ZStack(alignment: .leading) {
           Capsule()
@@ -75,12 +60,12 @@ struct ScheduleRangeSlider: View {
             fillBar(from: startX, to: endX)
           }
 
-          if let now {
-            nowMarker(at: x(for: minutes(of: now), width: w), date: now)
+          if let nowMinute {
+            nowMarker(at: x(for: nowMinute, width: w), minute: nowMinute)
           }
 
-          handle(at: startX, date: start, edge: .start, width: w)
-          handle(at: endX, date: end, edge: .end, width: w)
+          handle(at: startX, minute: start, edge: .start, width: w)
+          handle(at: endX, minute: end, edge: .end, width: w)
         }
         .frame(height: thumbSize + 28, alignment: .center)
         .coordinateSpace(name: Self.trackSpace)
@@ -105,7 +90,7 @@ struct ScheduleRangeSlider: View {
 
   private enum Edge { case start, end }
 
-  private func handle(at cx: CGFloat, date: Date, edge: Edge, width: CGFloat) -> some View {
+  private func handle(at cx: CGFloat, minute: Int, edge: Edge, width: CGFloat) -> some View {
     // The circle is the layout element — vertically centered in the track ZStack so it lands
     // on the track line. The time pill floats above it as an overlay (fixed upward offset) so
     // it doesn't shift the circle's center.
@@ -115,7 +100,7 @@ struct ScheduleRangeSlider: View {
       .overlay(Circle().stroke(Style.primaryColor.opacity(locked ? 0.4 : 1), lineWidth: 3))
       .shadow(color: .black.opacity(0.12), radius: 3, y: 1)
       .overlay {
-        Text(label(date))
+        Text(MinuteOfDay.localizedTime(minute))
           .font(.caption.weight(.semibold))
           .foregroundStyle(.white)
           .padding(.horizontal, 8)
@@ -128,22 +113,30 @@ struct ScheduleRangeSlider: View {
       .offset(x: cx - thumbSize / 2)
       .gesture(locked ? nil : DragGesture(coordinateSpace: .named(Self.trackSpace))
         .onChanged { value in
-          let m = minute(forX: value.location.x, width: width)
+          // The gap is enforced on the window's wrap-aware length, not on raw ordering. Comparing
+          // integers directly underflows once an endpoint reaches midnight (end - minGap goes
+          // negative and normalizes to 23:45), and a wrapping window is legitimate here — an
+          // overnight block is the app's main use case.
+          let candidate = MinuteOfDay.normalized(mapping(width).minute(forX: value.location.x))
           switch edge {
           case .start:
-            start = dateAtMinute(min(m, minutes(of: end) - minGap))
+            start = ScheduleMath.windowLength(windowStart: candidate, windowEnd: end) >= minGap
+              ? candidate
+              : MinuteOfDay.normalized(end - minGap)
           case .end:
-            end = dateAtMinute(max(m, minutes(of: start) + minGap))
+            end = ScheduleMath.windowLength(windowStart: start, windowEnd: candidate) >= minGap
+              ? candidate
+              : MinuteOfDay.normalized(start + minGap)
           }
         })
   }
 
-  private func nowMarker(at cx: CGFloat, date: Date) -> some View {
+  private func nowMarker(at cx: CGFloat, minute: Int) -> some View {
     Rectangle()
       .fill(Style.primaryColor)
       .frame(width: 2, height: thumbSize + 6)
       .overlay {
-        Text(label(date))
+        Text(MinuteOfDay.localizedTime(minute))
           .font(.caption2.weight(.semibold))
           .foregroundStyle(Style.primaryColor)
           .fixedSize()
@@ -157,7 +150,9 @@ struct ScheduleRangeSlider: View {
       let w = geo.size.width
       ForEach([0, 6, 12, 18, 24], id: \.self) { hour in
         let cx = x(for: hour * 60, width: w)
-        Text(hour == 24 ? "24:00" : String(format: "%02d:00", hour))
+        // Labelled in the user's locale like the handle pills, so a 12-hour locale doesn't get a
+        // 24-hour axis under 12-hour handles (F3.8).
+        Text(MinuteOfDay.localizedTime(hour * 60))
           .font(.caption2)
           .foregroundStyle(.secondary)
           .fixedSize()
@@ -171,20 +166,20 @@ struct ScheduleRangeSlider: View {
 
 struct ScheduleRangeSlider_Previews: PreviewProvider {
   struct Harness: View {
-    @State var start = Calendar.current.date(bySettingHour: 9, minute: 0, second: 0, of: Date())!
-    @State var end = Calendar.current.date(bySettingHour: 17, minute: 0, second: 0, of: Date())!
+    @State var start = 9 * 60
+    @State var end = 17 * 60
     var locked: Bool
-    var now: Date?
+    var nowMinute: Int?
     var body: some View {
-      ScheduleRangeSlider(start: $start, end: $end, locked: locked, now: now)
+      ScheduleRangeSlider(start: $start, end: $end, locked: locked, nowMinute: nowMinute)
         .padding(24)
     }
   }
   static var previews: some View {
     Group {
-      Harness(locked: false, now: nil)
+      Harness(locked: false, nowMinute: nil)
         .previewDisplayName("Editable")
-      Harness(locked: true, now: Calendar.current.date(bySettingHour: 13, minute: 36, second: 0, of: Date()))
+      Harness(locked: true, nowMinute: 13 * 60 + 36)
         .previewDisplayName("Locked + now")
     }
     .previewLayout(.sizeThatFits)

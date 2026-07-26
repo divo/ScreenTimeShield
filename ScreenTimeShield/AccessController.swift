@@ -128,15 +128,17 @@ final class AccessController: ObservableObject {
     center.removePendingNotificationRequests(withIdentifiers: [Self.trialEndedNotificationID])
 
     guard accessState == .expired else { return }
-    // "start" is the schedule start time the Model persists into the app group.
-    guard let start = kv.date(forKey: "start") else { return }
+    // The schedule start time the Model persists into the app group, as minutes since midnight.
+    guard let startMinutes = kv.integerIfPresent(forKey: Model.startMinutesKey) else { return }
 
     let content = UNMutableNotificationContent()
     content.title = String(localized: "Your blocks are off")
     content.body = String(localized: "Nothing's stopping the scroll right now. Unlock Unplug to bring your block back.")
     content.sound = .default
 
-    let comps = Calendar.current.dateComponents([.hour, .minute], from: start)
+    var comps = DateComponents()
+    comps.hour = MinuteOfDay.hour(startMinutes)
+    comps.minute = MinuteOfDay.minuteOfHour(startMinutes)
     let trigger = UNCalendarNotificationTrigger(dateMatching: comps, repeats: true)
     let request = UNNotificationRequest(identifier: Self.trialEndedNotificationID, content: content, trigger: trigger)
     center.add(request)
@@ -192,8 +194,8 @@ final class AccessController: ObservableObject {
 
     // Reset the in-memory @Published model values (not auto-cleared by removing the domain).
     model.selectionToRestrict = FamilyActivitySelection()
-    model.start = Calendar.current.date(bySettingHour: 9, minute: 0, second: 0, of: Date()) ?? Date()
-    model.end = Calendar.current.date(bySettingHour: 17, minute: 0, second: 0, of: Date()) ?? Date()
+    model.start = 9 * 60
+    model.end = 17 * 60
     model.notificationsEnabled = true
     model.hasSelection = false
     model.insideInterval = false

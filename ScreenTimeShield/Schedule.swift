@@ -7,6 +7,7 @@
 
 import Foundation
 import DeviceActivity
+import UnplugCore
 
 extension DeviceActivityName {
   static let daily = Self("daily")
@@ -25,11 +26,11 @@ class Schedule {
   /// `completion` reports the registration outcome on the main queue. It must not be ignored for the
   /// arming path: a thrown `startMonitoring` leaves nothing registered, so a caller that assumes
   /// success shows a user a block that will never fire.
-  static public func setSchedule(start: Date, end: Date, event: DeviceActivityEvent,
+  static public func setSchedule(start: Int, end: Int, event: DeviceActivityEvent,
                                  repeats: Bool = true,
                                  completion: ((Error?) -> Void)? = nil) {
-    let schedule = DeviceActivitySchedule(intervalStart: components(from: start),
-                                          intervalEnd: components(from: end),
+    let schedule = DeviceActivitySchedule(intervalStart: components(fromMinutes: start),
+                                          intervalEnd: components(fromMinutes: end),
                                           repeats: repeats)
     let activityName: DeviceActivityName = repeats ? .daily : .hourly
     let eventName = DeviceActivityEvent.Name("ScreenTimeShield.Event")
@@ -50,14 +51,14 @@ class Schedule {
     }
   }
 
-  static public func setNotificationSchedule(restrictionStart: Date,
-                                             restrictionEnd: Date,
+  static public func setNotificationSchedule(restrictionStart: Int,
+                                             restrictionEnd: Int,
                                              events: [DeviceActivityEvent.Name: DeviceActivityEvent],
                                              completion: ((Error?) -> Void)? = nil) {
     // Inverse schedule: active when restrictions are *not* (the gap between restrictionEnd and the
     // next restrictionStart), so refocus notifications fire outside blocked hours.
-    let notificationSchedule = DeviceActivitySchedule(intervalStart: components(from: restrictionEnd),
-                                                      intervalEnd: components(from: restrictionStart),
+    let notificationSchedule = DeviceActivitySchedule(intervalStart: components(fromMinutes: restrictionEnd),
+                                                      intervalEnd: components(fromMinutes: restrictionStart),
                                                       repeats: true)
     queue.async {
       let center = DeviceActivityCenter()
@@ -82,7 +83,9 @@ class Schedule {
     }
   }
 
-  static func components(from date: Date) -> DateComponents {
-    Calendar.current.dateComponents([.hour, .minute], from: date)
+  /// Minutes-of-day straight to hour/minute components. No `Calendar`, so no time zone is involved
+  /// and the registered schedule can't drift with the device's offset (V02).
+  static func components(fromMinutes minute: Int) -> DateComponents {
+    DateComponents(hour: MinuteOfDay.hour(minute), minute: MinuteOfDay.minuteOfHour(minute))
   }
 }

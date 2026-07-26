@@ -59,8 +59,16 @@ struct ContentView: View {
   /// arms; that's the explicit Start tap. Expired access silently skips (paywall only via the CTAs).
   private func applySchedule() {
     guard model.isArmed, !isExpired, !model.isEmpty() else { return }
-    access.startTrialIfNeeded()
     let bi = model.blockedInterval
+    // A degenerate interval means one of two useless extremes depending on mode — nothing blocked,
+    // or the entire day blocked with no free time — and neither is what the user asked for (F3.7).
+    // The slider's minimum gap should prevent it; a migration or a QA reset could still produce it.
+    guard bi.start != bi.end else {
+      model.isArmed = false
+      showScheduleError = true
+      return
+    }
+    access.startTrialIfNeeded()
     Schedule.setSchedule(start: bi.start, end: bi.end, event: model.activityEvent(), repeats: true) { error in
       guard error != nil else { return }
       // Registration failed, so nothing is monitoring. Drop back to disarmed rather than showing a
@@ -112,32 +120,27 @@ struct ContentView: View {
 
   private func performRestrictHour() {
     access.startTrialIfNeeded()
-    let now = Date()
-    let oneHourLater = Calendar.current.date(byAdding: .hour, value: 1, to: now)!
-    Schedule.setSchedule(start: now, end: oneHourLater, event: model.activityEvent(), repeats: false) { error in
+    let now = nowMinutes()
+    Schedule.setSchedule(start: now, end: MinuteOfDay.normalized(now + 60),
+                         event: model.activityEvent(), repeats: false) { error in
       if error != nil { showScheduleError = true }
     }
   }
 
   // MARK: Risk / confirmation
 
-  private func minutesOfDay(_ date: Date) -> Int {
-    let c = Calendar.current.dateComponents([.hour, .minute], from: date)
-    return (c.hour ?? 0) * 60 + (c.minute ?? 0)
-  }
-
-  private func timeString(_ date: Date) -> String {
-    date.formatted(date: .omitted, time: .shortened)
+  /// The current wall-clock time as minutes since midnight.
+  private func nowMinutes() -> Int {
+    let c = Calendar.current.dateComponents([.hour, .minute], from: Date())
+    return MinuteOfDay.normalized((c.hour ?? 0) * 60 + (c.minute ?? 0))
   }
 
   /// Arming is risky (→ confirm) when it would lock you in immediately or leave almost no free time.
   private func isRiskyToArm() -> Bool {
     let bi = model.blockedInterval
-    let activeNow = ScheduleMath.windowContains(now: minutesOfDay(Date()),
-                                                start: minutesOfDay(bi.start),
-                                                end: minutesOfDay(bi.end))
-    let free = ScheduleMath.freeMinutes(windowStart: minutesOfDay(model.start),
-                                        windowEnd: minutesOfDay(model.end),
+    let activeNow = ScheduleMath.windowContains(now: nowMinutes(), start: bi.start, end: bi.end)
+    let free = ScheduleMath.freeMinutes(windowStart: model.start,
+                                        windowEnd: model.end,
                                         blockOutsideWindow: model.blockOutsideWindow)
     return activeNow || free <= 30
   }
@@ -148,11 +151,9 @@ struct ContentView: View {
       return String(localized: "This blocks everything for the next hour and can't be stopped until then.")
     case .schedule:
       let bi = model.blockedInterval
-      let activeNow = ScheduleMath.windowContains(now: minutesOfDay(Date()),
-                                                  start: minutesOfDay(bi.start),
-                                                  end: minutesOfDay(bi.end))
+      let activeNow = ScheduleMath.windowContains(now: nowMinutes(), start: bi.start, end: bi.end)
       return activeNow
-        ? String(localized: "Blocking starts now and can't be stopped until \(timeString(bi.end)).")
+        ? String(localized: "Blocking starts now and can't be stopped until \(MinuteOfDay.localizedTime(bi.end)).")
         : String(localized: "This leaves almost no time unblocked, and can't be changed once active.")
     }
   }
