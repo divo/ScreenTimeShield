@@ -49,12 +49,12 @@
 		962DDB35068EE01990DADD48 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26C1F2411CDBB447F76426F0 /* Store.swift */; };
 		9948EFCEF4059E15D7BDF020 /* StoreKit.storekit in Resources */ = {isa = PBXBuildFile; fileRef = D0D4E35CAA82A943631086D1 /* StoreKit.storekit */; };
 		9A1B2C3D4E5F60718293A4B5 /* PermissionDeniedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F7E6D5C4B3A29180A1B2C3D /* PermissionDeniedView.swift */; };
+		A1C0DE0000000000000000B1 /* UnplugCore in Frameworks */ = {isa = PBXBuildFile; productRef = A1C0DE0000000000000000B2 /* UnplugCore */; };
 		AF69D4EFC01097B8E185AE13 /* RestrictedAppList.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8D8AFE52D2E982A1B980FB9 /* RestrictedAppList.swift */; };
 		B1D3AE259C2136E170FDD474 /* StoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C23184A50D8C703A2A7C2B3 /* StoreTests.swift */; };
 		BFA6E768C40D5F5A14DCBD28 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912F9D9B282616D8785C8978 /* SettingsView.swift */; };
 		C99F6A109280EE8AA6275103 /* QAMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2533604AB767B89C3AE6A63F /* QAMenuView.swift */; };
 		D5754AE38027ED9D0D25A17D /* AppCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ED3F83B01478F875A8A3C99 /* AppCard.swift */; };
-		A1C0DE0000000000000000B1 /* UnplugCore in Frameworks */ = {isa = PBXBuildFile; productRef = A1C0DE0000000000000000B2 /* UnplugCore */; };
 		FEFB7AD28DCA1B4648564C4D /* UnplugCore in Frameworks */ = {isa = PBXBuildFile; productRef = ACF9D0F184FF8E25627514C5 /* UnplugCore */; };
 /* End PBXBuildFile section */
 
@@ -821,7 +821,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = ScreenTimeShield/ScreenTimeShield.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEVELOPMENT_ASSET_PATHS = "\"ScreenTimeShield/Preview Content\"";
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -858,7 +858,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = ScreenTimeShield/ScreenTimeShield.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEVELOPMENT_ASSET_PATHS = "\"ScreenTimeShield/Preview Content\"";
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
