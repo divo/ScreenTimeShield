@@ -17,13 +17,13 @@ final class PricingBoundaryTests: XCTestCase {
   private let day: TimeInterval = 24 * 60 * 60
   private let sevenDays: TimeInterval = 7 * 24 * 60 * 60
 
-  /// 2026-07-25 00:00 UTC. A day on which the live App Store build was still the pre-IAP
+  /// 2026-08-01 00:00 UTC. A day on which the live App Store build was still the pre-IAP
   /// paid build: the lifetime IAP was "Ready to Submit" and 1.3 had been pulled from review
   /// on 2026-06-19 (status.md). Anyone who paid $0.99 on this day bought the pre-IAP app and
   /// must therefore be grandfathered. Pinned as a literal rather than read from `Date()` so
-  /// the verdict is deterministic and stays meaningful next month; move it forward (with the
-  /// production constant) if the release slips further.
-  private let lastDayThePreIAPBuildWasOnSale = Date(timeIntervalSince1970: 1_784_937_600)
+  /// the verdict is deterministic; **bump it to the submission day whenever the release slips**,
+  /// otherwise this guard silently stops covering the buyers who came after it.
+  private let lastDayThePreIAPBuildWasOnSale = Date(timeIntervalSince1970: 1_785_542_400)
 
   /// 2026-07-01 00:00 UTC — the concrete buyer in V22's failure trace.
   private let midGapPurchase = Date(timeIntervalSince1970: 1_782_864_000)
@@ -54,7 +54,7 @@ final class PricingBoundaryTests: XCTestCase {
     let gapPurchases: [(String, Date)] = [
       ("2026-06-25 (the slipped target release day — 1.3 did not ship)", slippedTargetReleaseDay),
       ("2026-07-01 (V22's traced buyer)", midGapPurchase),
-      ("2026-07-25 (last confirmed pre-IAP sale day)", lastDayThePreIAPBuildWasOnSale),
+      ("2026-08-01 (last confirmed pre-IAP sale day)", lastDayThePreIAPBuildWasOnSale),
     ]
     for (label, purchase) in gapPurchases {
       XCTAssertTrue(
