@@ -55,7 +55,8 @@ The app has **four targets** that work together:
 
 - **Model** (`Model.swift`) — Singleton (`Model.shared`) used by both the main app and the device activity monitor extension. Persists app selection via `PropertyListEncoder` into shared `UserDefaults`. Manages `ManagedSettingsStore` for applying/clearing shields.
 - **Schedule** (`Schedule.swift`) — Static methods to register `DeviceActivitySchedule` with the system. Supports both repeating daily schedules and one-off hourly restrictions. Also manages an inverse "notification schedule" that monitors app usage outside restriction hours.
-- **State sharing** — Extensions and the main app communicate through the `group.screentimeshield` app group UserDefaults. Key values: `ScreenTimeSeletion` (the encoded `FamilyActivitySelection`), `inside_interval` (bool), `start`/`end` (dates), `notifications_enabled` (bool).
+- **State sharing** — Extensions and the main app communicate through the `group.screentimeshield` app group UserDefaults. Key values: `ScreenTimeSeletion` (the encoded `FamilyActivitySelection`), `inside_interval` (bool), `start_minutes`/`end_minutes` (Int, minutes since midnight), `is_armed` (bool), `block_outside_window` (bool), `notifications_enabled` (bool), `enforcement_allowed` (bool, the cached entitlement gate the extensions read), `trial_start`, `times_stopped`.
+- **The schedule window is minutes-of-day, not `Date`** — `Model.start`/`end` are `Int` (0..<1439). They used to be `Date` instants re-interpreted through `Calendar.current` on every read, which made the window drift an hour at each DST change and let the slider's right-hand edge resolve to nothing. A one-time migration (`Model.migrateScheduleStorage`) reads the undrifted interval back from `DeviceActivityCenter.schedule(for: .daily)` where one is registered, and falls back to converting the legacy `start`/`end` instants otherwise.
 
 ### Dependencies
 
@@ -73,4 +74,6 @@ Product notes and marketing plan are in Obsidian: `~/Library/Mobile Documents/iC
 
 - `DeviceActivityName` extensions are duplicated in both `Schedule.swift` and `DeviceActivityMonitorExtension.swift` since extensions run in separate processes and can't share the main app's code directly
 - The `insideInterval` flag is the source of truth for whether restrictions are currently active — it gates UI controls (schedule pickers become disabled)
-- `validateRestriction()` exists in Model but is currently commented out in the UI — it was designed to prevent removing apps from an active block
+- `validateRestriction()` prevents removing apps from a block, but only while `insideInterval` is true (`ContentView.swift:221`) — during the armed-but-not-yet-active state a selection can still be emptied. That gap is a known, accepted risk (`V09` in `qa/README.md`), and nothing tests it.
+- `Schedule.setSchedule`/`setNotificationSchedule` take a completion that reports registration failure on the main queue. Use it on any arming path: a thrown `startMonitoring` leaves nothing registered, and the UI must not claim a block the system never accepted.
+- `UnplugCore` is linked by the app, `CustomShieldConfiguration` **and** `CustomDeviceActivityMonitor` (the last one because it compiles `Model.swift`). It declares `platforms: [.iOS(.v16), .macOS(.v13)]` so `swift test` runs natively against the same availability the app gets.

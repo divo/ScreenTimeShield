@@ -1,5 +1,25 @@
 # Device matrix — manual QA script for features 3, 4, 9
 
+> ## ⚠️ Read this first (added 2026-08-02)
+>
+> This script was written **before any fixes**, to reproduce bugs. Several are now fixed, so those
+> steps have flipped meaning: you are confirming a fix holds, not watching a bug happen. Where a step
+> says "expected (buggy) result", expect the *opposite* for anything in this list.
+>
+> **Already fixed — the step should now pass, and a failure is a regression:**
+> `V01` (end handle at 24:00), `V02` (DST drift), `V04` (overlapping handles), `V05` (overnight risk
+> gate), `V22` (cutover date), `N1` (trial countdown), `N4` (times-stopped counter reaching the app),
+> and swallowed `startMonitoring` errors.
+>
+> **Not yet fixed — reproduce as written:** `V07`, `V11`, `V12`, `V14`, `V15`, `V16`, `V18`, `V19`,
+> `V20`, `V21`.
+>
+> **Still genuinely unknown, and the reason this document exists:** `V13`, `V25`, `N3`, plus the
+> `intervalDidEnd` semantics that `V07`'s fix design depends on. Both outcomes are informative —
+> write down what actually happens.
+>
+> Current live status per finding is in `qa/README.md`.
+
 Everything in this pass that **only a real iPhone can settle**. The simulator cannot authorize Family
 Controls, so real app tokens, shields, `ManagedSettingsStore` enforcement and the monitor extension's
 `intervalDidStart`/`intervalDidEnd` callbacks are unobservable there. This script covers:

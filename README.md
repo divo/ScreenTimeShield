@@ -11,14 +11,22 @@ Divo built it, uses it himself (blocks apps at 10pm).
 
 ## Platform
 - iOS only
-- $1 upfront (Apple takes 30% → $0.70/download)
+- **Currently** $0.99 upfront on the App Store
+- **From 1.3 (unshipped)** free download + 7-day trial + a one-time $4.99 "lifetime unlock" IAP.
+  Anyone whose original download predates `PricingConfig.cutoverDate` keeps permanent free access
 - Some existing users
 
 ## Key Differentiator
 No bypass. iOS Screen Time can be circumvented in seconds. Unplug can't.
 
 ## Pending Work
-- [ ] Fix outstanding bug (needs documenting)
+
+`status.md` is the canonical task list. Highlights:
+
+- [ ] Ship 1.3 with the lifetime IAP — build 17 is currently a **dev build that must not be
+      submitted**; see the revert checklist at the top of `status.md`
+- [ ] Finish the QA fix pass — 9 of 17 done, remaining work and per-finding status in `qa/README.md`
+- [ ] Run `qa/device-matrix.md` on a real phone; none of the fixes have been observed working yet
 - [ ] Add search engine block (private browsing loophole — block search engines in settings)
 - [ ] Optimise App Store page (description, screenshots, keywords)
 - [ ] Execute marketing plan → see marketing-plan.md

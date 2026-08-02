@@ -4,8 +4,8 @@
 disarming blocks, and the trial/paywall/lifetime-unlock flow. Chosen because the first two are the
 UI redesign that has never had on-device QA, and the third is code no customer has ever run.
 
-**19 confirmed problems, 3 unresolved, 1 investigated and dismissed.** Now triaged with Steven's
-decisions (26 Jul). No code changed yet.
+**19 confirmed problems, 3 unresolved, 1 investigated and dismissed.** Triaged with Steven's
+decisions on 26 Jul; the fix pass began 26 Jul and is partly done — see Progress below.
 
 | | |
 |---|---|
@@ -16,61 +16,54 @@ decisions (26 Jul). No code changed yet.
 | Proven by a test you can run today | 4 |
 | Ever observed on a real phone | **0** |
 
-## Triage outcome
+## Progress (last updated 2026-08-02)
 
-| Disposition | Items |
-|---|---|
-| **Fix** | `V01` `V02` `V04` `V05` `V07` `V11`+`V14` `V18` `V19` `V20` `V21` `V22` `N1` |
-| **Fix — one piece of work: "complete the payment flow"** | `V15` + `V16` + `V18`'s persistence |
-| **Fix — two defensive lines** | `V12` |
-| **Won't fix — accepted** | `V06` `V09` `V17` `V23` `V24` |
-| **Verify on device, then harden with Keychain** | `V25` `N3` |
-| **Verify on device** | `V13` |
-| **Housekeeping created by this triage** | `N2` |
+**9 of 17 fixes landed.** `swift test` is green at 58 tests, up from 25 tests with 20 failures when
+the pass began. Everything below is on `main`.
 
-All three open questions are now resolved (`V09` dropped, `V02`'s migration solved by reading the
-registered schedule, `V07` scoped to completing a guard that already exists). Nothing is blocked on a
-decision.
+| Done | Item | Commit |
+|---|---|---|
+| ✅ | One command runs every suite; ⌘U's blind spot documented | `483675d` |
+| ✅ | `N4` shield extension app-group entitlement | `3797744` |
+| ✅ | `V22` IAP cutover date | `da16e73`, `7351ceb` |
+| ✅ | `V05` wrap-aware free-time arithmetic | `7375d72` |
+| ✅ | `N1` trial countdown clamp | `6c403db` |
+| ✅ | `N2` accepted V23 risk as strict expected failures | `75690b2` |
+| ✅ | Registration failures surfaced (F4.6, and `V06`'s real half) | `c594525` |
+| ✅ | Minutes-of-day types in `UnplugCore` | `0f67fed` |
+| ✅ | `V02` + `V01` schedule storage and migration (also closed `R1`) | `e508014` |
+| ✅ | `V04` single-gesture slider | `18bf3a9` |
 
-### Work that clusters — do these together, not item by item
+**Still to do, in order.** `V11` is first despite its severity because three other findings lean on it:
 
-- **Schedule storage** — `V02` + `V01`. Moving to minutes-of-day deletes the `Date` round trip that
-  causes `V01`, so doing them separately means writing `V01`'s fix twice.
-- **Payment flow** — `V15` + `V16` + `V18` + `V21`. One coherent change: every purchase outcome gets a
-  defined path, the verdict is persisted, and a live window lights up immediately.
-- **Trial state** — `V19` + `V20` + `V18`'s persisted flag. The extension needs to judge expiry
-  itself, and the UI needs an honest "inactive because the trial ended" state.
-- **Cross-process truth** — `V11` + `V14` + most of `V13`. Derive active-state from the clock instead
-  of a flag, and three findings collapse into one fix.
-- **Durability** — `V25` + `N3` + the Keychain move, gated on the device check first.
+| # | Item | Note |
+|---|---|---|
+| 1 | `V11` + `V14` — derive block-active from the clock | Also quiets `V13` and unblocks `V07`'s guard |
+| 2 | `V07` — don't tear down a block that should still run | Needs the device answer on `intervalDidEnd` |
+| 3 | `V12` — move the activities read off the main thread | Two defensive lines |
+| 4 | `V18` + Keychain — persist the entitlement verdict | Blocks `V20`; see `V25` for what goes in the Keychain |
+| 5 | `V15` + `V16` — complete the purchase flow | Register `StoreKitEdgeTests.swift` in the project here |
+| 6 | `V21` — re-apply enforcement the moment access returns | |
+| 7 | `V20` — judge trial expiry inside the monitor extension | Depends on 4 |
+| 8 | `V19` — honest "trial ended" state | New strings ×10 languages |
+
+**Won't fix, by decision:** `V06` (tiny block), `V09`, `V17`, `V23`, `V24`.
+**Needs a phone, not code:** `V13`, `V25`, `N3`, plus verification of everything above marked device.
 
 ### Two things to know before touching any of it
 
-- **`V02` and `V01` want doing together.** Moving the schedule to minutes-of-day deletes the `Date`
-  round trip that causes `V01`, so fixing `V01` first means writing it twice.
-- **`V11` is load-bearing for more than itself.** `V07`'s existing guard, `V13`'s stuck-flag symptom
-  and `V14` all depend on the app knowing whether a block is active. Fix that once and three findings
-  get quieter.
-
-Three of the annotations rested on a claim that turned out to be wrong or incomplete — `V09`
-(deselection is *not* currently prevented), `V15` ("only one purchasing flow"), and `V25`
-(reinstall). Each is corrected in place below.
-
-### Suggested order
-
-1. `V22` — one constant, has a deadline.
-2. `V05` + `N1` — proven wrong, one function each, oracle test already written.
-3. `N2` — retire the tests for the two won't-fix items so the suite can reach green.
-4. `V19` + `V20` + `V21` + `V18` — the money and trial-state cluster; they share a root cause and a fix design.
-5. `V07` — the bypass. Needs the device answer from step 7 to pick the right approach.
-6. `V15` + `V16`, `V11`+`V14`, `V09`, `V12`.
-7. Device sitting (`qa/device-matrix.md`) — settles `V13`, `V25`, `N3` and confirms the rest.
+- **`V11` is load-bearing beyond itself.** `V07`'s existing guard, `V13`'s stuck-flag symptom and
+  `V14` all depend on the app knowing whether a block is active. Fix that once and three findings get
+  quieter.
+- **The fixed items still need the device matrix.** Nothing above has been observed on a real phone;
+  a passing test suite is not the same as working enforcement.
 
 ---
 
 ## 1. The schedule slider
 
 ### 🔴 The right-hand end of the slider doesn't mean midnight · `V01`
+**✅ Fixed — `e508014`.** Minutes-of-day storage removed the `Date` round trip, so there is no failing conversion left to fall back from.
 *Fires on the gesture the UI advertises · no test yet*
 
 The slider prints "24:00" as its last tick. Dragging the end handle there asks iOS for hour 24,
@@ -99,6 +92,7 @@ it today. Move `minute(forX:)` / `x(for:)` / `dateAtMinute` into a small pure `T
 critic's warning that changing the clamp ceiling could silently alter behaviour elsewhere.
 
 ### 🔴 The safety check can't understand overnight blocks · `V05`
+**✅ Fixed — `7375d72`.** Wrap-aware, verified against a brute-force oracle across all 2,073,600 windows.
 *Common — it is the app's main use case · **proven by test***
 
 Before arming, the app checks "would this leave almost no free time?" by subtracting start from end.
@@ -124,6 +118,7 @@ this one is verifiable the moment you touch it. Expect the tests currently red a
 173, 182 and 184 to go green.
 
 ### 🔴 Your window drifts by an hour twice a year · `V02`
+**✅ Fixed — `e508014`.** Stored as minutes since midnight; armed users migrated exactly from the interval the system already holds.
 *Common across the user base · partly proven*
 
 Times are saved as absolute moments but read back as clock times in whatever timezone the phone is
@@ -180,6 +175,7 @@ One piece is already covered: the composed case where drift inverts the window i
 `ScheduleMathBoundaryTests:256`, and the `V05` fix resolves that half.
 
 ### 🔴 Short windows hide the start handle · `V04`
+**✅ Fixed — `18bf3a9`.** One gesture owns the track and picks the handle by proximity, falling back to drag direction when the thumbs overlap.
 The two handles overlap, so the start one can't be grabbed.
 
 > **Decision: fix** — approved.
@@ -204,6 +200,7 @@ unverified nit, `F3-MAP-03`). Tracking a drag offset from the initial touch fixe
 Not urgent, but it's a contained change to one view and worth doing whenever that file is next open.
 
 ### 🟡 Allow-only mode can build a block iOS rejects · `V06`
+**✅ Addressed — `c594525`.** The tiny block stays accepted as won't-fix; its *silent* failure does not — registration errors now surface.
 *proven by test*
 
 Allowing nearly the whole day leaves a blocked interval shorter than the minimum iOS will monitor.
@@ -447,6 +444,7 @@ this plan largely removes its trigger anyway, since a paid user will no longer b
 Restore by a spurious downgrade.
 
 ### 🔴 The grandfathering date has already passed · `V22`
+**✅ Fixed — `da16e73`, date set in `7351ceb`.** ⚠️ Currently overridden to 2020-01-01 for the dev build — see the revert checklist in `status.md`.
 *⏱ Deadline-bound · **proven by test***
 
 The code compares download date against a fixed cutover of **25 June 2026** — now a month in the
@@ -678,12 +676,14 @@ free side effect rather than a reason to do it.
 ## New items created by this triage
 
 ### 🔴 `N1` — The trial countdown can show more days than the trial has
+**✅ Fixed — `6c403db`.** Remaining time is clamped to the trial length.
 Surfaced by `PricingBoundaryTests`: `trialDaysRemaining` returned **18** for a 7-day trial. Unlike
 `V23` this needs no clock tampering and is visible on the trial chip. Root cause is in
 `AccessEvaluator.trialDaysRemaining` (`AccessControl.swift:60-69`) — the remaining-time calculation
 isn't clamped to the trial length. Cheap fix, cheap test, and it's the number on your main screen.
 
 ### 🟡 `N2` — Retire the tests for the won't-fix items
+**✅ Done — `75690b2`.** The two accepted V23 assertions are strict expected failures, so reverting the behaviour turns them red again.
 `V06` and `V23` are now accepted rather than fixed, but each has red assertions in
 `PricingBoundaryTests` / `ScheduleMathBoundaryTests`. Left alone they keep the suite permanently red,
 which trains everyone to ignore it.
@@ -691,6 +691,19 @@ which trains everyone to ignore it.
 Wrap those specific assertions in `XCTExpectFailure` with a comment recording the decision and the
 date, rather than deleting them — that keeps the knowledge, keeps the suite honest, and makes the test
 go red again if the behaviour ever changes. Everything else stays red until genuinely fixed.
+
+### 🔴 `N4` — The paywall's headline stat has never displayed to anyone
+**✅ Fixed — `3797744`.** App-group entitlement added to the shield extension.
+
+`CustomShieldConfiguration.entitlements` declared only `family-controls` — no app group — yet the
+shield extension writes the "times stopped" counter into `group.screentimeshield`. Without the
+entitlement those writes never reached the app, so `timesStopped` was permanently 0,
+`StatGate.shouldShowStat` never cleared its threshold of 5, and the paywall always fell through to
+its generic copy instead of the loss-framed number it was designed around.
+
+Found while planning the fix pass, in exactly the area the QA pass's F9 completeness critic flagged
+as suspicious silence — no discovery lens had examined the `times_stopped` pipeline. Needs a device
+to confirm the counter now arrives, since the shield only presents on real hardware.
 
 ### ❓ `N3` — Can an app update wipe the app-group container?
 From the `V25` research. If it can, an ordinary user could lose selection, schedule and trial state

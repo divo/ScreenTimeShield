@@ -14,8 +14,71 @@ Build 17 is a **development build and must not be submitted as-is.** Three chang
 - [ ] `ScreenTimeShield/SettingsView.swift` — comment the **QA / Debug** Section back out.
 
 `swift test` passing is *not* evidence this is safe to ship while the markers are in place.
+
+---
+
+## Release
+
 - [~] **P1: Lifetime IAP** (`com.halfspud.ScreenTimeShield.lifetime`, Non-Consumable, $4.99) — **created in App Store Connect and "Ready to Submit."** All metadata in: 175 territories, US $4.99 base (36 storefronts manually set to local under-5 + 139 auto-adjust), 10 localizations, review screenshot + notes, tax = match parent. The "blocked by the account move" assumption was wrong — the only gate was an unaccepted *updated* Paid Applications agreement (now accepted); account is still US and IAPs work. Local testing wired via `StoreKit.storekit` (scheme reference). **Remaining:** the first IAP must be **submitted with an app build** (can't go live standalone); optionally swap the review screenshot for a post-em-dash-fix capture.
 - [ ] P1: Triage remaning todos, grandfather logic and anything critical. Need to move to marketing
+
+## Bugs
+- [x] **Family Controls authorization not handled** (was a release blocker) — was: request at launch + swallow errors, so a denied/revoked/restricted user saw a working-looking app that enforced nothing (also surfaced as the spurious "selection was reset" toast). **Implemented:** `AccessController` now tracks `AuthorizationCenter.authorizationStatus` (live + re-read on scenePhase); when not `.approved`, `ContentView` shows `PermissionDeniedView` in place of the app card and disables the arm/quick CTAs. **There is no per-app Screen Time toggle in iOS Settings**, but re-calling `requestAuthorization` re-shows the system prompt — so the denied view is a single **"Allow access"** button that re-requests directly (no Settings trip). `UNPLUG_SKIP_FC` bypasses the gate. Strings localized ×10. **Verified on device** (deny → denied UI → tap Allow → prompt reappears → approve → returns to app list). Merged to `main`. Note: revoking auth in system settings while the app is running doesn't update `authorizationStatus` until next cold launch (Apple bug) — acceptable.
+- [x] "App selection was reset" toast firing every launch — `has_selection` persisted true while invalidated tokens decoded empty; now surfaced once then the flag is cleared (`ContentView.onAppear`).
+- [x] Arm-confirm UI stall — the synchronous `DeviceActivityCenter` start/stop XPC ran on the main thread (4 calls on confirm), freezing the UI. Moved off-main onto a serial queue in `Schedule` (UI/`Model` mutations stay on main; values captured before dispatch). Builds clean; **needs on-device confirm** (instant dismiss + enforcement still works). Note: `Schedule` still swallows `startMonitoring` errors (`catch { print }`) — likely culprit if a block ever silently fails to register; surface/validate next.
+- [ ] Notifications bug — needs investigation and documenting. **Lead from the QA pass (2026-07-25):** `Schedule.setNotificationSchedule` (`Schedule.swift:43-60`) never validates its own interval length and swallows the `startMonitoring` throw at `:56-58`, so refocus notifications would silently never register for any user whose block leaves under 15 free minutes. Unverified — see R3 in `qa/workflow-notes.md`. Also possibly related: V10 (notification schedule can be registered while nothing is armed and outlive every block), unverified, in `qa/candidates.md`.
+- [ ] Outstanding bug mentioned in README — needs documenting
+
+## QA pass — features 3, 4, 9 (2026-07-25), fix pass in progress
+
+**Read `qa/README.md` first** — it is the human-readable summary and carries the live per-finding
+status. Full evidence in `qa/findings.md`, method and blind spots in `qa/workflow-notes.md`, manual
+phone script in `qa/device-matrix.md`.
+
+19 confirmed findings, 3 uncertain, 1 refuted. **9 of 17 fixes are done** and `swift test` is green
+at 58 tests (it began at 25 tests with 20 failures).
+
+Fixed and on `main`:
+
+- [x] **V22** — IAP cutover date moved off 2026-06-25, which would have charged every post-June
+      $0.99 buyer twice. Now 2026-08-10 — but see the dev-build revert checklist at the top of this file.
+- [x] **V05 / V02 / V01** — the whole wrapping-window family: free-time arithmetic now wraps midnight
+      (verified against an oracle over all 2,073,600 windows), the schedule is stored as minutes-of-day
+      instead of `Date` instants so it no longer drifts with DST or travel, and the end handle can no
+      longer substitute "now" for the time you picked. Migration reads the undrifted interval back
+      from the system for armed users. Also closed `R1` from the round-2 backlog.
+- [x] **V04** — slider handles can both be grabbed when they overlap.
+- [x] **N1** — trial countdown can no longer show more days than the trial contains.
+- [x] **N4** (found during fix planning) — the shield extension had no app-group entitlement, so the
+      paywall's "stopped you N times" stat had never displayed to anyone.
+- [x] **F4.6 / V06's real half** — `startMonitoring` failures surface instead of being swallowed; a
+      failed arm drops back to disarmed rather than claiming a block that was never registered.
+- [x] **Test wiring** — `fastlane test` runs both suites, and `CLAUDE.md` warns that ⌘U alone
+      silently skips the `UnplugCore` tests.
+
+Still to do, in dependency order (`V11` first because three findings lean on it):
+
+- [ ] **V11 / V14** — derive block-active state from the clock instead of a cross-process flag the
+      app never sees updated. Also quiets `V13` and unblocks `V07`'s guard.
+- [ ] **V07** — the one-hour quick block's `intervalDidEnd` clears a concurrently active nightly
+      block. Breaks the core promise. Needs the device answer on `intervalDidEnd` semantics.
+- [ ] **V12** — move the `DeviceActivityCenter().activities` read off the main thread.
+- [ ] **V18 + Keychain** — persist the entitlement verdict so a failed lookup can't tell a paying
+      customer "Trial ended". Blocks `V20`. Keychain scope is decided in `qa/README.md` under `V25`.
+- [ ] **V15 / V16** — complete the purchase flow (`Transaction.updates` listener, explicit outcomes).
+      Register `ScreenTimeShieldTests/StoreKitEdgeTests.swift` in `project.pbxproj` as part of this.
+- [ ] **V21** — re-apply enforcement the moment access returns, instead of waiting for the next window.
+- [ ] **V20** — judge trial expiry inside the monitor extension rather than trusting a stale flag.
+- [ ] **V19** — honest "trial ended" state in the UI; new strings across all 10 languages.
+
+Won't fix by decision: `V06` (tiny block), `V09`, `V17`, `V23`, `V24`.
+
+- [ ] **Run `qa/device-matrix.md` on a phone.** Nothing fixed above has been *observed* working —
+      the simulator cannot authorize Family Controls. This also settles `V13`, `V25` and `N3`.
+- [ ] Round-2 backlog (`R1`–`R10` in `qa/workflow-notes.md`) — 9 unverified leads remain; `R1` is done.
+- [ ] Deferred features, conscious gaps: 1 (authorization), 2 (app selection), 5 (quick hour),
+      6 (enforcement), 7 (shield / no-bypass), 8 (refocus notifications), 10 (settings/QA/shared state).
+      **7 is the product promise and 6 is what enforces it** — neither got a dedicated pass.
 
 ## Bugs
 - [x] **Family Controls authorization not handled** (was a release blocker) — was: request at launch + swallow errors, so a denied/revoked/restricted user saw a working-looking app that enforced nothing (also surfaced as the spurious "selection was reset" toast). **Implemented:** `AccessController` now tracks `AuthorizationCenter.authorizationStatus` (live + re-read on scenePhase); when not `.approved`, `ContentView` shows `PermissionDeniedView` in place of the app card and disables the arm/quick CTAs. **There is no per-app Screen Time toggle in iOS Settings**, but re-calling `requestAuthorization` re-shows the system prompt — so the denied view is a single **"Allow access"** button that re-requests directly (no Settings trip). `UNPLUG_SKIP_FC` bypasses the gate. Strings localized ×10. **Verified on device** (deny → denied UI → tap Allow → prompt reappears → approve → returns to app list). Merged to `main`. Note: revoking auth in system settings while the app is running doesn't update `authorizationStatus` until next cold launch (Apple bug) — acceptable.
