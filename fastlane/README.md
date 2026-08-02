@@ -25,9 +25,14 @@ Generate/revoke at: ASC → Users and Access → Integrations → App Store Conn
 # install once (Ruby gem); on this machine: nix-shell -p fastlane
 gem install fastlane            # or: bundle
 
+fastlane ios test               # run BOTH test suites — see the note below
 fastlane ios check_listing      # precheck metadata (no upload)
 fastlane ios upload_listing     # upload metadata + screenshots as DRAFTS (never submits)
 ```
+`test` exists because ⌘U and `xcodebuild test` **do not run the `UnplugCore` tests** — a local
+SwiftPM test target cannot be referenced from the app scheme's `TestAction`, so they report success
+while those tests fail. The lane runs `swift test` for the package and `xcodebuild test` for the app
+targets. Override the simulator with `UNPLUG_TEST_DEVICE="iPhone 17 Pro"`.
 `upload_listing` does **not** submit for review or change release settings — submit manually
 in App Store Connect after reviewing.
 

@@ -119,7 +119,7 @@ likely do. Add a lens for *confirmation-dialog and alert staleness* (would have 
 
 | Check | Result |
 |---|---|
-| `cd UnplugCore && swift test` | **46 tests, 20 failures.** Pre-existing suites untouched: `AccessControlTests` 18/18 pass, `ScheduleMathTests` 6/6 pass. New: `ScheduleMathBoundaryTests` 9 of 10 red, `PricingBoundaryTests` 11 of 12 red |
+| `cd UnplugCore && swift test` | **At the end of the QA pass: 46 tests, 20 failures** — the proofs. Pre-existing suites untouched: `AccessControlTests` 18/18 pass, `ScheduleMathTests` 6/6 pass. New: `ScheduleMathBoundaryTests` 9 of 10 red, `PricingBoundaryTests` 11 of 12 red. **As of 2026-08-02, after the fix pass: 58 tests, 0 failures** |
 | App still builds | `** BUILD SUCCEEDED **` |
 | Production code untouched | `git status` shows only 3 new test files + 5 `qa/` docs. Zero production files modified |
 
@@ -137,7 +137,13 @@ Found by the F9 completeness critic, and the most important process finding here
    `ScreenTimeShieldTests` and `ScreenTimeShieldUITests`, so `xcodebuild test` and ⌘U **never run**
    the 20 red assertions written above. They only run via `swift test`. Any fix pass that trusts
    ⌘U will believe the bugs are fixed without ever executing their proofs.
-2. **`ScreenTimeShieldTests/StoreKitEdgeTests.swift` is not registered in `project.pbxproj`.** It is
+
+   **Mitigated, not solved (`483675d`).** Adding a `TestableReference` for the package test target
+   was tried first and Xcode rejects it — "UnplugCoreTests isn't a member of the specified test plan
+   or scheme" — so ⌘U still silently skips these tests. What exists instead is a `fastlane test` lane
+   running both suites, and a warning in `CLAUDE.md`. The hazard is documented rather than removed.
+2. **`ScreenTimeShieldTests/StoreKitEdgeTests.swift` is not registered in `project.pbxproj`.** Still
+   true as of 2026-08-02; scheduled to be done with the `V15`/`V16` fix. It is
    written and self-consistent, but not compiled, so V15/V16/V18 currently have **no executed
    proof**. Registration steps are in the W3 transcript; briefly: add the file to the
    `ScreenTimeShieldTests` target's Compile Sources, confirm `StoreKit.storekit` is still in Copy
@@ -146,6 +152,12 @@ Found by the F9 completeness critic, and the most important process finding here
    pass's read-only-production boundary, and it cannot be verified without a simulator run.
 
 ## Round 2 backlog — surfaced by the completeness critics, NOT verified
+
+**Status 2026-08-02: `R1` is fixed** (in `e508014`, alongside `V02`) — and it earned its place here,
+because moving the schedule to minutes-of-day made midnight representable, which is exactly the
+condition that turned `R1` from theoretical into reachable. The other nine remain unverified leads.
+`R3` in particular is still the most promising explanation for the undocumented notifications bug in
+`status.md`.
 
 The three critics reported **28 coverage gaps**. These are the substantive ones: each is a specific
 untraced path, none has been through refutation, and none should be treated as a confirmed bug.
