@@ -36,6 +36,12 @@ final class PricingBoundaryTests: XCTestCase {
   // MARK: V22 — release-safety invariant on PricingConfig.cutoverDate
 
   func testV22_cutoverDateMustNotPredateTheLastPreIAPSaleDay() {
+    // ⚠️ DEV BUILD: cutoverDate is deliberately in the past so a fresh install is not grandfathered
+    // and the IAP can be tested. XCTExpectFailure is strict, so restoring the release date turns
+    // this into an *unexpected pass* and the suite goes red until this marker is removed — which is
+    // the point: the date and the marker have to be reverted together.
+    XCTExpectFailure("DEV BUILD — cutoverDate set to the past to test the IAP. Revert before submission.")
+
     // V22: the grandfathering promise only holds if the cutover postdates every pre-IAP purchase.
     XCTAssertGreaterThan(
       PricingConfig.cutoverDate, lastDayThePreIAPBuildWasOnSale,
@@ -50,6 +56,9 @@ final class PricingBoundaryTests: XCTestCase {
   }
 
   func testV22_everyBuyerInTheReleaseGapIsGrandfathered() {
+    // ⚠️ DEV BUILD: see the note on the test above — revert the date and this marker together.
+    XCTExpectFailure("DEV BUILD — cutoverDate set to the past to test the IAP. Revert before submission.")
+
     // V22: no purchase made while only the pre-IAP build shipped may fall outside grandfathering.
     let gapPurchases: [(String, Date)] = [
       ("2026-06-25 (the slipped target release day — 1.3 did not ship)", slippedTargetReleaseDay),

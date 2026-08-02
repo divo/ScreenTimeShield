@@ -1,4 +1,19 @@
 # Unplug — Status Tracker
+
+## ⚠️ REVERT BEFORE SUBMITTING — dev build for IAP testing (2026-08-02)
+
+Build 17 is a **development build and must not be submitted as-is.** Three changes to undo:
+
+- [ ] `UnplugCore/Sources/UnplugCore/AccessControl.swift` — `PricingConfig.cutoverDate` is set to
+      **2020-01-01** so a fresh install is *not* grandfathered and the paywall/IAP can be exercised.
+      Restore to **2026-08-10** (`1_786_320_000`), or to the real release date if it has moved.
+- [ ] `UnplugCore/Tests/UnplugCoreTests/PricingBoundaryTests.swift` — remove the two
+      `XCTExpectFailure` markers on the V22 tests. These are strict, so restoring the date alone
+      makes the suite go red (unexpected pass) until the markers go too — deliberately, so the pair
+      can't drift apart.
+- [ ] `ScreenTimeShield/SettingsView.swift` — comment the **QA / Debug** Section back out.
+
+`swift test` passing is *not* evidence this is safe to ship while the markers are in place.
 - [~] **P1: Lifetime IAP** (`com.halfspud.ScreenTimeShield.lifetime`, Non-Consumable, $4.99) — **created in App Store Connect and "Ready to Submit."** All metadata in: 175 territories, US $4.99 base (36 storefronts manually set to local under-5 + 139 auto-adjust), 10 localizations, review screenshot + notes, tax = match parent. The "blocked by the account move" assumption was wrong — the only gate was an unaccepted *updated* Paid Applications agreement (now accepted); account is still US and IAPs work. Local testing wired via `StoreKit.storekit` (scheme reference). **Remaining:** the first IAP must be **submitted with an app build** (can't go live standalone); optionally swap the review screenshot for a post-em-dash-fix capture.
 - [ ] P1: Triage remaning todos, grandfather logic and anything critical. Need to move to marketing
 

@@ -28,7 +28,13 @@ public enum PricingConfig {
   /// Erring late is the expensive direction: anyone who bought the pre-IAP paid app after this date
   /// is treated as a new user and asked to pay again. Erring early only gives a few $0.99 buyers
   /// free access. `PricingBoundaryTests` fails while this predates the last known pre-IAP sale day.
-  public static let cutoverDate = Date(timeIntervalSince1970: 1_786_320_000) // 2026-08-10 00:00 UTC
+  ///
+  /// ⚠️ **DEV BUILD — currently set to the past on purpose.** A cutover in the past means a fresh
+  /// install is *not* grandfathered, so the trial, paywall and IAP purchase can actually be
+  /// exercised. **This build must not be submitted.** Restore to 2026-08-10 (1_786_320_000) — or to
+  /// the real release date if it has moved — and remove the matching XCTExpectFailure markers in
+  /// PricingBoundaryTests. See the revert checklist in status.md.
+  public static let cutoverDate = Date(timeIntervalSince1970: 1_577_836_800) // DEV: 2020-01-01 00:00 UTC
   public static let trialLength: TimeInterval = 7 * 24 * 60 * 60
   public static let statThreshold = 5
   /// Debounce window for the noisy shield-presentation counter.
