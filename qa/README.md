@@ -740,6 +740,7 @@ green light without executing a single proof.
 | File | Contents |
 |---|---|
 | **`findings.md`** | Full report, machine-generated. Per issue: the verifier's reasoning, the step-by-step failure trace, and a second opinion. Search the ID, e.g. `V05` |
+| **`iap-test-checklist.md`** | Numbered manual script for the trial → paywall → purchase → restore → grandfather flows, driven by the QA menu's state dropdown |
 | **`device-matrix.md`** | Numbered script for testing on a real phone — settles the unresolved items and the fourteen nobody has watched |
 | **`invariants.md`** | The 37 statements of what the app is supposed to do, which these findings violate |
 | **`candidates.md`** | Raw unverified output, including 9 minor items never checked |
