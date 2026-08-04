@@ -15,8 +15,8 @@ enum AppGroupKeys {
   static let lastStopLogged = "last_stop_logged"
   /// Cached gate the extensions read so they don't touch StoreKit themselves.
   static let enforcementAllowed = "enforcement_allowed"
-  /// QA-only: forces full access without a real StoreKit transaction.
-  static let qaForceFullAccess = "qa_force_full_access"
+  /// QA-only: pins the access state (see `QAAccessOverride`).
+  static let qaAccessOverride = "qa_access_override"
 }
 
 struct AppGroupStore: KeyValueStore {
@@ -42,6 +42,14 @@ struct AppGroupStore: KeyValueStore {
   }
 
   func setInteger(_ value: Int, forKey key: String) {
+    defaults.set(value, forKey: key)
+  }
+
+  func string(forKey key: String) -> String? {
+    defaults.string(forKey: key)
+  }
+
+  func setString(_ value: String?, forKey key: String) {
     defaults.set(value, forKey: key)
   }
 

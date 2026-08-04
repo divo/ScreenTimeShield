@@ -26,24 +26,41 @@ struct QAMenuView: View {
   var body: some View {
     NavigationView {
       Form {
-        Section("Current state") {
+        Section {
+          Picker("Access state", selection: Binding(
+            get: { access.qaAccessOverride },
+            set: { access.qaSetAccessOverride($0) }
+          )) {
+            ForEach(QAAccessOverride.allCases) { option in
+              Text(option.label).tag(option)
+            }
+          }
+          .pickerStyle(.inline)
+          .labelsHidden()
+        } header: {
+          Text("Pin access state")
+        } footer: {
+          Text("Overrides the entitlement the app derives its state from, so the selection survives "
+               + "backgrounding and outranks a sandbox purchase. \"Off\" returns to the real state.")
+        }
+
+        Section("Resulting state") {
           row("Access state", stateLabel)
           row("Trial days remaining", "\(access.trialDaysRemaining)")
-          row("Times stopped", "\(access.timesStopped)")
           row("Full access", access.hasFullAccess ? "yes" : "no")
+          row("Times stopped", "\(access.timesStopped)")
         }
 
-        Section("Trial") {
-          Button("Start trial now") { access.qaStartTrial() }
-          Button("Expire trial") { access.qaExpireTrial() }
-          Button("Reset trial (fresh install)") { access.qaResetTrial() }
-        }
-
-        Section("Entitlement") {
-          Toggle("Force full access", isOn: Binding(
-            get: { access.qaForceFullAccess },
-            set: { access.qaSetFullAccess($0) }
-          ))
+        Section {
+          row("Override", access.qaAccessOverride == .off ? "none" : access.qaAccessOverride.rawValue)
+          row("StoreKit purchased", access.storeKit.isPurchased ? "yes" : "no")
+          row("StoreKit grandfathered", access.storeKit.isGrandfathered ? "yes" : "no")
+        } header: {
+          Text("Real StoreKit state")
+        } footer: {
+          Text("What StoreKit actually reports, ignoring the override. If \"grandfathered\" is yes on "
+               + "a fresh install, the test environment's synthesized original-purchase date predates "
+               + "PricingConfig.cutoverDate — the paywall would be unreachable without an override.")
         }
 
         Section("Times stopped (stat gate ≥ \(PricingConfig.statThreshold))") {
