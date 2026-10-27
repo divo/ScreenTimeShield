@@ -20,6 +20,25 @@ decisions on 26 Jul; the fix pass began 26 Jul and is partly done — see Progre
 > walking `iap-test-checklist.md` on the simulator. See the top of `status.md`. The fix list resumes
 > after that, starting with `V11`.
 
+### Build 18 simulator run (2026-10-27) — sections A–C and F done, D onward blocked on a purchase
+
+Pass: 1, 3, 6 (✕ dismisses), 7, 8, 11, 12, 13, 32, 33. Fresh install reads **grandfathered = no**,
+so the paywall is reachable. The 50%/90% presets both stay in `trial` at a 1-day trial length.
+Steps marked 📱 were skipped: the simulator cannot authorize Family Controls.
+
+- **New bug `N5`: "1 days left in trial".** `TrialChip.swift:21` uses one `%lld days` string with
+  no plural variants, in all 10 languages. Not a dev-build artefact: on the 7-day build, every
+  user sees it on their final day. Fails steps 2 and 9. Fix: plural variations in
+  `Localizable.xcstrings` (en, de, es, fr, it, pt-PT need the singular; ja, ko, zh do not).
+- **Step 14 is stale, not a bug.** "Restrict for next hour" is *disabled* when the trial has
+  expired, by design since `8fea951` (paywall only from the chip and primary CTA). That makes the
+  `if isExpired { showPaywall = true }` guard at `ContentView.swift:117` unreachable.
+- **Observation, step 6:** the first paywall open showed "Unlock forever" with no price and a
+  disabled button. The second open showed $4.99. `loadProduct()` runs per open, so this is most
+  likely the latency of a cold sandbox fetch. Re-check on device.
+- **A `simctl` launch talks to the real sandbox, not `StoreKit.storekit`.** Only an Xcode ⌘R
+  applies the scheme's StoreKit config. Do section D from Xcode to get a local, erasable purchase.
+
 ## Progress (last updated 2026-08-02)
 
 **9 of 17 fixes landed.** `swift test` is green at 58 tests, up from 25 tests with 20 failures when

@@ -50,8 +50,8 @@ throughout; what matters is that the state is right, not the number.
 
 ## B. Trial running
 
-8. 💻 QA menu → pin **Trial active**. Confirm the chip shows a plausible countdown, not 0.
-9. 💻 Pin **Trial final day (1 day left)**. Confirm the chip reads **"1 day left"** — check the
+8. 💻 QA menu → pin **Trial active (half elapsed)**. Confirm the chip shows a plausible countdown, not 0.
+9. 💻 Pin **Trial nearly over**. Confirm the chip reads **"1 day left"** — check the
    singular reads correctly and isn't "1 days".
 10. 📱 With the trial active, confirm blocking still enforces: open a restricted app, see the shield.
 11. 💻 Background the app for 10 seconds, reopen. Confirm the pinned state **survives** — this is what
@@ -62,7 +62,8 @@ throughout; what matters is that the state is right, not the number.
 12. 💻 QA menu → pin **Trial expired**. Confirm the chip changes to **"Trial ended · Unlock Unplug"**
     with a lock icon.
 13. 💻 Tap **Start blocking**. Confirm it opens the **paywall** instead of arming.
-14. 💻 Tap **Restrict for next hour**. Confirm it also routes to the paywall.
+14. 💻 Confirm **Restrict for next hour** is disabled. That is by design (`8fea951`): only the chip
+    and the primary CTA open the paywall.
 15. 📱 **Known bug, not yet fixed (`V19`)** — if a block was already armed before expiry, the app
     still shows an armed, normal-looking state while the extension quietly refuses to enforce.
     Confirm this is what you see, and that it matches the finding rather than something worse.
@@ -139,4 +140,4 @@ For each ⚠️ step, note what actually happened — several are known-unfixed 
 to confirm the bug matches its description rather than being worse. Anything that behaves *differently
 from the note* is new information worth adding to `qa/README.md`.
 
-**Do not ship build 17.** Revert checklist: top of `status.md`.
+**Do not ship build 18.** Revert checklist: top of `status.md`.
