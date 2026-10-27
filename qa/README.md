@@ -20,7 +20,7 @@ decisions on 26 Jul; the fix pass began 26 Jul and is partly done — see Progre
 > walking `iap-test-checklist.md` on the simulator. See the top of `status.md`. The fix list resumes
 > after that, starting with `V11`.
 
-### Build 18 simulator run (2026-10-27) — A–C, F and D 17–23 done; D 24–27, E and G still to do
+### Build 18 simulator run (2026-10-27) — everything the simulator can do is done; E, G, 26–27 and 📱 steps remain
 
 Pass: 1, 3, 6 (✕ dismisses), 7, 8, 11, 12, 13, 32, 33. Fresh install reads **grandfathered = no**,
 so the paywall is reachable. The 50%/90% presets both stay in `trial` at a 1-day trial length.
@@ -45,6 +45,28 @@ Steps marked 📱 were skipped: the simulator cannot authorize Family Controls.
 - **Steps 21–22 are out of order in the checklist.** The "Trial expired" pin from step 17
   suppresses the new entitlement too. The chip stays "Trial ended" until you pin Off. That is by
   design, so the checklist now unpins first.
+- **Later passes:** 25 (purchase survives a cold ⌘R launch), 38, 39, 41. Step 11 passes, but only on
+  the re-run: the first pass was invalid (next bullet).
+- **`UNPLUG_SKIP_FC` never computes the access state at launch.** Both launch-time
+  `refreshAccess()` calls skip under it (`ContentView.swift:271`, `ScreenTimeShieldApp.swift:101`).
+  So `accessState` stays at its default `.trial`, and a saved pin is ignored until you tap a pin
+  again. The visible symptom is "0 days left in trial" with the expired pin on. This is QA-only,
+  not production. But any check of launch or foreground behaviour under the flag proves nothing.
+  Launch without the flag once Screen Time is authorized on the simulator.
+- **`N5` reproduces in German:** "Noch 1 Tage Testzeit" should be "Noch 1 Tag".
+- **New `N6`: the brand name is translated.** In all 9 non-English languages, the "Unplug ∎"
+  title is translated as a verb, for example de "Netzstecker ziehen ∎" and fr "Débrancher ∎".
+  The German title wraps, leaving ∎ alone on line 2. The ja title drops the ∎. Other strings keep
+  "Unplug" untranslated ("Unplug freischalten"), so this is most likely a slip from the bulk
+  translation in `0a338b8`. Needs a decision: mark the key do-not-translate, or keep it.
+- **Minor, German:** Settings uses the formal "Sie", but the paywall uses the informal "dich".
+- **Step 42 can't be checked by switching language.** StoreKit formats `displayPrice` for the
+  App Store country, not the device language, so a German device on the US storefront correctly
+  shows $4.99. A euro price needs a German sandbox account, or a German storefront in
+  `StoreKit.storekit`.
+- **Restore with a non-entitled pin on** reports "No previous purchase found.", even though
+  StoreKit holds a purchase. This follows from the design, because the pin suppresses
+  entitlement. Minor: the red error text is hard to read on the purple gradient.
 - **A `simctl` launch talks to the real sandbox, not `StoreKit.storekit`.** Only an Xcode ⌘R
   applies the scheme's StoreKit config. Do section D from Xcode to get a local, erasable purchase.
 

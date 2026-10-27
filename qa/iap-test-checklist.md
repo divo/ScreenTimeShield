@@ -24,6 +24,9 @@ throughout; what matters is that the state is right, not the number.
 - Most of this needs a **real device** — the simulator cannot authorize Family Controls, so nothing
   involving enforcement, shields or real app tokens is observable there. Steps marked 💻 work on the
   simulator; ones marked 📱 need the phone.
+- ⚠️ **On the simulator, don't use `UNPLUG_SKIP_FC` for anything about launch or foreground.**
+  Under it the app never computes the access state at launch, so a saved pin is ignored until
+  re-tapped. Authorize Screen Time once (an Xcode ⌘R run does it), then launch without the flag.
 - To clear a sandbox purchase on device: **Settings → App Store → Sandbox Account → Manage → clear**,
   or delete and reinstall the app. In Xcode: **Debug → StoreKit → Manage Transactions**.
 - ⚠️ If **Real StoreKit state → grandfathered** reads **yes** on a fresh install, stop and note it.
@@ -131,7 +134,8 @@ purchase date, which a local `.storekit` config cannot fake reliably.
 
 41. 💻 Switch the device to German. Confirm the paywall, trial chip and "Trial ended" copy are
     translated and not clipped.
-42. 💻 Confirm the price still renders in the correct local format.
+42. 💻 Confirm the price still renders in the correct local format. The format follows the App Store
+    *country*, not the device language, so this needs a German sandbox account or storefront.
 
 ---
 
