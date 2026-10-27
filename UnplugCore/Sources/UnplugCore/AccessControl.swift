@@ -35,7 +35,8 @@ public enum PricingConfig {
   /// the real release date if it has moved — and remove the matching XCTExpectFailure markers in
   /// PricingBoundaryTests. See the revert checklist in status.md.
   public static let cutoverDate = Date(timeIntervalSince1970: 1_577_836_800) // DEV: 2020-01-01 00:00 UTC
-  public static let trialLength: TimeInterval = 7 * 24 * 60 * 60
+  /// ⚠️ DEV BUILD — shortened to 1 day for trial→purchase QA. Restore to 7 days before submitting.
+  public static let trialLength: TimeInterval = 1 * 24 * 60 * 60 // DEV: 1 day
   public static let statThreshold = 5
   /// Debounce window for the noisy shield-presentation counter.
   public static let stopCooldown: TimeInterval = 60
