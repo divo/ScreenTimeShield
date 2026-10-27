@@ -28,51 +28,57 @@ reachable after buying. Walk the trial states with the dropdown; use the real pu
 
 ---
 
-## 🚢 v1.3 release checklist (audited 2026-10-27)
+## 🚢 v1.3 release checklist (updated 2026-10-27)
 
-Build 19 is the QA build (dev settings). The release build is 20.
+**Target: end of this week (Fri 2026-10-30), if QA passes.** Build 19 is the QA build (dev
+settings). The release build is 20.
 
-**Must do**
-- [ ] Finish device QA on build 19 (QA / Debug → QA checklist).
-- [ ] Decide on the bugs below, then fix the ones that block release.
-- [ ] Revert the dev-build changes (section below). Set `cutoverDate` to the release date, see the sequencing item.
-- [ ] Bump `CURRENT_PROJECT_VERSION` to 20 in all 12 configurations. Archive and upload.
-- [ ] **Price and cutover sequencing.** `cutoverDate` is compiled in, but the price change is not.
-      Anyone who pays $0.99 *after* the cutover is not grandfathered, and gets charged again at
-      the IAP. So: set the 1.3 release to **manual**. After approval, on the same day: set the
-      price to Free, then release. Use `cutoverDate` = release day + a small buffer. Users who
-      download for free during the buffer are grandfathered, which is cheap. The reverse,
-      charging a $0.99 buyer twice, is the bug `V22` was about.
-- [ ] Confirm the account move and the Paid Applications Agreement are **Active**. Without an
-      active agreement, the IAP can't be sold. The Obsidian note was last edited on 18 Jun.
-- [ ] Attach the IAP to the 1.3 version when submitting. It is `READY_TO_SUBMIT`, and the first IAP
-      can't go live on its own.
-- [ ] App Review notes: arming a block starts the 7-day trial. The "Unlock" chip opens the paywall
-      at any time. Owners of earlier paid versions are grandfathered.
+**Decision (2026-10-27): only QA blocks the release.** Every open bug, including `N5`, `N6`,
+`V07` and `V18`, ships as a known issue and goes to 1.3.1.
 
-**Bugs: blocker or not (your call)**
-- [ ] `N5`: "1 days left" on every user's last day, in all languages. Cheap fix, recommend a blocker.
-- [ ] `N6`: the in-app title is translated as a verb ("Netzstecker ziehen"). Cheap, recommend a blocker.
-- [ ] `V18` (with `V15`/`V16`): grandfathering isn't stored. An offline launch after day 7 can tell
-      a paying $0.99 customer "Trial ended" and switch their blocks off. 1.3 is the release that
-      grandfathers every existing customer. Recommend a blocker.
-- [ ] `V07`: a quick one-hour block ending clears a running nightly block (a no-bypass hole).
-      Needs a device check first.
-- [ ] Can follow in 1.3.1: `V11`/`V14`, `V12`, `V19`, `V20`, `V21`.
+**Must do, in order**
+1. [ ] Finish device QA on build 19 (QA / Debug → QA checklist).
+2. [ ] Revert the dev-build changes (section below). Set `cutoverDate` to the **release day**.
+3. [ ] Bump `CURRENT_PROJECT_VERSION` to 20 in all 12 configurations. Archive and upload.
+4. [ ] **Schedule the app's price change to Free, starting on the release day.** The price is still
+       **$0.99**, with no change scheduled (checked via the ASC API on 2026-10-27). The rule is
+       "installed before the cutover → free, after → pays for the IAP". That only works if nobody
+       can pay $0.99 after the cutover, otherwise they pay twice. ASC can schedule a price with a
+       start date, so set Free to start on the release day (`POST /v1/appPriceSchedules` with
+       `startDate`). If the release slips, people who download the free 1.2 in the gap are
+       grandfathered, which is harmless.
+5. [ ] Set the 1.3 release type to **manual** (it is currently "after approval"), so the release
+       day and the price change line up.
+6. [ ] Attach the IAP to the 1.3 version when submitting. It is `READY_TO_SUBMIT`, and the first
+       IAP can't go live on its own.
+7. [ ] App Review notes: arming a block starts the 7-day trial. The "Unlock" chip opens the paywall
+       at any time. Owners of earlier paid versions are grandfathered.
 
-**Store listing (checked via the ASC API)**
-- [x] 1.3 localizations for 11 locales (en-US, de, fr, es-ES, es-MX, it, pt-PT, ja, ko, zh-Hans, zh-Hant):
-      name, subtitle, description, keywords, What's New and 4 screenshots each (16 for en-US).
-- [x] IAP: 10 localizations. There's no es-MX entry, so the Mexico storefront falls back.
-- [ ] **The copy doesn't mention the new pricing.** What's New only covers the redesign and the
-      translations. Add one line about the free trial and the one-time unlock, and one reassuring
-      existing buyers that they keep full access. Also refresh "No Subscription". Then translate
-      both into 10 locales via the ASC API.
+**Paid Applications Agreement.** This is the contract in App Store Connect → Business that lets an
+account sell paid apps and IAPs. The updated version was accepted in June (see the IAP item under
+Release). It only becomes a risk if the US→Ireland account move resets it to pending. If the move
+isn't happening before Friday, there is nothing to do.
+
+**Known issues shipping in 1.3 (→ 1.3.1)**
+- `N5`: "1 days left" on the last trial day, in all languages.
+- `N6`: the in-app title is translated as a verb ("Netzstecker ziehen").
+- `V18`: the grandfather check asks Apple for the install date (`AppTransaction`) on every launch
+  and keeps nothing. If Apple can't answer (offline, not signed in), the app counts the user as
+  not grandfathered. After their own 7-day clock runs out, it shows "Trial ended" and stops
+  enforcing until a launch where the check succeeds. The fix keeps the rule and stores the answer
+  the first time it arrives, because the install date never changes.
+- `V07`: a quick one-hour block ending clears a running nightly block (needs a device check).
+- `V11`/`V14`, `V12`, `V15`/`V16`, `V19`, `V20`, `V21`: see `qa/README.md`.
+
+**Store listing (checked via the ASC API on 2026-10-27)**
+- [x] 1.3 localizations for 11 locales (en-US, de, fr, es-ES, es-MX, it, pt-PT, ja, ko, zh-Hans,
+      zh-Hant): name, subtitle, description, keywords, What's New and 4 screenshots each (16 for
+      en-US).
+- [x] IAP: $4.99 in 175 territories, 10 localizations (no es-MX).
 - [x] In-app strings: everything is translated except the 10 QA-menu strings (intentional).
-      Translations are machine quality, and a native-speaker spot check is still open (Features).
-
-**After release**
-- [ ] Set the price to Free. This happens on release day, as part of the sequencing above.
+- [ ] Optional: the copy doesn't mention the trial or the unlock. The App Store shows "Free" and
+      "In-App Purchases" by itself, so this isn't required. A What's New line telling existing
+      buyers they keep full access would head off support mail.
 
 ---
 
@@ -205,8 +211,8 @@ Full report in `qa/findings.md`; method and its limits in `qa/workflow-notes.md`
 - [ ] Verify the main-screen layout in block-active state on a real device — the old `ScrollView`/`minHeight` hack was removed on `ui-redesign` (now a fixed layout with a flexible, internally-scrolling app list); confirm it holds on short + tall devices and while a block is active
 - [x] App Store Connect: created the Non-Consumable IAP (`com.halfspud.ScreenTimeShield.lifetime`), $4.99, 175 territories, 10 localizations, review screenshot + notes — status **Ready to Submit** (driven via Chrome). Only gate was accepting the updated Paid Applications agreement (done); account still US. **Still must be submitted *with* an app build to go live.**
 - [x] Versioning for release — **1.3 was never released, so `MARKETING_VERSION` stays 1.3**; bumped `CURRENT_PROJECT_VERSION` (build) 12 → **13**. Grandfathering is date-based now, so the build number no longer affects it.
-- [ ] **v1.3 release sequencing (gated on the Ireland move)** — 1.3 was **pulled from review on 2026-06-19** because the US→Ireland region change is in play and the Paid Apps Agreement will go pending (a paid app can't release on a pending agreement; see [[.worklog/2026-06-16-pricing-rework]] / Obsidian `account-country-move`). Order: (1) finish move — Apple flips country **then** complete Agreements/Tax/Banking until **Active**; (2) resubmit 1.3; (3) release; (4) set Free. It's a region change (same account), so review history + app/IAP IDs are unaffected by the pull/resubmit.
-- [ ] **Set App Store price to Free** — switch from **$0.99 → Free** in all territories, but **only after v1.3 is approved/released** (decided 2026-06-19; holding until 1.3 ships). Price is independent of review; one ASC API call (`POST /v1/appPriceSchedules`, free USA price point already located; key in `.secrets/`). Existing $0.99 buyers unaffected; free→paid reversal has friction. (Going Free would also remove the Paid-Apps-Agreement dependency above.)
+- [ ] **v1.3 release sequencing** — superseded by the release checklist at the top (2026-10-27): the price goes Free on the release day, scheduled in advance, rather than after release. Original note: *gated on the Ireland move; 1.3 was pulled from review on 2026-06-19.*
+- [ ] **Set App Store price to Free** — now step 4 of the release checklist: schedule it to start on the release day. It must be Free by `cutoverDate`, or anyone paying $0.99 after the cutover pays twice.
 
 ## Marketing
 - [ ] Execute marketing plan — see [[marketing-plan]]
