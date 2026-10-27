@@ -28,9 +28,57 @@ reachable after buying. Walk the trial states with the dropdown; use the real pu
 
 ---
 
-## ⚠️ REVERT BEFORE SUBMITTING — dev build for IAP testing
+## 🚢 v1.3 release checklist (audited 2026-10-27)
 
-Build 17/18 is a **development build and must not be submitted as-is.** Four changes to undo:
+Build 19 is the QA build (dev settings). The release build is 20.
+
+**Must do**
+- [ ] Finish device QA on build 19 (QA / Debug → QA checklist).
+- [ ] Decide on the bugs below, then fix the ones that block release.
+- [ ] Revert the dev-build changes (section below). Set `cutoverDate` to the release date, see the sequencing item.
+- [ ] Bump `CURRENT_PROJECT_VERSION` to 20 in all 12 configurations. Archive and upload.
+- [ ] **Price and cutover sequencing.** `cutoverDate` is compiled in, but the price change is not.
+      Anyone who pays $0.99 *after* the cutover is not grandfathered, and gets charged again at
+      the IAP. So: set the 1.3 release to **manual**. After approval, on the same day: set the
+      price to Free, then release. Use `cutoverDate` = release day + a small buffer. Users who
+      download for free during the buffer are grandfathered, which is cheap. The reverse,
+      charging a $0.99 buyer twice, is the bug `V22` was about.
+- [ ] Confirm the account move and the Paid Applications Agreement are **Active**. Without an
+      active agreement, the IAP can't be sold. The Obsidian note was last edited on 18 Jun.
+- [ ] Attach the IAP to the 1.3 version when submitting. It is `READY_TO_SUBMIT`, and the first IAP
+      can't go live on its own.
+- [ ] App Review notes: arming a block starts the 7-day trial. The "Unlock" chip opens the paywall
+      at any time. Owners of earlier paid versions are grandfathered.
+
+**Bugs: blocker or not (your call)**
+- [ ] `N5`: "1 days left" on every user's last day, in all languages. Cheap fix, recommend a blocker.
+- [ ] `N6`: the in-app title is translated as a verb ("Netzstecker ziehen"). Cheap, recommend a blocker.
+- [ ] `V18` (with `V15`/`V16`): grandfathering isn't stored. An offline launch after day 7 can tell
+      a paying $0.99 customer "Trial ended" and switch their blocks off. 1.3 is the release that
+      grandfathers every existing customer. Recommend a blocker.
+- [ ] `V07`: a quick one-hour block ending clears a running nightly block (a no-bypass hole).
+      Needs a device check first.
+- [ ] Can follow in 1.3.1: `V11`/`V14`, `V12`, `V19`, `V20`, `V21`.
+
+**Store listing (checked via the ASC API)**
+- [x] 1.3 localizations for 11 locales (en-US, de, fr, es-ES, es-MX, it, pt-PT, ja, ko, zh-Hans, zh-Hant):
+      name, subtitle, description, keywords, What's New and 4 screenshots each (16 for en-US).
+- [x] IAP: 10 localizations. There's no es-MX entry, so the Mexico storefront falls back.
+- [ ] **The copy doesn't mention the new pricing.** What's New only covers the redesign and the
+      translations. Add one line about the free trial and the one-time unlock, and one reassuring
+      existing buyers that they keep full access. Also refresh "No Subscription". Then translate
+      both into 10 locales via the ASC API.
+- [x] In-app strings: everything is translated except the 10 QA-menu strings (intentional).
+      Translations are machine quality, and a native-speaker spot check is still open (Features).
+
+**After release**
+- [ ] Set the price to Free. This happens on release day, as part of the sequencing above.
+
+---
+
+## ⚠️ REVERT BEFORE SUBMITTING — dev build for IAP testing## ⚠️ REVERT BEFORE SUBMITTING — dev build for IAP testing
+
+Builds 17–19 are **development builds and must not be submitted as-is.** Four changes to undo:
 
 - [ ] `UnplugCore/Sources/UnplugCore/AccessControl.swift` — `PricingConfig.trialLength` is shortened
       for testing. Restore to **7 days** (`7 * 24 * 60 * 60`).
