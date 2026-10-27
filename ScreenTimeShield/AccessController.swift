@@ -40,8 +40,8 @@ enum QAAccessOverride: String, CaseIterable, Identifiable {
     switch self {
     case .off: return "Off — use real state"
     case .freshInstall: return "Fresh install (trial not started)"
-    case .trialActive: return "Trial active (3 days left)"
-    case .trialFinalDay: return "Trial final day (1 day left)"
+    case .trialActive: return "Trial active (half elapsed)"
+    case .trialFinalDay: return "Trial nearly over"
     case .expired: return "Trial expired"
     case .purchased: return "Full access — purchased"
     case .grandfathered: return "Full access — grandfathered"
@@ -211,9 +211,9 @@ final class AccessController: ObservableObject {
     case .freshInstall:
       trialStartDate = nil
     case .trialActive:
-      trialStartDate = Date(timeIntervalSinceNow: -4 * PricingConfig.secondsPerDay)
+      trialStartDate = Date(timeIntervalSinceNow: -PricingConfig.trialLength * 0.5)
     case .trialFinalDay:
-      trialStartDate = Date(timeIntervalSinceNow: -6.5 * PricingConfig.secondsPerDay)
+      trialStartDate = Date(timeIntervalSinceNow: -PricingConfig.trialLength * 0.9)
     case .expired:
       trialStartDate = Date(timeIntervalSinceNow: -(PricingConfig.trialLength + PricingConfig.secondsPerDay))
     }
