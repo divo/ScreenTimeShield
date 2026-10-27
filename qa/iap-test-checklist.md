@@ -73,6 +73,11 @@ throughout; what matters is that the state is right, not the number.
 16. 📱 **Known bug, not yet fixed (`V20`)** — expiry is only recalculated when the app comes to the
     foreground. Confirm that a block armed before expiry keeps enforcing until you next open the app.
 
+16a. 📱 **Trial-ended notification (one-shot).** Before buying: pin **Trial nearly over**, which puts
+    the end of the trial about 2 h 24 min away on the 1-day build. Close the app. Expect one
+    *"Your Unplug trial has ended"* notification at that time, and no repeat the next day. Buying
+    cancels it.
+
 ## D. Buying the unlock — the real purchase
 
 17. 💻 QA menu → pin **Off**, so you're testing the real path. Then pin **Trial expired** to reach the

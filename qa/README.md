@@ -75,6 +75,13 @@ Steps marked 📱 were skipped: the simulator cannot authorize Family Controls.
   refunded in Manage Transactions and the app relaunched with ⌘R. StoreKit purchased then read
   **no**, and the paywall was reachable again. With the pin on Off, access stays full on the
   simulator because of the grandfather confound, so judge this by the purchased row.
+- **The trial-ended notification is now one-shot (2026-10-27).** It used to be a daily repeating
+  reminder, "Your blocks are off", scheduled only after the app noticed the trial had expired.
+  So it nagged forever, and it never reached a user who didn't open the app. Now one
+  notification, "Your Unplug trial has ended", is scheduled from the trial start for the moment
+  the trial ends. Buying cancels it, and it never repeats. Rescheduling under the same identifier
+  also clears the daily reminder that older builds scheduled. This removes the dependency noted
+  for `V20`: the notification no longer relies on the app being opened.
 - **A `simctl` launch talks to the real sandbox, not `StoreKit.storekit`.** Only an Xcode ⌘R
   applies the scheme's StoreKit config. Do section D from Xcode to get a local, erasable purchase.
 

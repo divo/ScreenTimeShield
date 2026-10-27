@@ -167,25 +167,24 @@ final class AccessController: ObservableObject {
 
   private static let trialEndedNotificationID = "unplug.trial.ended"
 
-  /// After expiry, fire a daily reminder at the user's habitual block-start time — the moment
-  /// they'd normally be protected. Removed once access is restored.
+  /// One notification at the moment the trial ends, never repeated. Scheduled ahead from the trial
+  /// start, so it arrives even if the app is never opened again. Re-running this on every recompute
+  /// keeps it in step with the trial clock (including QA pins), drops it once access is full, and
+  /// clears the daily repeating reminder that earlier builds scheduled under the same identifier.
   private func updateTrialEndedNotification() {
     let center = UNUserNotificationCenter.current()
     center.removePendingNotificationRequests(withIdentifiers: [Self.trialEndedNotificationID])
 
-    guard accessState == .expired else { return }
-    // The schedule start time the Model persists into the app group, as minutes since midnight.
-    guard let startMinutes = kv.integerIfPresent(forKey: Model.startMinutesKey) else { return }
+    guard accessState != .fullAccess, let trialStart = trialStartDate else { return }
+    let untilTrialEnd = trialStart.addingTimeInterval(PricingConfig.trialLength).timeIntervalSinceNow
+    guard untilTrialEnd > 0 else { return }
 
     let content = UNMutableNotificationContent()
-    content.title = String(localized: "Your blocks are off")
-    content.body = String(localized: "Nothing's stopping the scroll right now. Unlock Unplug to bring your block back.")
+    content.title = String(localized: "Your Unplug trial has ended")
+    content.body = String(localized: "Unlock Unplug to keep your blocks working.")
     content.sound = .default
 
-    var comps = DateComponents()
-    comps.hour = MinuteOfDay.hour(startMinutes)
-    comps.minute = MinuteOfDay.minuteOfHour(startMinutes)
-    let trigger = UNCalendarNotificationTrigger(dateMatching: comps, repeats: true)
+    let trigger = UNTimeIntervalNotificationTrigger(timeInterval: untilTrialEnd, repeats: false)
     let request = UNNotificationRequest(identifier: Self.trialEndedNotificationID, content: content, trigger: trigger)
     center.add(request)
   }

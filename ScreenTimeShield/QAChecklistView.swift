@@ -43,9 +43,15 @@ struct QAChecklistView: View {
       "QA / Debug → pin Trial expired.",
       "Expect (known bug V19): the chip reads \"Trial ended\", but the screen still looks armed and offers Stop blocking.",
       "Wait until the window starts, then open a blocked app. Expect: no shield.",
-      "Expect: a \"Your blocks are off\" notification at the window's start time.",
       "Report anything worse than this, such as a crash or a shield that never clears.",
       "To return to a running trial: pin Trial active (half elapsed), then pin Off.",
+    ]),
+    QACase(id: "trialEndedNotification", title: "C · Trial-ended notification (one-shot)", steps: [
+      "Do this before the purchase: buying cancels the notification.",
+      "QA / Debug → pin Trial nearly over. That moves the end of the trial to about 2 h 24 min from now.",
+      "Close Unplug and leave it closed.",
+      "Expect: one notification, \"Your Unplug trial has ended\", about 2 h 24 min later.",
+      "Expect: no repeat of it the next day. Earlier builds repeated a reminder daily.",
     ]),
     QACase(id: "v20", title: "C · Overnight expiry (V20, step 16, optional)", steps: [
       "Optional, and it takes a day. Do it before the purchase: a purchase makes it impossible.",
