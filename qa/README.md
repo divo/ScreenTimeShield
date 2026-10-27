@@ -20,7 +20,7 @@ decisions on 26 Jul; the fix pass began 26 Jul and is partly done — see Progre
 > walking `iap-test-checklist.md` on the simulator. See the top of `status.md`. The fix list resumes
 > after that, starting with `V11`.
 
-### Build 18 simulator run (2026-10-27) — everything the simulator can do is done; E, G, 26–27 and 📱 steps remain
+### Build 18 simulator run (2026-10-27) — simulator done (G passes, E needs a device); E, 26–27 and 📱 steps remain on TestFlight
 
 Pass: 1, 3, 6 (✕ dismisses), 7, 8, 11, 12, 13, 32, 33. Fresh install reads **grandfathered = no**,
 so the paywall is reachable. The 50%/90% presets both stay in `trial` at a 1-day trial length.
@@ -67,6 +67,14 @@ Steps marked 📱 were skipped: the simulator cannot authorize Family Controls.
 - **Restore with a non-entitled pin on** reports "No previous purchase found.", even though
   StoreKit holds a purchase. This follows from the design, because the pin suppresses
   entitlement. Minor: the red error text is hard to read on the purple gradient.
+- **Section E can't be tested on the simulator.** Deleting the app wipes Xcode's local test
+  transaction. After reinstalling, Restore ran without errors, but StoreKit purchased stayed
+  **no**, because nothing was left to restore. Test it on the phone, where the sandbox keeps the
+  purchase.
+- **Section G passes (36–37).** After a fresh local purchase (purchased = yes), the transaction was
+  refunded in Manage Transactions and the app relaunched with ⌘R. StoreKit purchased then read
+  **no**, and the paywall was reachable again. With the pin on Off, access stays full on the
+  simulator because of the grandfather confound, so judge this by the purchased row.
 - **A `simctl` launch talks to the real sandbox, not `StoreKit.storekit`.** Only an Xcode ⌘R
   applies the scheme's StoreKit config. Do section D from Xcode to get a local, erasable purchase.
 
