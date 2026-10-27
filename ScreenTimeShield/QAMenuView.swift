@@ -27,6 +27,10 @@ struct QAMenuView: View {
     NavigationView {
       Form {
         Section {
+          NavigationLink { QAChecklistView() } label: { Text(verbatim: "QA checklist (device)") }
+        }
+
+        Section {
           Picker("Access state", selection: Binding(
             get: { access.qaAccessOverride },
             set: { access.qaSetAccessOverride($0) }

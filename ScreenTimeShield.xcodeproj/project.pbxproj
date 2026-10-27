@@ -54,6 +54,7 @@
 		B1D3AE259C2136E170FDD474 /* StoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C23184A50D8C703A2A7C2B3 /* StoreTests.swift */; };
 		BFA6E768C40D5F5A14DCBD28 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912F9D9B282616D8785C8978 /* SettingsView.swift */; };
 		C99F6A109280EE8AA6275103 /* QAMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2533604AB767B89C3AE6A63F /* QAMenuView.swift */; };
+		A1C4E7B20000000000000001 /* QAChecklistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C4E7B20000000000000002 /* QAChecklistView.swift */; };
 		D5754AE38027ED9D0D25A17D /* AppCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ED3F83B01478F875A8A3C99 /* AppCard.swift */; };
 		FEFB7AD28DCA1B4648564C4D /* UnplugCore in Frameworks */ = {isa = PBXBuildFile; productRef = ACF9D0F184FF8E25627514C5 /* UnplugCore */; };
 /* End PBXBuildFile section */
@@ -116,6 +117,7 @@
 		0ED3F83B01478F875A8A3C99 /* AppCard.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppCard.swift; sourceTree = "<group>"; };
 		1C23184A50D8C703A2A7C2B3 /* StoreTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = StoreTests.swift; sourceTree = "<group>"; };
 		2533604AB767B89C3AE6A63F /* QAMenuView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = QAMenuView.swift; sourceTree = "<group>"; };
+		A1C4E7B20000000000000002 /* QAChecklistView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = QAChecklistView.swift; sourceTree = "<group>"; };
 		26C1F2411CDBB447F76426F0 /* Store.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		507894EFD724C5277117DC54 /* AppGroupStore.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppGroupStore.swift; sourceTree = "<group>"; };
 		60ABAF720C80920CF87D2492 /* ScheduleRangeSlider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ScheduleRangeSlider.swift; sourceTree = "<group>"; };
@@ -266,6 +268,7 @@
 				9CDEEA7261E4C98B75C6367D /* AccessController.swift */,
 				9C71ACD206FCE4A5EDE7A4F8 /* PaywallView.swift */,
 				2533604AB767B89C3AE6A63F /* QAMenuView.swift */,
+				A1C4E7B20000000000000002 /* QAChecklistView.swift */,
 				60ABAF720C80920CF87D2492 /* ScheduleRangeSlider.swift */,
 				912F9D9B282616D8785C8978 /* SettingsView.swift */,
 				7598E82AF0FB26C5A5B18FA7 /* StatusBanner.swift */,
@@ -602,6 +605,7 @@
 				63DF5E15F67290B44D866122 /* AccessController.swift in Sources */,
 				167D69C20C7BDF7888B00CDC /* PaywallView.swift in Sources */,
 				C99F6A109280EE8AA6275103 /* QAMenuView.swift in Sources */,
+				A1C4E7B20000000000000001 /* QAChecklistView.swift in Sources */,
 				691FF2A8A41584D62F3BFAB7 /* ScheduleRangeSlider.swift in Sources */,
 				BFA6E768C40D5F5A14DCBD28 /* SettingsView.swift in Sources */,
 				06F1096121C1F811122F36CC /* StatusBanner.swift in Sources */,
