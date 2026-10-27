@@ -15,7 +15,8 @@ Tasks, in order:
        from the labels.
 3. [x] Bump `CURRENT_PROJECT_VERSION` 17 → **18** across **all 12** build configurations, not just
        the app — extensions must match the containing app or App Store Connect rejects the upload.
-4. [ ] Build, install on the simulator, then run `qa/iap-test-checklist.md`.
+4. [~] Build, install on the simulator, then run `qa/iap-test-checklist.md`. **Simulator part done
+       (2026-10-27)** — results in `qa/README.md`. Left: E, G, 26–27 and the 📱 steps. New bugs `N5`, `N6`.
 
 ⚠️ **No test reads `PricingConfig.trialLength`** — the suite passes its own value in — so a wrong
 trial length ships with a green `swift test`. Check it by eye.
