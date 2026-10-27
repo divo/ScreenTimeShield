@@ -20,7 +20,7 @@ decisions on 26 Jul; the fix pass began 26 Jul and is partly done — see Progre
 > walking `iap-test-checklist.md` on the simulator. See the top of `status.md`. The fix list resumes
 > after that, starting with `V11`.
 
-### Build 18 simulator run (2026-10-27) — sections A–C and F done, D onward blocked on a purchase
+### Build 18 simulator run (2026-10-27) — A–C, F and D 17–23 done; D 24–27, E and G still to do
 
 Pass: 1, 3, 6 (✕ dismisses), 7, 8, 11, 12, 13, 32, 33. Fresh install reads **grandfathered = no**,
 so the paywall is reachable. The 50%/90% presets both stay in `trial` at a 1-day trial length.
@@ -36,6 +36,15 @@ Steps marked 📱 were skipped: the simulator cannot authorize Family Controls.
 - **Observation, step 6:** the first paywall open showed "Unlock forever" with no price and a
   disabled button. The second open showed $4.99. `loadProduct()` runs per open, so this is most
   likely the latency of a cold sandbox fetch. Re-check on device.
+- **Section D, run from Xcode ⌘R (local StoreKit):** 17, 18 ($4.99 shown at once), 19 and 20 pass.
+  After the purchase, **StoreKit purchased = yes**.
+- **Under Xcode StoreKit testing, StoreKit grandfathered = yes.** The synthesized
+  `AppTransaction.originalPurchaseDate` predates the 2020-01-01 dev cutover. So with the pin on
+  "Off", the state is fullAccess before any purchase. Steps 22–23 can't separate "purchased" from
+  "grandfathered" on the simulator. Re-check on TestFlight, where the real sandbox reads no.
+- **Steps 21–22 are out of order in the checklist.** The "Trial expired" pin from step 17
+  suppresses the new entitlement too. The chip stays "Trial ended" until you pin Off. That is by
+  design, so the checklist now unpins first.
 - **A `simctl` launch talks to the real sandbox, not `StoreKit.storekit`.** Only an Xcode ⌘R
   applies the scheme's StoreKit config. Do section D from Xcode to get a local, erasable purchase.
 

@@ -79,7 +79,8 @@ throughout; what matters is that the state is right, not the number.
     with no amount — a missing price means the product failed to load.
 19. 💻 Tap buy. Complete the sandbox purchase.
 20. 💻 Confirm the paywall **dismisses itself** on success.
-21. 💻 Confirm the trial chip is now **gone entirely**.
+21. 💻 QA menu → pin **Off** first (the step-17 pin suppresses the new entitlement too). Then confirm
+    the trial chip is **gone entirely**.
 22. 💻 QA menu → confirm **Real StoreKit state → purchased = yes** and **Access state = fullAccess**.
 23. 💻 Pin **Off** and confirm the state stays `fullAccess` — the entitlement is real, not the override.
 24. 📱 Confirm blocking still arms and enforces after purchase.
