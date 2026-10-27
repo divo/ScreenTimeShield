@@ -31,9 +31,10 @@ public enum PricingConfig {
   ///
   /// ⚠️ **DEV BUILD — currently set to the past on purpose.** A cutover in the past means a fresh
   /// install is *not* grandfathered, so the trial, paywall and IAP purchase can actually be
-  /// exercised. **This build must not be submitted.** Restore to 2026-08-10 (1_786_320_000) — or to
-  /// the real release date if it has moved — and remove the matching XCTExpectFailure markers in
-  /// PricingBoundaryTests. See the revert checklist in status.md.
+  /// exercised. **This build must not be submitted.** For release, set it to 00:00 UTC on the day
+  /// *after* the 1.3 release day, never to an old date: the app is on sale at $0.99 until the
+  /// release day, and anyone who paid before the cutover must be grandfathered. Then remove the
+  /// matching XCTExpectFailure markers in PricingBoundaryTests. See the release checklist in status.md.
   public static let cutoverDate = Date(timeIntervalSince1970: 1_577_836_800) // DEV: 2020-01-01 00:00 UTC
   /// ⚠️ DEV BUILD — shortened to 1 day for trial→purchase QA. Restore to 7 days before submitting.
   public static let trialLength: TimeInterval = 1 * 24 * 60 * 60 // DEV: 1 day

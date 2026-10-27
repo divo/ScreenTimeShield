@@ -38,9 +38,13 @@ settings). The release build is 20.
 
 **Must do, in order**
 1. [ ] Finish device QA on build 19 (QA / Debug → QA checklist).
-2. [ ] Revert the dev-build changes (section below). Set `cutoverDate` to the **release day**.
+2. [ ] Revert the dev-build changes (section below). Set `cutoverDate` to **00:00 UTC on the day
+       after the release day** (for Fri 2026-10-30: `1_793_404_800`, 2026-10-31). **Never** use the
+       old 2026-08-10: the app has been on sale at $0.99 since then, and those buyers would pay twice.
+       Also bump `lastDayThePreIAPBuildWasOnSale` in `PricingBoundaryTests` to the release day, so
+       the V22 guard covers everyone up to release. If the release slips, move both.
 3. [ ] Bump `CURRENT_PROJECT_VERSION` to 20 in all 12 configurations. Archive and upload.
-4. [ ] **Schedule the app's price change to Free, starting on the release day.** The price is still
+4. [ ] **💰 PRICE: schedule the app's price change to Free, starting on the release day.** The price is still
        **$0.99**, with no change scheduled (checked via the ASC API on 2026-10-27). The rule is
        "installed before the cutover → free, after → pays for the IAP". That only works if nobody
        can pay $0.99 after the cutover, otherwise they pay twice. ASC can schedule a price with a
@@ -91,7 +95,7 @@ Builds 17–19 are **development builds and must not be submitted as-is.** Four 
 
 - [ ] `UnplugCore/Sources/UnplugCore/AccessControl.swift` — `PricingConfig.cutoverDate` is set to
       **2020-01-01** so a fresh install is *not* grandfathered and the paywall/IAP can be exercised.
-      Restore to **2026-08-10** (`1_786_320_000`), or to the real release date if it has moved.
+      Set it to 00:00 UTC on the day **after** the 1.3 release day. **Never** restore the old 2026-08-10 (see step 2 of the release checklist).
 - [ ] `UnplugCore/Tests/UnplugCoreTests/PricingBoundaryTests.swift` — remove the two
       `XCTExpectFailure` markers on the V22 tests. These are strict, so restoring the date alone
       makes the suite go red (unexpected pass) until the markers go too — deliberately, so the pair
