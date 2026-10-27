@@ -17,6 +17,13 @@ struct QAChecklistView: View {
   }
 
   private static let cases: [QACase] = [
+    QACase(id: "upgradeReminder", title: "Upgrade from build 18 clears the daily reminder (optional)", steps: [
+      "Only if this build was installed as an update over build 18, without deleting the app first.",
+      "Before updating: on build 18 you set a schedule, pinned Trial expired and opened the app once. That scheduled build 18's daily \"Your blocks are off\" reminder at the schedule's start time.",
+      "Open this build once.",
+      "Expect: at the next schedule start time, no \"Your blocks are off\" notification arrives.",
+      "Do this before Setup, because Setup deletes the app.",
+    ]),
     QACase(id: "setup", title: "Setup: fresh TestFlight install", steps: [
       "Delete Unplug, then install this build from TestFlight.",
       "Open QA / Debug and check Real StoreKit state → StoreKit grandfathered = no.",

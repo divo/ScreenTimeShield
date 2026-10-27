@@ -35,6 +35,15 @@ throughout; what matters is that the state is right, not the number.
 
 ---
 
+## 0. Upgrade from build 18 (optional — only if build 18 is on the phone)
+
+Builds up to 18 scheduled a **daily, never-ending** "Your blocks are off" reminder after expiry.
+Build 19 replaces it with a one-shot notification and must remove the old reminder on upgrade.
+
+0a. 📱 On **build 18**: set a schedule, pin **Trial expired**, and open the app once.
+0b. 📱 Update to build 19 from TestFlight **without deleting** the app. Open it once.
+0c. 📱 Expect no "Your blocks are off" notification at the next schedule start time.
+
 ## A. Fresh install — trial not yet started
 
 1. 💻 Delete the app. Reinstall. Launch.
@@ -150,4 +159,4 @@ For each ⚠️ step, note what actually happened — several are known-unfixed 
 to confirm the bug matches its description rather than being worse. Anything that behaves *differently
 from the note* is new information worth adding to `qa/README.md`.
 
-**Do not ship build 18.** Revert checklist: top of `status.md`.
+**Do not ship build 19.** Revert checklist: top of `status.md`.
