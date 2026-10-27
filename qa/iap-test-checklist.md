@@ -4,8 +4,17 @@ Manual test script for the trial → paywall → lifetime-unlock flow. Work top 
 are ordered so expensive setup (a real purchase, a wiped install) happens once and later scenarios
 reuse it.
 
-**Build 17 is a dev build** — the QA menu is enabled and `PricingConfig.cutoverDate` is set to
-2020-01-01 so a fresh install is *not* grandfathered. Revert checklist is at the top of `status.md`.
+**This runs against a dev build** — the QA menu is enabled, `PricingConfig.cutoverDate` is set to
+2020-01-01 so a fresh install is *not* grandfathered, and `PricingConfig.trialLength` is shortened to
+**1 day** so the whole trial can elapse in one sitting. Revert checklist is at the top of `status.md`.
+
+⚠️ **The sandbox IAP history cannot be reliably erased, so treat the real purchase as one-way.**
+Do every pre-purchase scenario *before* step 19, and after buying, use the QA dropdown's
+non-entitled options to get back — they suppress a real entitlement, which is the whole reason the
+override overrides the entitlement input rather than the state.
+
+Day counts below assume a 7-day trial. With the 1-day build, read "N days left" as "1 day left"
+throughout; what matters is that the state is right, not the number.
 
 ## Before you start
 
@@ -26,7 +35,7 @@ reuse it.
 ## A. Fresh install — trial not yet started
 
 1. 💻 Delete the app. Reinstall. Launch.
-2. 💻 Confirm the trial chip reads **"7 days left in trial · Unlock"**.
+2. 💻 Confirm the trial chip reads **"1 day left in trial · Unlock"** (or 7 on a full-length build).
    *(This is the case where `trial_start` is nil — the countdown shows the full length before the
    clock has actually started.)*
 3. 💻 Open **QA / Debug** and confirm **Access state = trial**, **Trial days remaining = 7**,
@@ -41,7 +50,7 @@ reuse it.
 
 ## B. Trial running
 
-8. 💻 QA menu → pin **Trial active (3 days left)**. Confirm the chip reads **"3 days left"**.
+8. 💻 QA menu → pin **Trial active**. Confirm the chip shows a plausible countdown, not 0.
 9. 💻 Pin **Trial final day (1 day left)**. Confirm the chip reads **"1 day left"** — check the
    singular reads correctly and isn't "1 days".
 10. 📱 With the trial active, confirm blocking still enforces: open a restricted app, see the shield.

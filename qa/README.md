@@ -16,6 +16,10 @@ decisions on 26 Jul; the fix pass began 26 Jul and is partly done — see Progre
 | Proven by a test you can run today | 4 |
 | Ever observed on a real phone | **0** |
 
+> **Current focus (2026-10-27):** not the fix backlog below — a dev build with a 1-day trial, then
+> walking `iap-test-checklist.md` on the simulator. See the top of `status.md`. The fix list resumes
+> after that, starting with `V11`.
+
 ## Progress (last updated 2026-08-02)
 
 **9 of 17 fixes landed.** `swift test` is green at 58 tests, up from 25 tests with 20 failures when
