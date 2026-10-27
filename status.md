@@ -7,13 +7,13 @@ journey can be walked in one sitting, then QA it on the iPhone simulator via the
 
 Tasks, in order:
 
-1. [ ] `PricingConfig.trialLength` → **1 day** (`AccessControl.swift`). Currently `7 * 24 * 60 * 60`.
-2. [ ] **Fix the QA presets first — they break at 1 day.** `AccessController.qaSetAccessOverride`
+1. [x] `PricingConfig.trialLength` → **1 day** (`AccessControl.swift`). Currently `7 * 24 * 60 * 60`.
+2. [x] **Fix the QA presets first — they break at 1 day.** `AccessController.qaSetAccessOverride`
        hardcodes `-4` and `-6.5` days for "Trial active" and "Trial final day". Both land past
        expiry once the trial is 1 day, so two of the six states silently become unreachable.
        Express them as fractions of `trialLength` (50% and 90% elapsed) and drop the day counts
        from the labels.
-3. [ ] Bump `CURRENT_PROJECT_VERSION` 17 → **18** across **all 12** build configurations, not just
+3. [x] Bump `CURRENT_PROJECT_VERSION` 17 → **18** across **all 12** build configurations, not just
        the app — extensions must match the containing app or App Store Connect rejects the upload.
 4. [ ] Build, install on the simulator, then run `qa/iap-test-checklist.md`.
 
