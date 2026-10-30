@@ -18,7 +18,7 @@ Tasks, in order:
 4. [~] Build, install on the simulator, then run `qa/iap-test-checklist.md`. **Simulator part done
        (2026-10-27)** — results in `qa/README.md`. Left, on TestFlight: E, 21–23, 26–27 and the 📱 steps. New bugs `N5`, `N6`.
 
-⚠️ **No test reads `PricingConfig.trialLength`** — the suite passes its own value in — so a wrong
+⚠️ **No test reads `PricingConfig.trialDays`** — the suite passes its own value in — so a wrong
 trial length ships with a green `swift test`. Check it by eye.
 
 ⚠️ **The IAP purchase history cannot be erased**, so a real purchase is one-way. That is exactly
@@ -30,20 +30,28 @@ reachable after buying. Walk the trial states with the dropdown; use the real pu
 
 ## 🚢 v1.3 release checklist (updated 2026-10-27)
 
-**Target: end of this week (Fri 2026-10-30), if QA passes.** Build 19 is the QA build (dev
-settings). The release build is 20.
+**Target: end of this week (Fri 2026-10-30), if QA passes.** Build 20 is the QA build (dev
+settings). The release build is 21.
+
+**Decision (2026-10-28): the trial counts local calendar days.** The trial still starts when the
+user first arms a block. The rest of that day is free, then 7 full days follow, and the trial ends
+at local midnight. The trial-ended notification arrives at 09:00 local the next morning. Build 20
+carries this change, so the trial cases in the QA checklist need a re-run on build 20.
 
 **Decision (2026-10-27): only QA blocks the release.** Every open bug, including `N5`, `N6`,
 `V07` and `V18`, ships as a known issue and goes to 1.3.1.
 
+**⛔ Blocked (2026-10-29): a purchase left the app on "Trial ended".** See
+`qa/postmortems/2026-10-29-purchase-left-trial-ended.md`. Actions 1–3 there must pass before release.
+
 **Must do, in order**
-1. [ ] Finish device QA on build 19 (QA / Debug → QA checklist).
+1. [ ] Finish device QA on build 20 (QA / Debug → QA checklist), including the purchase re-run.
 2. [ ] Revert the dev-build changes (section below). Set `cutoverDate` to **00:00 UTC on the day
        after the release day** (for Fri 2026-10-30: `1_793_404_800`, 2026-10-31). **Never** use the
        old 2026-08-10: the app has been on sale at $0.99 since then, and those buyers would pay twice.
        Also bump `lastDayThePreIAPBuildWasOnSale` in `PricingBoundaryTests` to the release day, so
        the V22 guard covers everyone up to release. If the release slips, move both.
-3. [ ] Bump `CURRENT_PROJECT_VERSION` to 20 in all 12 configurations. Archive and upload.
+3. [ ] Bump `CURRENT_PROJECT_VERSION` to 21 in all 12 configurations. Archive and upload.
 4. [ ] **💰 PRICE: schedule the app's price change to Free, starting on the release day.** The price is still
        **$0.99**, with no change scheduled (checked via the ASC API on 2026-10-27). The rule is
        "installed before the cutover → free, after → pays for the IAP". That only works if nobody
@@ -55,7 +63,8 @@ settings). The release build is 20.
        day and the price change line up.
 6. [ ] Attach the IAP to the 1.3 version when submitting. It is `READY_TO_SUBMIT`, and the first
        IAP can't go live on its own.
-7. [ ] App Review notes: arming a block starts the 7-day trial. The "Unlock" chip opens the paywall
+7. [ ] App Review notes: arming a block starts the trial (the rest of that day plus 7 full days,
+       ending at local midnight). The "Unlock" chip opens the paywall
        at any time. Owners of earlier paid versions are grandfathered.
 
 **Paid Applications Agreement.** This is the contract in App Store Connect → Business that lets an
@@ -86,12 +95,12 @@ isn't happening before Friday, there is nothing to do.
 
 ---
 
-## ⚠️ REVERT BEFORE SUBMITTING — dev build for IAP testing## ⚠️ REVERT BEFORE SUBMITTING — dev build for IAP testing
+## ⚠️ REVERT BEFORE SUBMITTING — dev build for IAP testing
 
-Builds 17–19 are **development builds and must not be submitted as-is.** Four changes to undo:
+Builds 17–20 are **development builds and must not be submitted as-is.** Four changes to undo:
 
-- [ ] `UnplugCore/Sources/UnplugCore/AccessControl.swift` — `PricingConfig.trialLength` is shortened
-      for testing. Restore to **7 days** (`7 * 24 * 60 * 60`).
+- [ ] `UnplugCore/Sources/UnplugCore/AccessControl.swift` — `PricingConfig.trialDays` is shortened
+      for testing. Restore to **7**.
 
 - [ ] `UnplugCore/Sources/UnplugCore/AccessControl.swift` — `PricingConfig.cutoverDate` is set to
       **2020-01-01** so a fresh install is *not* grandfathered and the paywall/IAP can be exercised.
