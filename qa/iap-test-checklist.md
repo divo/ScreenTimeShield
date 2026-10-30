@@ -5,13 +5,17 @@ are ordered so expensive setup (a real purchase, a wiped install) happens once a
 reuse it.
 
 **This runs against a dev build** — the QA menu is enabled, `PricingConfig.cutoverDate` is set to
-2020-01-01 so a fresh install is *not* grandfathered, and `PricingConfig.trialLength` is shortened to
-**1 day** so the whole trial can elapse in one sitting. Revert checklist is at the top of `status.md`.
+2020-01-01 so a fresh install is *not* grandfathered, and `PricingConfig.trialDays` is shortened to
+**1 day** so the whole trial can elapse overnight. Revert checklist is at the top of `status.md`.
 
 ⚠️ **The sandbox IAP history cannot be reliably erased, so treat the real purchase as one-way.**
 Do every pre-purchase scenario *before* step 19, and after buying, use the QA dropdown's
 non-entitled options to get back — they suppress a real entitlement, which is the whole reason the
 override overrides the entitlement input rather than the state.
+
+The trial counts local calendar days. The rest of the day the user first arms a block is free, then
+`trialDays` full days follow, and the trial ends at local midnight. On the 1-day build, a trial
+started today ends at midnight at the end of tomorrow.
 
 Day counts below assume a 7-day trial. With the 1-day build, read "N days left" as "1 day left"
 throughout; what matters is that the state is right, not the number.
@@ -38,10 +42,10 @@ throughout; what matters is that the state is right, not the number.
 ## 0. Upgrade from build 18 (optional — only if build 18 is on the phone)
 
 Builds up to 18 scheduled a **daily, never-ending** "Your blocks are off" reminder after expiry.
-Build 19 replaces it with a one-shot notification and must remove the old reminder on upgrade.
+Build 19 and later replace it with a one-shot notification and must remove the old reminder on upgrade.
 
 0a. 📱 On **build 18**: set a schedule, pin **Trial expired**, and open the app once.
-0b. 📱 Update to build 19 from TestFlight **without deleting** the app. Open it once.
+0b. 📱 Update to build 20 from TestFlight **without deleting** the app. Open it once.
 0c. 📱 Expect no "Your blocks are off" notification at the next schedule start time.
 
 ## A. Fresh install — trial not yet started
@@ -62,8 +66,8 @@ Build 19 replaces it with a one-shot notification and must remove the old remind
 
 ## B. Trial running
 
-8. 💻 QA menu → pin **Trial active (half elapsed)**. Confirm the chip shows a plausible countdown, not 0.
-9. 💻 Pin **Trial nearly over**. Confirm the chip reads **"1 day left"** — check the
+8. 💻 QA menu → pin **Trial started today**. Confirm the chip shows the full trial length, not 0.
+9. 💻 Pin **Last day of trial**. Confirm the chip reads **"1 day left"** — check the
    singular reads correctly and isn't "1 days".
 10. 📱 With the trial active, confirm blocking still enforces: open a restricted app, see the shield.
 11. 💻 Background the app for 10 seconds, reopen. Confirm the pinned state **survives** — this is what
@@ -82,10 +86,10 @@ Build 19 replaces it with a one-shot notification and must remove the old remind
 16. 📱 **Known bug, not yet fixed (`V20`)** — expiry is only recalculated when the app comes to the
     foreground. Confirm that a block armed before expiry keeps enforcing until you next open the app.
 
-16a. 📱 **Trial-ended notification (one-shot).** Before buying: pin **Trial nearly over**, which puts
-    the end of the trial about 2 h 24 min away on the 1-day build. Close the app. Expect one
-    *"Your Unplug trial has ended"* notification at that time, and no repeat the next day. Buying
-    cancels it.
+16a. 📱 **Trial ends at midnight, notification at 09:00 (overnight).** Before buying: pin **Last day
+    of trial**, which ends the trial at midnight tonight. Close the app. Expect no notification at
+    midnight, one *"Your Unplug trial has ended"* notification at 09:00, "Trial ended" when you open
+    the app, and no repeat the next day. Buying cancels the notification.
 
 ## D. Buying the unlock — the real purchase
 
@@ -159,4 +163,4 @@ For each ⚠️ step, note what actually happened — several are known-unfixed 
 to confirm the bug matches its description rather than being worse. Anything that behaves *differently
 from the note* is new information worth adding to `qa/README.md`.
 
-**Do not ship build 19.** Revert checklist: top of `status.md`.
+**Do not ship build 20.** Revert checklist: top of `status.md`.

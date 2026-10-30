@@ -20,8 +20,9 @@ decisions on 26 Jul; the fix pass began 26 Jul and is partly done — see Progre
 > walking `iap-test-checklist.md` on the simulator. See the top of `status.md`. The fix list resumes
 > after that, starting with `V11`.
 >
-> **Release decision (2026-10-27):** 1.3 ships at the end of this week if device QA on build 19
-> passes. **Only QA blocks the release.** Every open finding, including `N5`, `N6`, `V07` and
+> **Release decision (2026-10-27):** 1.3 ships at the end of this week if device QA on build 20
+> passes. Build 20 (2026-10-28) replaces build 19 for QA: the trial now counts local calendar days
+> and ends at local midnight, and the trial-ended notification arrives at 09:00 the next morning. **Only QA blocks the release.** Every open finding, including `N5`, `N6`, `V07` and
 > `V18`, ships as a known issue and is fixed in 1.3.1. See the release checklist in `status.md`.
 
 ### Build 18 simulator run (2026-10-27) — simulator done (G passes, E needs a device); E, 26–27 and 📱 steps remain on TestFlight

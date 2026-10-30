@@ -36,12 +36,12 @@ public enum PricingConfig {
   /// release day, and anyone who paid before the cutover must be grandfathered. Then remove the
   /// matching XCTExpectFailure markers in PricingBoundaryTests. See the release checklist in status.md.
   public static let cutoverDate = Date(timeIntervalSince1970: 1_577_836_800) // DEV: 2020-01-01 00:00 UTC
+  /// Full local calendar days in the trial, after the day it starts (see `AccessEvaluator.trialEnd`).
   /// ⚠️ DEV BUILD — shortened to 1 day for trial→purchase QA. Restore to 7 days before submitting.
-  public static let trialLength: TimeInterval = 1 * 24 * 60 * 60 // DEV: 1 day
+  public static let trialDays = 1 // DEV: 1 day
   public static let statThreshold = 5
   /// Debounce window for the noisy shield-presentation counter.
   public static let stopCooldown: TimeInterval = 60
-  public static let secondsPerDay: TimeInterval = 24 * 60 * 60
 }
 
 /// Abstracts the StoreKit entitlement source so callers (and tests) don't depend on StoreKit directly.
@@ -60,27 +60,33 @@ public protocol KeyValueStore {
 
 /// Resolves the user's current access level from trial timing + entitlement.
 public enum AccessEvaluator {
+  /// The trial runs in whole local calendar days, so it ends at a midnight rather than at whatever
+  /// time of day the user first armed a block. The rest of that first day is free, then `trialDays`
+  /// full days follow. `calendar` carries the time zone, so DST and travel keep the end at midnight.
+  public static func trialEnd(trialStart: Date, trialDays: Int, calendar: Calendar) -> Date {
+    calendar.date(byAdding: .day, value: trialDays + 1, to: calendar.startOfDay(for: trialStart))!
+  }
+
   public static func accessState(now: Date,
                                  trialStart: Date?,
                                  hasFullAccess: Bool,
-                                 trialLength: TimeInterval) -> AccessState {
+                                 trialDays: Int,
+                                 calendar: Calendar) -> AccessState {
     if hasFullAccess { return .fullAccess }
     guard let trialStart else { return .trial } // trial not started yet
-    return now.timeIntervalSince(trialStart) < trialLength ? .trial : .expired
+    return now < trialEnd(trialStart: trialStart, trialDays: trialDays, calendar: calendar) ? .trial : .expired
   }
 
   public static func trialDaysRemaining(now: Date,
                                         trialStart: Date?,
-                                        trialLength: TimeInterval) -> Int {
-    guard let trialStart else {
-      return Int(ceil(trialLength / PricingConfig.secondsPerDay))
-    }
-    // Clamped to the trial length: elapsed time is a signed interval, so an instant before
-    // trialStart would otherwise inflate the count past the trial itself ("18 days left" in a
-    // 7-day trial). The count shown to the user can never exceed what they were given.
-    let remaining = min(trialLength, trialLength - now.timeIntervalSince(trialStart))
-    guard remaining > 0 else { return 0 }
-    return Int(ceil(remaining / PricingConfig.secondsPerDay))
+                                        trialDays: Int,
+                                        calendar: Calendar) -> Int {
+    guard let trialStart else { return trialDays }
+    let end = trialEnd(trialStart: trialStart, trialDays: trialDays, calendar: calendar)
+    let days = calendar.dateComponents([.day], from: calendar.startOfDay(for: now), to: end).day ?? 0
+    // Clamped to the trial length: the free first day would otherwise read "8 days left" in a 7-day
+    // trial, and an instant before trialStart would inflate the count further (V23).
+    return min(trialDays, max(0, days))
   }
 }
 

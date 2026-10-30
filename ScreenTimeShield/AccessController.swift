@@ -40,8 +40,8 @@ enum QAAccessOverride: String, CaseIterable, Identifiable {
     switch self {
     case .off: return "Off — use real state"
     case .freshInstall: return "Fresh install (trial not started)"
-    case .trialActive: return "Trial active (half elapsed)"
-    case .trialFinalDay: return "Trial nearly over"
+    case .trialActive: return "Trial started today"
+    case .trialFinalDay: return "Last day of trial"
     case .expired: return "Trial expired"
     case .purchased: return "Full access — purchased"
     case .grandfathered: return "Full access — grandfathered"
@@ -103,7 +103,8 @@ final class AccessController: ObservableObject {
   var trialDaysRemaining: Int {
     AccessEvaluator.trialDaysRemaining(now: Date(),
                                        trialStart: trialStartDate,
-                                       trialLength: PricingConfig.trialLength)
+                                       trialDays: PricingConfig.trialDays,
+                                       calendar: .current)
   }
 
   /// Whether the user is entitled to full access. Honours the QA override so every caller — the
@@ -159,7 +160,8 @@ final class AccessController: ObservableObject {
     accessState = AccessEvaluator.accessState(now: Date(),
                                               trialStart: trialStartDate,
                                               hasFullAccess: hasFullAccess,
-                                              trialLength: PricingConfig.trialLength)
+                                              trialDays: PricingConfig.trialDays,
+                                              calendar: .current)
     // Extensions can't query StoreKit — cache whether enforcement is currently permitted.
     kv.setBool(accessState != .expired, forKey: AppGroupKeys.enforcementAllowed)
     updateTrialEndedNotification()
@@ -167,8 +169,8 @@ final class AccessController: ObservableObject {
 
   private static let trialEndedNotificationID = "unplug.trial.ended"
 
-  /// One notification at the moment the trial ends, never repeated. Scheduled ahead from the trial
-  /// start, so it arrives even if the app is never opened again. Re-running this on every recompute
+  /// One notification at 09:00 local on the morning after the trial ends at midnight, never repeated.
+  /// Scheduled ahead from the trial start, so it arrives even if the app is never opened again. Re-running this on every recompute
   /// keeps it in step with the trial clock (including QA pins), drops it once access is full, and
   /// clears the daily repeating reminder that earlier builds scheduled under the same identifier.
   private func updateTrialEndedNotification() {
@@ -176,15 +178,17 @@ final class AccessController: ObservableObject {
     center.removePendingNotificationRequests(withIdentifiers: [Self.trialEndedNotificationID])
 
     guard accessState != .fullAccess, let trialStart = trialStartDate else { return }
-    let untilTrialEnd = trialStart.addingTimeInterval(PricingConfig.trialLength).timeIntervalSinceNow
-    guard untilTrialEnd > 0 else { return }
+    let calendar = Calendar.current
+    let trialEnd = AccessEvaluator.trialEnd(trialStart: trialStart, trialDays: PricingConfig.trialDays, calendar: calendar)
+    guard let fireDate = calendar.date(bySettingHour: 9, minute: 0, second: 0, of: trialEnd), fireDate > Date() else { return }
 
     let content = UNMutableNotificationContent()
     content.title = String(localized: "Your Unplug trial has ended")
     content.body = String(localized: "Unlock Unplug to keep your blocks working.")
     content.sound = .default
 
-    let trigger = UNTimeIntervalNotificationTrigger(timeInterval: untilTrialEnd, repeats: false)
+    let trigger = UNCalendarNotificationTrigger(
+      dateMatching: calendar.dateComponents([.year, .month, .day, .hour, .minute], from: fireDate), repeats: false)
     let request = UNNotificationRequest(identifier: Self.trialEndedNotificationID, content: content, trigger: trigger)
     center.add(request)
   }
@@ -210,11 +214,11 @@ final class AccessController: ObservableObject {
     case .freshInstall:
       trialStartDate = nil
     case .trialActive:
-      trialStartDate = Date(timeIntervalSinceNow: -PricingConfig.trialLength * 0.5)
+      trialStartDate = Date()
     case .trialFinalDay:
-      trialStartDate = Date(timeIntervalSinceNow: -PricingConfig.trialLength * 0.9)
+      trialStartDate = Calendar.current.date(byAdding: .day, value: -PricingConfig.trialDays, to: Date())
     case .expired:
-      trialStartDate = Date(timeIntervalSinceNow: -(PricingConfig.trialLength + PricingConfig.secondsPerDay))
+      trialStartDate = Calendar.current.date(byAdding: .day, value: -(PricingConfig.trialDays + 1), to: Date())
     }
 
     recomputeAccessState()

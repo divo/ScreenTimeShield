@@ -15,7 +15,11 @@ import UnplugCore
 final class PricingBoundaryTests: XCTestCase {
 
   private let day: TimeInterval = 24 * 60 * 60
-  private let sevenDays: TimeInterval = 7 * 24 * 60 * 60
+  private let utc: Calendar = {
+    var calendar = Calendar(identifier: .gregorian)
+    calendar.timeZone = TimeZone(identifier: "UTC")!
+    return calendar
+  }()
 
   /// 2026-10-27 00:00 UTC. A day on which the live App Store build was still the pre-IAP
   /// paid build: 1.2 was on sale at $0.99 (checked via the ASC API), and 1.3 had not shipped.
@@ -131,19 +135,18 @@ final class PricingBoundaryTests: XCTestCase {
     let atDay8 = AccessEvaluator.accessState(now: trialStart.addingTimeInterval(8 * day),
                                             trialStart: trialStart,
                                             hasFullAccess: false,
-                                            trialLength: sevenDays)
+                                            trialDays: 7, calendar: utc)
     XCTAssertEqual(atDay8, .expired, "V23 precondition: the trial must be expired on day 8.")
 
     // Settings → General → Date & Time, "Set Automatically" off, date set to 2026-06-20.
     let afterRollback = AccessEvaluator.accessState(now: trialStart.addingTimeInterval(-11 * day),
                                                    trialStart: trialStart,
                                                    hasFullAccess: false,
-                                                   trialLength: sevenDays)
+                                                   trialDays: 7, calendar: utc)
     XCTAssertEqual(afterRollback, .expired,
                    """
                    V23: rolling the device clock back to before trial_start restored the expired \
-                   trial. `now.timeIntervalSince(trialStart) < trialLength` is a signed compare with \
-                   no lower bound, so a negative elapsed interval reads as "in trial" and the app \
+                   trial. `now < trialEnd` has no lower bound, so a negative elapsed interval reads as "in trial" and the app \
                    re-persists enforcement_allowed = true. A supplied instant earlier than \
                    trial_start is impossible on an honest clock and must be treated as expired.
                    """)
@@ -160,7 +163,7 @@ final class PricingBoundaryTests: XCTestCase {
       let state = AccessEvaluator.accessState(now: trialStart.addingTimeInterval(offset),
                                              trialStart: trialStart,
                                              hasFullAccess: false,
-                                             trialLength: sevenDays)
+                                             trialDays: 7, calendar: utc)
       if state == .expired { expiryObserved = true }
       XCTAssertEqual(state, .expired,
                      "V23: now = trialStart \(offset)s reads as \(state), expected .expired — the "
@@ -174,7 +177,7 @@ final class PricingBoundaryTests: XCTestCase {
     let state = AccessEvaluator.accessState(now: midGapPurchase,
                                            trialStart: midGapPurchase,
                                            hasFullAccess: false,
-                                           trialLength: sevenDays)
+                                           trialDays: 7, calendar: utc)
     XCTAssertEqual(state, .trial)
   }
 
@@ -183,7 +186,7 @@ final class PricingBoundaryTests: XCTestCase {
     let state = AccessEvaluator.accessState(now: midGapPurchase.addingTimeInterval(-11 * day),
                                            trialStart: midGapPurchase,
                                            hasFullAccess: true,
-                                           trialLength: sevenDays)
+                                           trialDays: 7, calendar: utc)
     XCTAssertEqual(state, .fullAccess)
   }
 
@@ -192,11 +195,11 @@ final class PricingBoundaryTests: XCTestCase {
     let trialStart = midGapPurchase
     let days = AccessEvaluator.trialDaysRemaining(now: trialStart.addingTimeInterval(-11 * day),
                                                   trialStart: trialStart,
-                                                  trialLength: sevenDays)
+                                                  trialDays: 7, calendar: utc)
     XCTAssertLessThanOrEqual(days, 7,
                              """
                              V23: trialDaysRemaining returned \(days) for a 7-day trial because \
-                             `trialLength - now.timeIntervalSince(trialStart)` has no upper clamp. \
+                             the count from `now` to the trial end has no upper clamp. \
                              A backdated clock must never inflate the count shown in TrialChip.
                              """)
     XCTAssertGreaterThanOrEqual(days, 0)
