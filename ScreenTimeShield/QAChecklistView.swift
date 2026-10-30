@@ -75,11 +75,10 @@ struct QAChecklistView: View {
       "QA / Debug → pin Off, then pin Trial expired.",
       "Tap the chip. Expect: the button shows a price, \"Unlock forever ($4.99)\".",
       "Tap it and complete the purchase with your sandbox account.",
-      "Expect: the paywall closes by itself.",
+      "Expect: the paywall closes by itself, the chip disappears straight away, and QA / Debug shows Override = none. The purchase clears the pin.",
     ]),
     QACase(id: "verify", title: "D · Purchase grants access (steps 21–23)", steps: [
-      "QA / Debug → pin Off.",
-      "Expect: StoreKit purchased = yes, StoreKit grandfathered = no, Access state = fullAccess.",
+      "QA / Debug: expect StoreKit purchased = yes, StoreKit grandfathered = no, Access state = fullAccess.",
       "Back on the main screen, expect: no trial chip.",
       "The simulator can't do this check, because there grandfathered reads yes.",
     ]),

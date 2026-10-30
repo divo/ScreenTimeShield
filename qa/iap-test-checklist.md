@@ -100,8 +100,8 @@ Build 19 and later replace it with a one-shot notification and must remove the o
     with no amount — a missing price means the product failed to load.
 19. 💻 Tap buy. Complete the sandbox purchase.
 20. 💻 Confirm the paywall **dismisses itself** on success.
-21. 💻 QA menu → pin **Off** first (the step-17 pin suppresses the new entitlement too). Then confirm
-    the trial chip is **gone entirely**.
+21. 💻 Confirm the trial chip is **gone straight away**, and QA menu → **Override = none**. A
+    successful purchase clears a non-entitled pin, because the pin would otherwise hide it.
 22. 💻 QA menu → confirm **Real StoreKit state → purchased = yes** and **Access state = fullAccess**.
 23. 💻 Pin **Off** and confirm the state stays `fullAccess` — the entitlement is real, not the override.
 24. 📱 Confirm blocking still arms and enforces after purchase.

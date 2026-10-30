@@ -147,6 +147,10 @@ final class AccessController: ObservableObject {
 
   func purchase() async throws -> Bool {
     let ok = try await storeKit.purchase()
+    // A non-entitled QA pin hides a real entitlement, so it would hide the purchase just made too.
+    if ok, !qaAccessOverride.grantsFullAccess {
+      kv.setString(nil, forKey: AppGroupKeys.qaAccessOverride)
+    }
     recomputeAccessState()
     return ok
   }

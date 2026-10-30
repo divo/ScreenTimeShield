@@ -39,7 +39,8 @@ final class Store: ObservableObject {
     case .success(let verification):
       guard case .verified(let transaction) = verification else { return false }
       await transaction.finish()
-      await refreshPurchasedState()
+      // Trust the verified transaction in hand: `currentEntitlements` can lag a just-finished purchase.
+      isPurchased = true
       return true
     case .userCancelled, .pending:
       return false
