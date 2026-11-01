@@ -1,7 +1,7 @@
 # Postmortem: a purchase left the app on "Trial ended"
 
-**Date of report:** 2026-10-29 · **Build:** 19 (QA build, TestFlight) · **Status:** fix written, not yet
-on a device · **Severity:** release blocker for 1.3
+**Date of report:** 2026-10-29 · **Build:** 19 (QA build, TestFlight) · **Status:** fix committed in build 20
+(`7740af4`), not yet on a device · **Severity:** release blocker for 1.3
 
 ## Summary
 
@@ -19,15 +19,15 @@ A second cause is possible but not confirmed. After a purchase, the app re-asked
 user's purchases instead of trusting the purchase it had just received. If StoreKit answered late,
 real customers would see the same symptom.
 
-Both causes have a fix in the working tree. Neither fix has been on a device yet.
+Both causes have a fix in build 20 (`7740af4`). Neither fix has been on a device yet.
 
 ## Impact
 
 - **Customers:** none. 1.3 is not released.
 - **QA:** one device purchase run is invalid and must be repeated. The sandbox purchase is one-way, so
   the repeat needs a fresh sandbox account, or a re-test that uses the pins.
-- **Release:** the target was today, Fri 2026-10-30. The fix needs a new build and a device re-run of
-  the purchase cases, so the release moves unless that happens today.
+- **Release:** the target was Fri 2026-10-30. The fix needs a new build and a device re-run of the
+  purchase cases, so the release slipped past that date.
 - **Trust:** the core money path looked broken in front of the owner. That cost is real even though
   the cause is most likely QA-only.
 
@@ -57,7 +57,7 @@ cleared the pin when the user bought.
 | 2026-10-27 | `b3881ff`: the in-app QA checklist. The buy case says "pin Off, then pin Trial expired" before buying. The "pin Off" that makes the purchase visible is in the *next* case. The notification case leaves "Trial nearly over" pinned. |
 | 2026-10-27 | Build 19 archived for TestFlight with this checklist. |
 | 2026-10-29 | Device QA: the trial expires, the purchase succeeds, and the app stays on "Trial ended". Reported via another Claude session. |
-| 2026-10-29 | Fix written (not committed): a purchase now grants access from the transaction in hand, and clears a non-entitled pin. |
+| 2026-10-29 | Fix committed in build 20 (`7740af4`, pushed): a purchase now grants access from the transaction in hand, and clears a non-entitled pin. |
 
 ## Root cause
 
@@ -105,7 +105,7 @@ production path, so it is fixed regardless.
 - Device QA caught it before release. That is what the dev build and the checklist were for.
 - The pin design meant every pre-purchase screen stayed reachable after the one-way sandbox purchase.
 
-## Fixes (in the working tree, not committed)
+## Fixes (build 20, commit `7740af4`)
 
 1. **A verified purchase sets `isPurchased = true` directly** (`ScreenTimeShield/Store.swift:42`). It
    no longer depends on `currentEntitlements` having caught up.
@@ -122,7 +122,7 @@ above).
 | # | Action | Owner | Blocks 1.3? |
 |---|---|---|---|
 | 1 | Check QA / Debug → **Override** on the phone that made the purchase, and report what it shows. This confirms or rules out the pin. | Steven | Yes |
-| 2 | Commit build 20 (calendar-day trial and this fix). Archive and upload to TestFlight. | Claude, then Steven | Yes |
+| 2 | ~~Commit build 20~~ (done: `f2fd16a`, `7740af4`). Archive and upload build 20 to TestFlight. | Steven | Yes |
 | 3 | Re-run the purchase cases on build 20 on a device: once with no pin, once with the "Trial expired" pin set. Both must show full access straight after buying. Use a new sandbox account, because the old one already owns the unlock. | Steven | Yes |
 | 4 | Show a visible "QA pin: …" label on the main screen whenever a pin is set, so a pinned app never passes for the real one. | Claude | No (QA builds only) |
 | 5 | Add a StoreKitTest unit test: a purchase through `AccessController` against `StoreKit.storekit` must end in `.fullAccess`. This is the test that would have caught the second cause. Needs the app test suite to launch first. | Claude | Recommended |
