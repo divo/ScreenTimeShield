@@ -15,8 +15,8 @@ enum AppGroupKeys {
   static let lastStopLogged = "last_stop_logged"
   /// Cached gate the extensions read so they don't touch StoreKit themselves.
   static let enforcementAllowed = "enforcement_allowed"
-  /// QA-only: pins the access state (see `QAAccessOverride`).
-  static let qaAccessOverride = "qa_access_override"
+  /// QA-only: ignore the real purchase and grandfathering (see `AccessController.qaIgnoresEntitlement`).
+  static let qaIgnoreEntitlement = "qa_ignore_entitlement"
 }
 
 struct AppGroupStore: KeyValueStore {

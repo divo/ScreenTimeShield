@@ -28,15 +28,19 @@ reachable after buying. Walk the trial states with the dropdown; use the real pu
 
 ---
 
-## 🚢 v1.3 release checklist (updated 2026-10-27)
+## 🚢 v1.3 release checklist (updated 2026-11-04)
 
-**Target: end of this week (Fri 2026-10-30), if QA passes.** Build 20 is the QA build (dev
-settings). The release build is 21.
+**Target: slipped from Fri 2026-10-30.** The new date follows device QA on build 21, the QA build
+(dev settings). The release build is 22. When the date is set, recompute the cutover in step 2.
+
+**QA menu redesign (2026-11-04), in build 21:** the access-state pin is gone. "Set trial state"
+presets rewrite the trial clock once; one "Ignore purchase & grandfathering" switch is the only
+thing that hides Apple's answer, with a banner on the main screen. See the postmortem.
 
 **Decision (2026-10-28): the trial counts local calendar days.** The trial still starts when the
 user first arms a block. The rest of that day is free, then 7 full days follow, and the trial ends
-at local midnight. The trial-ended notification arrives at 09:00 local the next morning. Build 20
-carries this change, so the trial cases in the QA checklist need a re-run on build 20.
+at local midnight. The trial-ended notification arrives at 09:00 local the next morning. Build 21
+carries this change, so the trial cases in the QA checklist need a re-run on build 21.
 
 **Decision (2026-10-27): only QA blocks the release.** Every open bug, including `N5`, `N6`,
 `V07` and `V18`, ships as a known issue and goes to 1.3.1.
@@ -45,13 +49,14 @@ carries this change, so the trial cases in the QA checklist need a re-run on bui
 `qa/postmortems/2026-10-29-purchase-left-trial-ended.md`. Actions 1–3 there must pass before release.
 
 **Must do, in order**
-1. [ ] Finish device QA on build 20 (QA / Debug → QA checklist), including the purchase re-run.
+1. [ ] Finish device QA on build 21 (QA / Debug → QA checklist), including the purchase re-run with a
+       new sandbox account.
 2. [ ] Revert the dev-build changes (section below). Set `cutoverDate` to **00:00 UTC on the day
        after the release day** (for Fri 2026-10-30: `1_793_404_800`, 2026-10-31). **Never** use the
        old 2026-08-10: the app has been on sale at $0.99 since then, and those buyers would pay twice.
        Also bump `lastDayThePreIAPBuildWasOnSale` in `PricingBoundaryTests` to the release day, so
        the V22 guard covers everyone up to release. If the release slips, move both.
-3. [ ] Bump `CURRENT_PROJECT_VERSION` to 21 in all 12 configurations. Archive and upload.
+3. [ ] Bump `CURRENT_PROJECT_VERSION` to 22 in all 12 configurations. Archive and upload.
 4. [ ] **💰 PRICE: schedule the app's price change to Free, starting on the release day.** The price is still
        **$0.99**, with no change scheduled (checked via the ASC API on 2026-10-27). The rule is
        "installed before the cutover → free, after → pays for the IAP". That only works if nobody
@@ -97,7 +102,7 @@ isn't happening before Friday, there is nothing to do.
 
 ## ⚠️ REVERT BEFORE SUBMITTING — dev build for IAP testing
 
-Builds 17–20 are **development builds and must not be submitted as-is.** Four changes to undo:
+Builds 17–21 are **development builds and must not be submitted as-is.** Four changes to undo:
 
 - [ ] `UnplugCore/Sources/UnplugCore/AccessControl.swift` — `PricingConfig.trialDays` is shortened
       for testing. Restore to **7**.

@@ -15,43 +15,24 @@ import DeviceActivity
 import FamilyControls
 import Combine
 
-/// QA-only: pins the access state so every branch of the pricing UI can be reached without a real
-/// trial clock, a real purchase, or whatever the StoreKit test environment decides about
-/// grandfathering.
-///
-/// This overrides the **entitlement input** to the state derivation, not `accessState` itself.
-/// `accessState` is derived and recomputed on every foreground (`refreshAccess`), so a value written
-/// straight to it would be discarded within seconds. Overriding the input keeps one code path for
-/// QA and production, and — because `grantsFullAccess` is false for the trial cases — it is also
-/// the only way back to a pre-purchase state once a sandbox purchase has made
-/// `Transaction.currentEntitlements` permanently non-empty.
-enum QAAccessOverride: String, CaseIterable, Identifiable {
-  case off
+/// QA-only: trial states the QA menu can jump to. Each one only rewrites `trial_start`, the app's own
+/// trial clock, and the normal logic takes it from there. Nothing persists after the jump, so a real
+/// purchase still wins.
+enum QATrialPreset: String, CaseIterable, Identifiable {
   case freshInstall
-  case trialActive
-  case trialFinalDay
+  case startedToday
+  case lastDay
   case expired
-  case purchased
-  case grandfathered
 
   var id: String { rawValue }
 
   var label: String {
     switch self {
-    case .off: return "Off — use real state"
     case .freshInstall: return "Fresh install (trial not started)"
-    case .trialActive: return "Trial started today"
-    case .trialFinalDay: return "Last day of trial"
+    case .startedToday: return "Trial started today"
+    case .lastDay: return "Last day of trial"
     case .expired: return "Trial expired"
-    case .purchased: return "Full access — purchased"
-    case .grandfathered: return "Full access — grandfathered"
     }
-  }
-
-  /// Whether this state is entitled. `false` also *suppresses* a real entitlement, which is what
-  /// makes `.expired` reachable after a sandbox purchase.
-  var grantsFullAccess: Bool {
-    self == .purchased || self == .grandfathered
   }
 }
 
@@ -107,12 +88,10 @@ final class AccessController: ObservableObject {
                                        calendar: .current)
   }
 
-  /// Whether the user is entitled to full access. Honours the QA override so every caller — the
-  /// state derivation, the paywall's restore check — sees one consistent answer.
+  /// Whether the user is entitled to full access. Apple owns the purchase record, so the only way QA
+  /// can show the unpaid screens after a sandbox purchase is to ignore Apple's answer here.
   var hasFullAccess: Bool {
-    let override = qaAccessOverride
-    guard override == .off else { return override.grantsFullAccess }
-    return storeKit.hasFullAccess
+    !qaIgnoresEntitlement && storeKit.hasFullAccess
   }
 
   /// Re-present the Family Controls system prompt. There's no per-app Screen Time toggle in
@@ -147,16 +126,14 @@ final class AccessController: ObservableObject {
 
   func purchase() async throws -> Bool {
     let ok = try await storeKit.purchase()
-    // A non-entitled QA pin hides a real entitlement, so it would hide the purchase just made too.
-    if ok, !qaAccessOverride.grantsFullAccess {
-      kv.setString(nil, forKey: AppGroupKeys.qaAccessOverride)
-    }
+    if ok { qaIgnoresEntitlement = false }
     recomputeAccessState()
     return ok
   }
 
   func restore() async {
     await storeKit.restore()
+    if storeKit.hasFullAccess { qaIgnoresEntitlement = false }
     recomputeAccessState()
   }
 
@@ -199,32 +176,32 @@ final class AccessController: ObservableObject {
 
   // MARK: - QA
   // In-app QA controls. Present in release builds (TestFlight has no DEBUG); the menu
-  // that drives these is exposed in a separate, easily-reverted commit. These simulate
-  // entitlement *results* (not real StoreKit transactions) and persist via the app group.
+  // that drives these is exposed in a separate, easily-reverted commit. Trial presets set the
+  // app's own trial clock; only the ignore switch hides Apple's answer, and it shows on screen.
 
-  /// The pinned QA state, or `.off` to use the real one.
-  var qaAccessOverride: QAAccessOverride {
-    QAAccessOverride(rawValue: kv.string(forKey: AppGroupKeys.qaAccessOverride) ?? "") ?? .off
+  /// Ignores the real purchase and grandfathering, so the unpaid screens stay reachable after a
+  /// one-way sandbox purchase. Any purchase or successful restore turns it off.
+  var qaIgnoresEntitlement: Bool {
+    get { kv.bool(forKey: AppGroupKeys.qaIgnoreEntitlement) }
+    set {
+      kv.setBool(newValue, forKey: AppGroupKeys.qaIgnoreEntitlement)
+      recomputeAccessState()
+      objectWillChange.send()
+    }
   }
 
-  /// Pin the access state. Sets the trial clock to match, so `trialDaysRemaining` and the extensions'
-  /// `enforcement_allowed` gate agree with the selection instead of needing their own special cases.
-  func qaSetAccessOverride(_ override: QAAccessOverride) {
-    kv.setString(override == .off ? nil : override.rawValue, forKey: AppGroupKeys.qaAccessOverride)
-
-    switch override {
-    case .off, .purchased, .grandfathered:
-      break                                    // entitled or real — the trial clock is irrelevant
+  func qaSetTrial(_ preset: QATrialPreset) {
+    let calendar = Calendar.current
+    switch preset {
     case .freshInstall:
       trialStartDate = nil
-    case .trialActive:
+    case .startedToday:
       trialStartDate = Date()
-    case .trialFinalDay:
-      trialStartDate = Calendar.current.date(byAdding: .day, value: -PricingConfig.trialDays, to: Date())
+    case .lastDay:
+      trialStartDate = calendar.date(byAdding: .day, value: -PricingConfig.trialDays, to: Date())
     case .expired:
-      trialStartDate = Calendar.current.date(byAdding: .day, value: -(PricingConfig.trialDays + 1), to: Date())
+      trialStartDate = calendar.date(byAdding: .day, value: -(PricingConfig.trialDays + 1), to: Date())
     }
-
     recomputeAccessState()
     objectWillChange.send()
   }
@@ -251,8 +228,7 @@ final class AccessController: ObservableObject {
     model.insideInterval = false
     model.blockOutsideWindow = false
     model.isArmed = false
-    // The override lives in the wiped domain, so it is already gone; recomputing below picks up
-    // .off and falls back to the real StoreKit state.
+    // The ignore switch lives in the wiped domain, so recomputing below uses the real StoreKit state.
 
     recomputeAccessState()
     objectWillChange.send()

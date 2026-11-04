@@ -122,9 +122,9 @@ above).
 | # | Action | Owner | Blocks 1.3? |
 |---|---|---|---|
 | 1 | Check QA / Debug → **Override** on the phone that made the purchase, and report what it shows. This confirms or rules out the pin. | Steven | Yes |
-| 2 | ~~Commit build 20~~ (done: `f2fd16a`, `7740af4`). Archive and upload build 20 to TestFlight. | Steven | Yes |
-| 3 | Re-run the purchase cases on build 20 on a device: once with no pin, once with the "Trial expired" pin set. Both must show full access straight after buying. Use a new sandbox account, because the old one already owns the unlock. | Steven | Yes |
-| 4 | Show a visible "QA pin: …" label on the main screen whenever a pin is set, so a pinned app never passes for the real one. | Claude | No (QA builds only) |
+| 2 | ~~Commit build 20~~ (done: `f2fd16a`, `7740af4`). Archive and upload build 21 to TestFlight (build 20 plus the QA menu redesign). | Steven | Yes |
+| 3 | Re-run the purchase cases on build 21 on a device: once as is, and once with the ignore switch on. Both must show full access straight after buying. Use a new sandbox account, because the old one already owns the unlock. | Steven | Yes |
+| 4 | ~~Show a visible label on the main screen whenever QA hides the real entitlement.~~ Done, as part of a redesign (2026-11-04): the access-state pin is gone. "Set trial state" presets now only rewrite the trial clock once. One "Ignore purchase & grandfathering" switch is the only thing that hides Apple's answer; it shows a yellow banner on the main screen, and buying or restoring turns it off. | Claude | No (QA builds only) |
 | 5 | Add a StoreKitTest unit test: a purchase through `AccessController` against `StoreKit.storekit` must end in `.fullAccess`. This is the test that would have caught the second cause. Needs the app test suite to launch first. | Claude | Recommended |
 | 6 | Fix the app test suite launch failure on the simulator. | Claude | Recommended |
 | 7 | Decide whether `V15` (no `Transaction.updates` listener) moves back into 1.3. It is the remaining gap where a real customer can pay and not get access until a later launch (Ask to Buy, interrupted purchases). It is a small change in `Store.swift`. | Steven | Your call |

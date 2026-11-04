@@ -194,6 +194,15 @@ struct ContentView: View {
 
         StatusBanner()
 
+        if access.qaIgnoresEntitlement {
+          Text(verbatim: "QA: ignoring purchase & grandfathering")
+            .font(.caption.weight(.semibold))
+            .foregroundStyle(.black)
+            .padding(.horizontal, Style.Spacing.sm)
+            .padding(.vertical, Style.Spacing.xxs)
+            .background(Capsule().fill(.yellow))
+        }
+
         if access.accessState != .fullAccess {
           TrialChip(access: access) { showPaywall = true }
         }

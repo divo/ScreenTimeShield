@@ -28,6 +28,7 @@ struct QAChecklistView: View {
       "Delete Unplug, then install this build from TestFlight.",
       "Open QA / Debug and check Real StoreKit state → StoreKit grandfathered = no.",
       "If it reads yes, stop: the paywall is unreachable and the rest of this list is invalid.",
+      "Check StoreKit purchased = no. If it reads yes, this sandbox account already owns the unlock: use a new sandbox account, or clear its purchase history in App Store Connect, then reinstall.",
     ]),
     QACase(id: "trialStart", title: "A · Trial starts on arming (steps 2–5)", steps: [
       "The chip reads \"1 days left in trial · Unlock\". \"1 days\" is the known N5 bug.",
@@ -48,15 +49,15 @@ struct QAChecklistView: View {
     ]),
     QACase(id: "v19", title: "C · Expired with a block armed (V19, step 15)", steps: [
       "Arm a block whose window starts in a few minutes.",
-      "QA / Debug → pin Trial expired.",
+      "QA / Debug → Set trial state → Trial expired.",
       "Expect (known bug V19): the chip reads \"Trial ended\", but the screen still looks armed and offers Stop blocking.",
       "Wait until the window starts, then open a blocked app. Expect: no shield.",
       "Report anything worse than this, such as a crash or a shield that never clears.",
-      "To return to a running trial: pin Trial started today, then pin Off.",
+      "To return to a running trial: Set trial state → Trial started today.",
     ]),
     QACase(id: "trialEndedNotification", title: "C · Trial ends at midnight, notification at 09:00 (overnight)", steps: [
       "Do this before the purchase: buying cancels the notification.",
-      "QA / Debug → pin Last day of trial. Expect: the chip reads \"1 days left\" (N5), and the trial ends at midnight tonight.",
+      "QA / Debug → Set trial state → Last day of trial. Expect: the chip reads \"1 days left\" (N5), and the trial ends at midnight tonight.",
       "Close Unplug and leave it closed overnight.",
       "Expect: no notification at midnight.",
       "Expect: one notification, \"Your Unplug trial has ended\", at 09:00 tomorrow.",
@@ -65,17 +66,17 @@ struct QAChecklistView: View {
     ]),
     QACase(id: "v20", title: "C · Overnight expiry (V20, step 16, optional)", steps: [
       "Optional, and it takes a day. Do it before the purchase: a purchase makes it impossible.",
-      "With pin Off and the real trial running, arm a block.",
+      "QA / Debug → Set trial state → Trial started today, then arm a block.",
       "Don't open Unplug until the day after tomorrow. A trial started today ends at midnight at the end of tomorrow.",
       "Expect (known bug V20): the block still enforces after the trial has ended.",
       "Open Unplug. Expect: \"Trial ended\", and the next block doesn't apply a shield.",
     ]),
     QACase(id: "buy", title: "D · Buy the unlock (steps 17–20, one-way)", steps: [
       "Finish every case above first. A sandbox purchase can't be undone.",
-      "QA / Debug → pin Off, then pin Trial expired.",
+      "QA / Debug: check the ignore switch is off, then Set trial state → Trial expired.",
       "Tap the chip. Expect: the button shows a price, \"Unlock forever ($4.99)\".",
       "Tap it and complete the purchase with your sandbox account.",
-      "Expect: the paywall closes by itself, the chip disappears straight away, and QA / Debug shows Override = none. The purchase clears the pin.",
+      "Expect: the paywall closes by itself and the chip disappears straight away, with no QA step in between.",
     ]),
     QACase(id: "verify", title: "D · Purchase grants access (steps 21–23)", steps: [
       "QA / Debug: expect StoreKit purchased = yes, StoreKit grandfathered = no, Access state = fullAccess.",
@@ -93,10 +94,11 @@ struct QAChecklistView: View {
       "Expect: \"No previous purchase found.\" (known V17), and no crash.",
       "Turn airplane mode off.",
     ]),
-    QACase(id: "grandfathered", title: "F · Grandfathered pin (step 32)", steps: [
-      "QA / Debug → pin Full access — grandfathered.",
-      "Expect: no chip, and Start blocking arms a block with no paywall.",
-      "QA / Debug → pin Off.",
+    QACase(id: "ignoreSwitch", title: "F · Ignore switch after buying (steps 32–33)", steps: [
+      "QA / Debug → turn on Ignore purchase & grandfathering, then Set trial state → Trial expired.",
+      "Expect: a yellow \"QA: ignoring purchase & grandfathering\" banner, the \"Trial ended\" chip, and Start blocking opens the paywall.",
+      "In the paywall, tap Restore Purchase.",
+      "Expect: the paywall closes, the banner and the chip go, and the switch is off in QA / Debug.",
     ]),
     QACase(id: "restore", title: "E · Restore after reinstall (steps 28–31, do last)", steps: [
       "Do this last: deleting the app also clears the ticks on this screen.",
