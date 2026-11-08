@@ -18,14 +18,7 @@ final class StoreKitEdgeTests: XCTestCase {
   private var session: SKTestSession!
 
   override func setUp() async throws {
-    // The bundled config lives in the read-only test bundle; SKTestSession needs to
-    // write a working copy, so load it from a writable temp copy instead.
-    let bundled = try XCTUnwrap(Bundle(for: Self.self).url(forResource: "StoreKit", withExtension: "storekit"))
-    let tmp = URL(fileURLWithPath: NSTemporaryDirectory())
-      .appendingPathComponent("StoreKit-\(UUID().uuidString).storekit")
-    try FileManager.default.copyItem(at: bundled, to: tmp)
-
-    session = try SKTestSession(contentsOf: tmp)
+    session = try SKTestSession(configurationFileNamed: "StoreKit")
     session.disableDialogs = true
     session.clearTransactions()
   }
@@ -35,14 +28,12 @@ final class StoreKitEdgeTests: XCTestCase {
     session = nil
   }
 
-  /// The simulator's StoreKit test daemon fails to persist its configuration in some
-  /// headless `xcodebuild` environments ("Error saving configuration file"), serving zero
-  /// products. Detect that and skip, so these run for real under Xcode/device but never
-  /// report a false failure in a broken sim. Verified manually in Pass 4 via the simulator.
+  /// Command-line `xcodebuild` can't drive SKTestSession here ("Error saving configuration file",
+  /// purchase sheets wait for a tap), so run these from Xcode. Fail rather than skip when no products
+  /// load, so a broken StoreKit environment can never pass as green.
   private func requireStoreKitTestEnvironment() async throws {
     let products = (try? await Product.products(for: [Store.lifetimeProductID])) ?? []
-    try XCTSkipIf(products.isEmpty,
-                  "StoreKit test environment unavailable — SKTestSession served no products.")
+    _ = try XCTUnwrap(products.first, "StoreKit test environment unavailable — SKTestSession served no products.")
   }
 
   private func pollUntil(timeout: TimeInterval = 5, _ condition: () -> Bool) async -> Bool {
