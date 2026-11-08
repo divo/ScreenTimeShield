@@ -10,6 +10,36 @@ and code map, with these criterion changes: 1 — notice line in the first-block
 production; new 12 — a purchase during an active window applies the block at once; new 13 — usage
 reminders stop after expiry.*
 
+## v5 amendments (after gate D r3, `trial-iap-gateD-r3.md`) — these override v4 where they differ
+
+1. First block decides from **stored** facts first: full access (grandfathered or granting transaction)
+   → arm with no notice; a stored verified Apple answer → use it (no network call). Only with no stored
+   Apple answer does it call `AppTransaction.shared` (10 s timeout via an unstructured `Task` and a
+   one-shot continuation, so a non-cancellable hang can't hold it). (r3 holes 1, 4, 9)
+2. While expired, schedule edits are locked like during an active block, so the schedule is kept. An
+   active block from before expiry wins over "paused" on the banner and the button. (r3 hole 2)
+3. Refreshes are **not** serialized; every write is idempotent. Refresh `AppTransaction` gets the same
+   timeout; the Screen Time authorization re-read moves out of the refresh path. (r3 hole 3)
+4. One boundary function: the last day a trial can start (production: download day + 14). A nil start
+   past it is expired; the chip and the trial-ended notification use the capped end. (r3 hole 5)
+5. Chip hidden while no verified Apple answer and no trial start are stored. (r3 hole 7)
+6. Re-apply after access returns: `ContentView.onChange(of: accessState)` leaving `.expired` → the
+   existing `applySchedule()`. Covers purchase, restore, listener and refresh; the extension stays the
+   single writer of `inside_interval`. No re-apply code in AccessController. (r3 hole 8)
+7. A refresh grants access too (a reinstall shows full access without Restore). A refresh that read
+   `Transaction.all` before a refund can re-grant once; it heals on the next refresh — known limit.
+   An SKTestSession test proves a refunded non-consumable appears in `Transaction.all` with a
+   revocation date; the listener clears only when the revoked transaction's `originalID` equals the
+   stored granting `originalID`. (r3 hole 10)
+8. Apple facts stored as **one Codable value under one key** (download date, environment, granting
+   original id, verified-at); `trialStart` under its own key (set once). (r3 hole 11)
+9. Move `AppGroupStore`/`AppGroupKeys` into UnplugCore (add bool/missing-vs-false) instead of a new
+   store; delete the app copy. (scope cut)
+10. Delete the V18 test; turn the remaining V16 skips into failures. The TestFlight run starts from a
+    deleted app. (r3 hole 12)
+11. **Open, for Steven:** the QA menu and App Review (r3 hole 6) — App Review runs in the same
+    environment as TestFlight, so "only outside the App Store" would show it to the reviewer.
+
 ### Approved plan: reliable trial, unlock and grandfathering for Unplug 1.3
 
 ## Context
