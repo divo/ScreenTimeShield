@@ -1,0 +1,44 @@
+{
+  "configurations" : [
+    {
+      "id" : "EF8D73DE-8DAE-4EF4-9483-A2AEED7483FB",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "environmentVariableEntries" : [
+      {
+        "key" : "__WidgetKind",
+        "value" : "com.halfspud.ScreenTimeShield.ScreenTimeShieldControl"
+      }
+    ],
+    "performanceAntipatternCheckerEnabled" : true,
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:ScreenTimeShield.xcodeproj",
+      "identifier" : "93B013172A8E557700B97CA0",
+      "name" : "ScreenTimeShield"
+    }
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:ScreenTimeShield.xcodeproj",
+        "identifier" : "93B013272A8E557800B97CA0",
+        "name" : "ScreenTimeShieldTests"
+      }
+    },
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:ScreenTimeShield.xcodeproj",
+        "identifier" : "93B013312A8E557800B97CA0",
+        "name" : "ScreenTimeShieldUITests"
+      }
+    }
+  ],
+  "version" : 1
+}
