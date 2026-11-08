@@ -18,8 +18,8 @@ Tasks, in order:
 4. [~] Build, install on the simulator, then run `qa/iap-test-checklist.md`. **Simulator part done
        (2026-10-27)** — results in `qa/README.md`. Left, on TestFlight: E, 21–23, 26–27 and the 📱 steps. New bugs `N5`, `N6`.
 
-⚠️ **No test reads `PricingConfig.trialDays`** — the suite passes its own value in — so a wrong
-trial length ships with a green `swift test`. Check it by eye.
+`PricingConfig.trialDays` (7) and the 14-day start window are pinned by
+`AccessPolicyTests.testShippedTermsAreSevenDaysWithAFourteenDayStartWindow`.
 
 ⚠️ **The IAP purchase history cannot be erased**, so a real purchase is one-way. That is exactly
 what the QA menu's state dropdown is for: the non-entitled options (`fresh install`, `trial active`,
@@ -27,6 +27,23 @@ what the QA menu's state dropdown is for: the non-entitled options (`fresh insta
 reachable after buying. Walk the trial states with the dropdown; use the real purchase once.
 
 ---
+
+## 🔨 Trial, unlock and grandfathering rebuild (design `qa/design/trial-iap.md`)
+
+Steven's decisions of 2026-11-08 are in the design doc. One commit per slice, straight to main.
+
+- [x] 0. QA setup: unit-test plan, StoreKit edge tests compiled, fail on no products.
+- [x] 1. UnplugCore rules (`AccessPolicy`, `AppleFacts`, storage keys) + tests.
+- [ ] 2. Store + AccessController on `AccessPolicy`. **Must also:** delete
+      `AccessEvaluator.accessState`/`trialDaysRemaining` and port their tests (AccessControlTests trial
+      cases, PricingBoundaryTests V23); move `AppGroupStore` into UnplugCore; re-read stored facts after
+      every `await` before merging; keep the last known access on undecodable facts; delete
+      `AppGroupKeys.trialStart` ("trial_start") so every read and write, including the QA expire-trial
+      button, uses `AccessStorageKeys.trialStart`; SKTestSession
+      refund test proving a refunded purchase stays in `Transaction.all` with a revocation date.
+- [ ] 3. Extension gate via `AccessPolicy.extensionAppliesBlock` (blocks and usage reminders).
+- [ ] 4. UI: confirmation notice, paused state, re-apply on access return, deletions, strings, docs.
+- [ ] 5. Automated QA pass (needs Steven to allow the terminal to control Xcode).
 
 ## 🚢 v1.3 release checklist (updated 2026-11-04)
 
@@ -51,9 +68,9 @@ carries this change, so the trial cases in the QA checklist need a re-run on bui
 **Must do, in order**
 1. [ ] Finish device QA on build 21 (QA / Debug → QA checklist), including the purchase re-run with a
        new sandbox account.
-2. [ ] Revert the dev-build changes (section below). Set `cutoverDate` to **00:00 UTC on the day
-       after the release day** (for Fri 2026-10-30: `1_793_404_800`, 2026-10-31). **Never** use the
-       old 2026-08-10: the app has been on sale at $0.99 since then, and those buyers would pay twice.
+2. [ ] Revert the dev-build changes (section below). Set `cutoverDate` to **a few days after the
+       release day** (decision 2026-11-08), set when the final build is prepared. **Never** earlier
+       than the release day: the app is on sale at $0.99 until then, and those buyers would pay twice.
        Also bump `lastDayThePreIAPBuildWasOnSale` in `PricingBoundaryTests` to the release day, so
        the V22 guard covers everyone up to release. If the release slips, move both.
 3. [ ] Bump `CURRENT_PROJECT_VERSION` to 22 in all 12 configurations. Archive and upload.
@@ -104,12 +121,12 @@ isn't happening before Friday, there is nothing to do.
 
 Builds 17–21 are **development builds and must not be submitted as-is.** Four changes to undo:
 
-- [ ] `UnplugCore/Sources/UnplugCore/AccessControl.swift` — `PricingConfig.trialDays` is shortened
-      for testing. Restore to **7**.
+- [x] `UnplugCore/Sources/UnplugCore/AccessControl.swift` — `PricingConfig.trialDays` is **7** in every
+      build (2026-11-08); a test pins it (`AccessPolicyTests`).
 
 - [ ] `UnplugCore/Sources/UnplugCore/AccessControl.swift` — `PricingConfig.cutoverDate` is set to
-      **2020-01-01** so a fresh install is *not* grandfathered and the paywall/IAP can be exercised.
-      Set it to 00:00 UTC on the day **after** the 1.3 release day. **Never** restore the old 2026-08-10 (see step 2 of the release checklist).
+      **2020-01-01** as a placeholder. After slice 2, grandfathering only runs in the real App Store, so test builds
+      don't need it; set it a few days after the 1.3 release day. **Never** restore the old 2026-08-10 (see step 2 of the release checklist).
 - [ ] `UnplugCore/Tests/UnplugCoreTests/PricingBoundaryTests.swift` — remove the two
       `XCTExpectFailure` markers on the V22 tests. These are strict, so restoring the date alone
       makes the suite go red (unexpected pass) until the markers go too — deliberately, so the pair

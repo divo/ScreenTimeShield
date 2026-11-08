@@ -87,7 +87,7 @@ final class AccessControlTests: XCTestCase {
 
   // MARK: Grandfather
 
-  private let cutover = Date(timeIntervalSince1970: 1_781_740_800) // matches PricingConfig.cutoverDate placeholder
+  private let cutover = Date(timeIntervalSince1970: 1_781_740_800)
 
   func testGrandfatheredWhenOriginalPurchasePredatesCutover() {
     let before = cutover.addingTimeInterval(-24 * 60 * 60) // one day before

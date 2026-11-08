@@ -6,6 +6,9 @@ decisions (notice in the confirmation; cutover a few days after release; buy-at-
 paused state and reminders in scope; release-day production check). v3 kept below for the criteria
 and code map, with these criterion changes: 1 — notice line in the first-block confirmation;
 2 — cap = first block within 14 days of download, trial ends by download + 21 days, production only;
+6 — a refund revokes only when Apple reports the **granting** purchase (`originalID`) refunded, not
+"the newest"; 7 — grandfathering is derived each time from the latest verified answer, never stored as
+a flag;
 7b — `AppTransaction` with a 10 s timeout, verified only; 9 — paused state; 10 — QA menu only outside
 production; new 12 — a purchase during an active window applies the block at once; new 13 — usage
 reminders stop after expiry.*
@@ -32,13 +35,21 @@ reminders stop after expiry.*
    revocation date; the listener clears only when the revoked transaction's `originalID` equals the
    stored granting `originalID`. (r3 hole 10)
 8. Apple facts stored as **one Codable value under one key** (download date, environment, granting
-   original id, verified-at); `trialStart` under its own key (set once). (r3 hole 11)
+   original id); `trialStart` under its own key (set once). (r3 hole 11)
 9. Move `AppGroupStore`/`AppGroupKeys` into UnplugCore (add bool/missing-vs-false) instead of a new
-   store; delete the app copy. (scope cut)
+   store; delete the app copy. Slice 2. (scope cut)
+12. A stored trial start decides on its own: with one stored, the first block arms (or opens the unlock
+    screen once it ended) without asking Apple; the cap is filled at the next refresh. A trial start is
+    only ever stored after Apple has answered, under the new key `trial_started_at`, so leftovers from
+    dev builds (`trial_start`) are never read. (gate B r1 #5, r2 #2)
+13. **Before the first block (Steven, 2026-11-08):** the chip says "7-day free trial · Unlock", with no
+    countdown; the countdown starts at the first block. No trial-ended notification without a trial
+    start; past the start window, a block attempt opens the unlock screen. `trialDaysRemaining`
+    returning the full trial length before a start matches this. (gate B r3 #1)
 10. Delete the V18 test; turn the remaining V16 skips into failures. The TestFlight run starts from a
     deleted app. (r3 hole 12)
-11. **Open, for Steven:** the QA menu and App Review (r3 hole 6) — App Review runs in the same
-    environment as TestFlight, so "only outside the App Store" would show it to the reviewer.
+11. **QA menu (Steven, 2026-11-08):** back to manual removal — visible in TestFlight builds, commented
+    out by hand before the App Store build, as the release checklist says today. (r3 hole 6)
 
 ### Approved plan: reliable trial, unlock and grandfathering for Unplug 1.3
 
@@ -68,7 +79,7 @@ automatic. Design history and the two adversarial reviews: `qa/design/trial-iap.
 | Buy while a block window is on | Block applies **straight away**. |
 | Screen after expiry | Clear **"paused — trial ended"** state; main button opens the unlock screen; schedule kept. |
 | Usage reminders after expiry | **Stop**, like blocks. |
-| QA menu | Shows itself **only outside the real App Store**. No manual comment-out step. |
+| QA menu | ~~Only outside the real App Store~~ → superseded by v5 #11: manual removal before the App Store build. |
 | Mocking | None. The only QA control is "expire trial now", which edits the app's own trial date. |
 | Trial length | 7 days in every build. |
 
@@ -76,26 +87,27 @@ automatic. Design history and the two adversarial reviews: `qa/design/trial-iap.
 
 **Stored facts** (app group, one definition in UnplugCore, read by app and extension):
 - `trialStart` — the app's own date, set once at the first block, never moved.
-- `appleDownloadDate` + `isProductionEnvironment` — raw values from the latest **verified**
+- `downloadDate` + `isProduction` (in `AppleFacts`) — raw values from the latest **verified**
   `AppTransaction`, overwritten by each verified answer. Grandfathering and the cap are derived from
   them every time, never stored as flags (review r2 hole 6).
-- `grantingTransactionID` — the verified lifetime purchase that granted access. Cleared only when
+- `grantingOriginalID` — the verified lifetime purchase that granted access. Cleared only when
   that exact transaction shows a refund (r2 hole 5). Empty answers never clear it.
 
 **Derived (pure functions in UnplugCore, `swift test`):**
 - grandfathered = production AND download date < cutover.
 - full access = grandfathered OR granting transaction present.
 - trial end = earlier of: midnight after start day + 7 full days; production only: midnight after
-  download day + 21 days. With no start date but a known production download date, end = that
-  ceiling (r2 holes 2, 4).
-- first-block decision: grandfathered → arm; production and past download + 14 days → unlock screen;
+  download day + 21 days. ~~With no start date but a known production download date, end = that
+  ceiling~~ (superseded by v5 #4: end = the last start day) (r2 holes 2, 4).
+- first-block decision (superseded by v5 #1: any full access arms, decided from stored facts first): grandfathered → arm; production and past download + 14 days → unlock screen;
   otherwise → confirmation with the trial notice → set `trialStart` → arm.
-- extension gate: not expired → apply block (and reminders); nothing stored → apply.
+- extension gate (`AccessPolicy.extensionAppliesBlock`): not expired → apply block (and reminders);
+  nothing stored → apply; undecodable facts → apply; a trial start with no facts → the 7-day end applies.
 
 **Who writes:** `AccessController` only, on the main actor.
 - **Purchase, restore and the `Transaction.updates` listener** write the verified transaction they
   hold, then `finish()`. They never re-ask StoreKit (r2 hole 1, the postmortem's second cause).
-- **Launch and foreground refreshes** run one at a time. They read `Transaction.all` (refunds) and
+- **Launch and foreground refreshes** ~~run one at a time~~ (superseded by v5 #3: not serialized). They read `Transaction.all` (refunds) and
   `AppTransaction`, and apply whatever succeeded.
 - **The first block** calls `AppTransaction.shared` with a 10-second timeout, the button disabled
   while waiting. Unverified, a throw or a timeout means "couldn't reach the App Store".
@@ -103,13 +115,14 @@ automatic. Design history and the two adversarial reviews: `qa/design/trial-iap.
 ## Changes (critical files)
 
 - `UnplugCore/Sources/UnplugCore/AccessControl.swift`:
-  - stored-facts type, key names and a UserDefaults store (the extension can't see `AppGroupStore`);
-  - `AccessEvaluator` gains the ceiling;
+  - stored-facts type and key names (~~a UserDefaults store~~: v5 #9 moves `AppGroupStore` in slice 2);
+  - ~~`AccessEvaluator` gains the ceiling~~ → built as `AccessPolicy` over `AppleFacts`; the old
+    `AccessEvaluator.accessState`/`trialDaysRemaining` are deleted in slice 2;
   - grandfather derivation with environment;
   - first-block decision;
   - remove unused `EntitlementProviding`;
   - `trialDays = 7`; fix the backwards cutover comment.
-  Reuse: `trialEnd`, `accessState`, `trialDaysRemaining`, `Grandfather.isGrandfathered`.
+  Reuse: `AccessEvaluator.trialEnd`, `Grandfather.isGrandfathered`.
 - `ScreenTimeShield/Store.swift`:
   - purchase, restore and the listener return the verified transaction;
   - `Transaction.all` pass for refunds;
@@ -118,7 +131,7 @@ automatic. Design history and the two adversarial reviews: `qa/design/trial-iap.
 - `ScreenTimeShield/AccessController.swift`:
   - single writer; synchronous init from stored facts (no flash);
   - one arm gate for both buttons;
-  - serialized refresh; listener started from `ScreenTimeShieldApp`, never under XCTest;
+  - ~~serialized refresh~~ (v5 #3); listener started from `ScreenTimeShieldApp`, never under XCTest;
   - re-apply restrictions after a purchase when inside the block window;
   - delete the QA presets, the ignore switch and `enforcement_allowed`.
 - `ScreenTimeShield/ContentView.swift`:
@@ -130,10 +143,10 @@ automatic. Design history and the two adversarial reviews: `qa/design/trial-iap.
 - `ScreenTimeShield/ScreenTimeShieldApp.swift`, `ContentView.swift`: remove the `UNPLUG_SKIP_FC` refresh skips.
 - `CustomDeviceActivityMonitor/DeviceActivityMonitorExtension.swift`: gate blocks and reminders with the UnplugCore rule.
 - `ScreenTimeShield/QAMenuView.swift`, `SettingsView.swift`:
-  - QA entry shown only outside production;
+  - ~~QA entry shown only outside production~~ (superseded by v5 #11: manual removal);
   - the menu keeps expire-trial, read-only diagnostics, times-stopped and the checklist.
 - `Localizable.xcstrings`: new strings (notice, unreachable, paused) in 10 languages.
-- `qa/invariants.md` (F9 rows), `qa/iap-test-checklist.md`, `QAChecklistView.swift`, `status.md` (release checklist: no manual QA revert; cutover step; release-day check).
+- `qa/invariants.md` (F9 rows), `qa/iap-test-checklist.md`, `QAChecklistView.swift`, `status.md` (release checklist: ~~no manual QA revert~~ (v5 #11: manual removal stays); cutover step; release-day check).
 
 ## Build order (one commit each, straight to main, pushed)
 
@@ -283,9 +296,9 @@ customer has any); verifying the production ceiling or grandfathering on a devic
 
 **Reuse found:**
 - `AccessEvaluator.trialEnd` — the midnight maths serves both the 7-day end and the 14-day ceiling.
-  `accessState` / `trialDaysRemaining` reused with the capped end. The extension's gate is
-  `accessState(...) != .expired`, the expression already at `AccessController.swift:147`.
-- `startTrialIfNeeded()` / `trial_start` — the app's own start date, already written once on arm.
+  ~~`accessState` / `trialDaysRemaining` reused; extension gate = `accessState(...) != .expired`~~ →
+  superseded: `AccessPolicy` and `AccessPolicy.extensionAppliesBlock` (v4/v5 build).
+- ~~`startTrialIfNeeded()` / `trial_start`~~ → superseded by v5 #12: new key `trial_started_at`.
 - `Grandfather.isGrandfathered` — keep; the environment check sits in front of it.
 - `Store.purchase / restore / loadProduct` — unchanged product.
 - `KeyValueStore` protocol (`AccessControl.swift:53`) / `AppGroupStore` — storage, injectable in tests.
@@ -365,7 +378,8 @@ New moving parts: the `Transaction.updates` task (criterion 6 while running); th
 (criteria 3, 4, 5, 7). Nothing else.
 
 Risk and rollout: ships as 1.3. No new IAP. Rollback is a new build. Dev-build keys
-(`enforcement_allowed`, `qa_*`) are never read; `trial_start` keeps its meaning (the app's own date).
+(`enforcement_allowed`, `qa_*`, `trial_start`) are never read (v5 #12: the trial start moved to
+`trial_started_at`).
 
 Pre-mortem:
 - Signed out of the App Store → first arm blocked with a message; 1.2 blocks already armed keep
@@ -398,7 +412,41 @@ the user has set anything up.
 4. UI + deletions + string + cutover comment + invariants + QA checklist.
 5. Automated QA pass; results in `qa/README.md`.
 
+**Slice 2 must also:** delete `AccessEvaluator.accessState` / `trialDaysRemaining` (keep `trialEnd`)
+and port their tests (AccessControlTests trial cases, PricingBoundaryTests V23) to `AccessPolicy`, so
+the compiler finds every old caller; re-read stored facts after every `await` before merging; on an
+undecodable stored value keep the last known access, never demote.
+
 **Follow-ups:** `V19` and `V21` unless taken into scope; `V20` closes with slice 3; `V23` stays
 won't-fix.
 
-**Known limits:** (filled in Phase 6)
+**Known limits:**
+- A device clock that stays set back revives an expired trial (V23, accepted won't-fix). Trigger: the
+  user turns off automatic time and backdates the clock. Likelihood: low (deliberate effort for $4.99).
+  Consequence: free use while the clock stays wrong. The download-date ceiling does **not** help: it is
+  compared against the same backdated clock.
+- Travel moves the trial end and the last start day, because both are local midnights recomputed in
+  the current zone: the shift is the zone offset plus or minus up to a day. Likelihood: common for
+  travellers. Consequence: the trial ends up to about a day earlier or later; near the last start day,
+  travel can turn a trial start into the unlock screen or the reverse.
+- A refresh that read `Transaction.all` before a refund can re-grant once. Trigger: a refund lands
+  during a refresh. Likelihood: very low. Consequence: access until the next refresh.
+- If `Transaction.all` ever lists a refunded purchase twice (revoked and not), access is kept.
+  Likelihood: unknown; the slice 2 SKTestSession refund test shows the real shape. Consequence: a
+  refunded user keeps access (lost revenue, no user harm).
+- Corrupt stored facts: the extension applies blocks; the app keeps the last known access (slice 2).
+  Likelihood: very low. Consequence: possibly a longer trial, never a lost purchase.
+- The 2020 cutover placeholder is guarded only by release checklist step 2. The V22 tests do **not**
+  guard it: they are marked expected-failure, so `swift test` stays green while the placeholder is in.
+  Trigger: the final build is prepared without setting it. Likelihood: medium — this constant went
+  stale twice before (`da16e73`, `af84448`). Consequence: every 1.2 buyer
+  is treated as new and asked to pay. A late placeholder was considered and rejected: if it shipped,
+  every new user would be grandfathered.
+- [UNVERIFIED] App Store account switch on the device: `withAppTransaction` replaces the download date
+  with each answer, while the granting purchase stays stored. If `AppTransaction.shared` follows the new
+  account, grandfathering follows it too, and a purchase made on the old account stays on the device.
+  Likelihood: low (shared or family devices). Consequence: access follows the device, not the account,
+  until a refresh reads the new account's purchase history.
+- A reinstall inside the 14-day start window clears the trial start and gives a fresh trial, capped
+  at download + 21 days in production (unlimited outside production). Likelihood: low (deliberate).
+  Consequence: up to about 3 weeks free instead of 1. Accepted with the cap decision.

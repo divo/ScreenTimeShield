@@ -40,28 +40,26 @@ final class PricingBoundaryTests: XCTestCase {
   // MARK: V22 — release-safety invariant on PricingConfig.cutoverDate
 
   func testV22_cutoverDateMustNotPredateTheLastPreIAPSaleDay() {
-    // ⚠️ DEV BUILD: cutoverDate is deliberately in the past so a fresh install is not grandfathered
-    // and the IAP can be tested. XCTExpectFailure is strict, so restoring the release date turns
-    // this into an *unexpected pass* and the suite goes red until this marker is removed — which is
-    // the point: the date and the marker have to be reverted together.
-    XCTExpectFailure("DEV BUILD — cutoverDate set to the past to test the IAP. Revert before submission.")
+    // ⚠️ cutoverDate is a 2020 placeholder until the release date is known. Once slice 2 routes the
+    // app through AccessPolicy, grandfathering only runs in the real App Store. XCTExpectFailure is strict: setting the
+    // real date turns this into an *unexpected pass* and the suite goes red until this marker is
+    // removed, so the date and the marker change together.
+    XCTExpectFailure("cutoverDate is a placeholder until the release date is known; set it a few days after release.")
 
     // V22: the grandfathering promise only holds if the cutover postdates every pre-IAP purchase.
     XCTAssertGreaterThan(
       PricingConfig.cutoverDate, lastDayThePreIAPBuildWasOnSale,
       """
-      V22: PricingConfig.cutoverDate is 2026-06-25, but the pre-IAP paid build was still the \
-      only build on sale on 2026-07-25. Every $0.99 buyer in that gap is treated as a post-IAP \
-      user: 7-day trial, then enforcement_allowed = false and a $4.99 paywall, with no restore path. \
-      DO ONE OF TWO THINGS: (1) move PricingConfig.cutoverDate to the actual 1.3 App Store release \
-      date — it must be set or re-verified at submission time, not once — or (2) accept the cohort \
-      deliberately, and delete this test with a note in status.md saying who is being written off.
+      V22: PricingConfig.cutoverDate predates the last day the pre-IAP paid build was on sale. \
+      Every $0.99 buyer after the cutover is treated as a new user and asked to pay $4.99. \
+      Set PricingConfig.cutoverDate a few days after the 1.3 release day (never earlier), bump \
+      lastDayThePreIAPBuildWasOnSale to the release day, and remove the XCTExpectFailure markers.
       """)
   }
 
   func testV22_everyBuyerInTheReleaseGapIsGrandfathered() {
-    // ⚠️ DEV BUILD: see the note on the test above — revert the date and this marker together.
-    XCTExpectFailure("DEV BUILD — cutoverDate set to the past to test the IAP. Revert before submission.")
+    // ⚠️ Placeholder cutover: see the note on the test above — change the date and this marker together.
+    XCTExpectFailure("cutoverDate is a placeholder until the release date is known; set it a few days after release.")
 
     // V22: no purchase made while only the pre-IAP build shipped may fall outside grandfathering.
     let gapPurchases: [(String, Date)] = [

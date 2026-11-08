@@ -17,37 +17,28 @@ public enum AccessState: Equatable {
 
 /// Central pricing constants.
 public enum PricingConfig {
-  /// The moment the IAP release goes live. Users whose original download predates this
-  /// date are grandfathered into permanent free access. Compared against
-  /// `AppTransaction.originalPurchaseDate`, which is monotonic and immune to our
-  /// per-version build-number resets (unlike the original `originalAppVersion` check).
-  /// The IAP go-live date. Users whose original download predates this are grandfathered
-  /// into permanent free access (compared against `AppTransaction.originalPurchaseDate`).
+  /// Users whose Apple ID first got the app (`AppTransaction.originalPurchaseDate`) before this are
+  /// grandfathered into permanent free access. `AccessPolicy` checks it only in the real App Store, so
+  /// test environments, where Apple reports a fixed 2013 date, never grandfather.
   ///
-  /// **Must be at or after the actual 1.3 App Store release, and re-verified at every submission.**
-  /// Erring late is the expensive direction: anyone who bought the pre-IAP paid app after this date
-  /// is treated as a new user and asked to pay again. Erring early only gives a few $0.99 buyers
-  /// free access. `PricingBoundaryTests` fails while this predates the last known pre-IAP sale day.
+  /// **Set it a few days after the 1.3 release day, when the final build is prepared, never earlier.**
+  /// Erring early is the expensive direction: anyone who paid $0.99 between the cutover and the price
+  /// change to Free is treated as a new user and asked to pay again. Erring late only grandfathers a
+  /// few free downloads. `PricingBoundaryTests` V22 checks this against the last known pre-IAP sale day;
+  /// it is marked as an expected failure while the placeholder is in, so remove those markers when the
+  /// real value goes in. See status.md.
   ///
-  /// ⚠️ **DEV BUILD — currently set to the past on purpose.** A cutover in the past means a fresh
-  /// install is *not* grandfathered, so the trial, paywall and IAP purchase can actually be
-  /// exercised. **This build must not be submitted.** For release, set it to 00:00 UTC on the day
-  /// *after* the 1.3 release day, never to an old date: the app is on sale at $0.99 until the
-  /// release day, and anyone who paid before the cutover must be grandfathered. Then remove the
-  /// matching XCTExpectFailure markers in PricingBoundaryTests. See the release checklist in status.md.
-  public static let cutoverDate = Date(timeIntervalSince1970: 1_577_836_800) // DEV: 2020-01-01 00:00 UTC
+  /// ⚠️ **The 2020 placeholder must not be submitted**: in the real App Store it would treat every 1.2
+  /// buyer as a new user.
+  public static let cutoverDate = Date(timeIntervalSince1970: 1_577_836_800) // placeholder: 2020-01-01, not the release value
   /// Full local calendar days in the trial, after the day it starts (see `AccessEvaluator.trialEnd`).
-  /// ⚠️ DEV BUILD — shortened to 1 day for trial→purchase QA. Restore to 7 days before submitting.
-  public static let trialDays = 1 // DEV: 1 day
+  public static let trialDays = 7
+  /// In the real App Store, a first block within this many days of Apple's download date still gets the
+  /// full trial; a reinstall can't push a trial past `trialStartGraceDays + trialDays`.
+  public static let trialStartGraceDays = 14
   public static let statThreshold = 5
   /// Debounce window for the noisy shield-presentation counter.
   public static let stopCooldown: TimeInterval = 60
-}
-
-/// Abstracts the StoreKit entitlement source so callers (and tests) don't depend on StoreKit directly.
-public protocol EntitlementProviding {
-  var isPurchased: Bool { get }
-  var originalPurchaseDate: Date? { get }
 }
 
 /// Thin seam over the shared app-group UserDefaults for trial date + counters.
